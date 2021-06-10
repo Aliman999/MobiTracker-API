@@ -22,6 +22,25 @@ var webSocket = null;
 var clients=[];
 var hourly;
 
+Object.size = function(obj) {
+  var size = 0, key;
+  for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+  }
+  return size;
+};
+
+const con = mysql.createPool({
+  host:config.MysqlHost,
+  user:config.MysqlUsername,
+  password:config.MysqlPassword,
+  database:config.MysqlDatabase,
+  multipleStatements:true
+});
+
+con.getConnection(function(err, connection) {
+  if (err) throw err;
+});
 const limiter = new Bottleneck({
   maxConcurrent: 3,
 });
@@ -93,25 +112,6 @@ function calcTime(){
 
 const timeToJob = new Timer(calcTime, 500);
 
-Object.size = function(obj) {
-  var size = 0, key;
-  for (key in obj) {
-      if (obj.hasOwnProperty(key)) size++;
-  }
-  return size;
-};
-
-const con = mysql.createPool({
-  host:config.MysqlHost,
-  user:config.MysqlUsername,
-  password:config.MysqlPassword,
-  database:config.MysqlDatabase,
-  multipleStatements:true
-});
-
-con.getConnection(function(err, connection) {
-  if (err) throw err;
-});
 
 if(server.listen(2599)){
   console.log("Key Maintenance is Online");
