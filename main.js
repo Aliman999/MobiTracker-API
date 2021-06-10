@@ -159,11 +159,11 @@ function update(key){
       res.on('end', function(){
         try{
           var user = JSON.parse(body);
+          console.log("working");
           if(user.data == null){
             promiseSearch({status:0});
           }else{
             if(Object.size(user.data) > 0){
-              console.log(user);
               promiseSearch({ status:1});
             }else{
               promiseSearch({ status:0 });
