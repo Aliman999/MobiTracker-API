@@ -124,7 +124,7 @@ program().then(() => console.log('Waiting for database events...')).catch(consol
 
 
 function socket(){
-  var payload = jwt.sign({ user:"bot" }, config.Secret, { algorithm: 'HS265' });
+  var payload = jwt.sign({ user:"bot" }, config.Secret);
   webSocket = new WebSocket("wss://mobitracker.co:2599");
   webSocket.onopen = function(){
     message = {
