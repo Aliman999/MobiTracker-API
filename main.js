@@ -185,10 +185,15 @@ async function keys(){
     })
   }
 }
+
+var bool = true;
 setInterval(()=>{
-  keys();
-  console.log("starting");
-  timeToJob.stop();
+  if(bool == true){
+    keys();
+    console.log("starting");
+    timeToJob.stop();
+    bool = false;
+  }
 }, 10000)
 
 function getKeys(){
