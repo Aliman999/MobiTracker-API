@@ -220,7 +220,8 @@ const program = async () => {
   instance.on(MySQLEvents.EVENTS.CONNECTION_ERROR, console.error);
   instance.on(MySQLEvents.EVENTS.ZONGJI_ERROR, console.error);
 };
-program().then(() => console.log('Waiting for database events...')).catch(console.error);
+program()
+.catch(err);
 
 
 /*
