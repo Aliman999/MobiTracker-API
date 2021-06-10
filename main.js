@@ -145,7 +145,7 @@ function update(key){
     var options = {
       hostname: 'api.starcitizen-api.com',
       port: 443,
-      path: '/'+apiKey+'/v1/live/user/'+escape(args),
+      path: '/'+apiKey+'/v1/me',
       method: 'GET'
     }
     const req = https.request(options, res =>{
@@ -159,7 +159,6 @@ function update(key){
       res.on('end', function(){
         try{
           var user = JSON.parse(body);
-          console.log("working");
           if(user.data == null){
             promiseSearch({status:0});
           }else{
