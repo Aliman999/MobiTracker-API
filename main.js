@@ -121,7 +121,7 @@ program().then(() => console.log('Waiting for database events...')).catch(consol
 
 
 
-
+console.log(config.secret);
 
 function socket(){
   var payload = jwt.sign({ user:"bot" }, config.secret, { algorithm: 'HS265' });
@@ -150,4 +150,4 @@ function heartbeat() {
   setTimeout(heartbeat, 3000);
 }
 
-socket();
+//socket();
