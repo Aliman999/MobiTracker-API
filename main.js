@@ -23,7 +23,7 @@ const limiter = new Bottleneck({
 });
 
 limiter.on("executing", function(info){
-  console.log(limiter.jobs("EXECUTING").join(", ")+" executing");
+  //console.log(limiter.jobs("EXECUTING").join(", ")+" executing");
 })
 
 limiter.on("done", function(info){
@@ -122,6 +122,7 @@ async function keys(){
       if(result.status == 0){
         throw new Error();
       }else{
+        console.log(result);
         //var sql = "UPDATE apiKeys SET count = ";
       }
     })
