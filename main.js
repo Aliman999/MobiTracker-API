@@ -150,4 +150,4 @@ function heartbeat() {
   setTimeout(heartbeat, 3000);
 }
 
-//socket();
+socket();
