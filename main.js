@@ -187,6 +187,7 @@ async function keys(){
 }
 setInterval(()=>{
   keys();
+  console.log("starting");
   timeToJob.stop();
 }, 1800000)
 
