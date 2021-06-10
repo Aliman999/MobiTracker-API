@@ -174,6 +174,7 @@ async function keys(){
         throw new Error();
       }else{
         var sql = "UPDATE apiKeys SET count = "+result.data.value+" WHERE apiKey = '"+result.data.key+"'";
+        console.log(sql);
         con.query(sql, function (err, result, fields) {
           if(err) throw err;
         });
@@ -232,7 +233,6 @@ function update(key){
             promiseSearch({status:0});
           }else{
             if(Object.size(user.data) > 0){
-              console.log({key:user.data.user_key, value:user.data.value});
               promiseSearch({ status:1, data:{ key:user.data.user_key, value:user.data.value } });
             }else{
               promiseSearch({ status:0 });
