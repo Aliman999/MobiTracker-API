@@ -167,6 +167,7 @@ function update(key){
       res.on('end', function(){
         try{
           var user = JSON.parse(body);
+          console.log(user);
           if(user.data == null){
             promiseSearch({status:0});
           }else{
