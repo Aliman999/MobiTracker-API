@@ -141,6 +141,7 @@ wss.on('connection', function(ws){
         }else{
           ws.user = decoded.user;
           ws.isAlive = true;
+          clients.push(ws);
         }
       });
     })
