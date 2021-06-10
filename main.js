@@ -23,7 +23,7 @@ const limiter = new Bottleneck({
 });
 
 limiter.on("executeing", function(info){
-
+  console.log(limiter.jobs("EXECUTING").join(", ")+" executing");
 })
 
 const con = mysql.createPool({
