@@ -201,6 +201,7 @@ function update(key){
 }
 
 const program = async () => {
+  console.log("Waiting for database events");
   const instance = new MySQLEvents(con, {
     startAtEnd: true,
     serverId:3,
@@ -222,7 +223,7 @@ const program = async () => {
 };
 program()
 .catch((err) =>{
-  
+
 });
 
 
