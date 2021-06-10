@@ -120,6 +120,7 @@ async function keys(){
   })
   */
 }
+keys();
 
 function getKeys(){
   return new Promise(callback =>{
