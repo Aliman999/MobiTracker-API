@@ -22,16 +22,15 @@ const limiter = new Bottleneck({
   maxConcurrent: 3,
 });
 
-limiter.on("executing", function(info){
-  //console.log(limiter.jobs("EXECUTING").join(", ")+" executing");
-})
-
 limiter.on("done", function(info){
-  console.log(info);
+  if(info.options.id == info.args[1]){
+    console.log("Finished updating "+info.args[1]+" keys.");
+  }
 })
 
 limiter.on("failed", async (error, jobInfo) => {
   if(jobInfo.retryCount < 10){
+    console.log("KEY ID: "+jobInfo.options.id+" failed. Retrying.");
     return 1000;
   }
 });
@@ -144,7 +143,7 @@ async function keys(){
     })
   };
   for(var i = 0; i < result.length; i++){
-    limiter.schedule({ id:result[i].id }, pushKey, result[i].apiKey)
+    limiter.schedule({ id:result[i].id }, pushKey, result[i].apiKey, result.length)
     .catch((error) => {
     })
   }
