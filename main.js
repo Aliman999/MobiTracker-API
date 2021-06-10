@@ -108,17 +108,22 @@ wss.on('close', function close(e) {
 
 //Key Management
 async function keys(){
-  await getKeys().then((result)=>{
-    console.log(result);
-  });
-  /*
+  var result = await getKeys();
+
+  async function pushKey(key){
+    await update(key)
+    .then((result)=>{
+      if(result.status == 0){
+        throw new Error();
+      }else{
+        //var sql = "UPDATE apiKeys SET count = ";
+      }
+    })
+  };
+
   limiter.schedule()
   .catch((error) => {
-    if (error instanceof Bottleneck.BottleneckError) {
-
-    }
   })
-  */
 }
 keys();
 
@@ -127,13 +132,13 @@ function getKeys(){
     var sql = "SELECT * FROM apiKeys";
     con.query(sql, function (err, result, fields) {
       if(err) throw err;
-      var keys = result;
-      callback(keys);
+      callback(result);
     });
   })
 }
 
-function update(){
+
+function update(key){
   return new Promise(promiseSearch =>{
     var embed;
     var options = {
@@ -157,7 +162,8 @@ function update(){
             promiseSearch({status:0});
           }else{
             if(Object.size(user.data) > 0){
-              promiseSearch({ status:1 });
+              console.log(user);
+              promiseSearch({ status:1});
             }else{
               promiseSearch({ status:0 });
             }
