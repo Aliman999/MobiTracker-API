@@ -174,12 +174,11 @@ function update(key){
       res.on('end', function(){
         try{
           var user = JSON.parse(body);
-          console.log(user);
           if(user.data == null){
             promiseSearch({status:0});
           }else{
             if(Object.size(user.data) > 0){
-              promiseSearch({ status:1});
+              promiseSearch({ status:1, data:user.data.value });
             }else{
               promiseSearch({ status:0 });
             }
