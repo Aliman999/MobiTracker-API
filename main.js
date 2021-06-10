@@ -19,6 +19,7 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null;
 var clients=[];
+var thirty = Date.now()+1800000;
 
 const limiter = new Bottleneck({
   maxConcurrent: 3,
@@ -27,6 +28,7 @@ const limiter = new Bottleneck({
 limiter.on("done", function(info){
   if(info.options.id == info.args[1]){
     console.log("Finished updating "+info.args[1]+" keys.");
+    thirty += 1800000;
     timeToJob.start();
   }
 })
@@ -64,7 +66,7 @@ function Timer(fn, t) {
 }
 
 function calcTime(){
-  const timeLeft = countdown(Date.now(), day);
+  const timeLeft = countdown(Date.now(), thirty);
   log("Running job in "+timeLeft.hours+":"+timeLeft.minutes+":"+timeLeft.seconds);
 }
 
