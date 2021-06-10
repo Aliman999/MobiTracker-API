@@ -130,7 +130,7 @@ async function keys(){
       if(result.status == 0){
         throw new Error();
       }else{
-        var sql = "UPDATE apiKeys SET count = "+result.value+" WHERE apiKey = '"+result.key+"'";
+        var sql = "UPDATE apiKeys SET count = "+result.data.value+" WHERE apiKey = '"+result.data.key+"'";
         console.log(sql);
       }
     })
