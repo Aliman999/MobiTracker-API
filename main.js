@@ -142,13 +142,13 @@ function socket(){
   webSocket.onclose = function(){
     socket();
   };
+  function heartbeat() {
+    if (!webSocket) return;
+    if (webSocket.readyState !== 1) return;
+    webSocket.send(JSON.stringify({type:"ping"}));
+    setTimeout(heartbeat, 3000);
+  }
 }
 
-function heartbeat() {
-  if (!webSocket) return;
-  if (webSocket.readyState !== 1) return;
-  webSocket.send(JSON.stringify({type:"ping"}));
-  setTimeout(heartbeat, 3000);
-}
 
 socket();
