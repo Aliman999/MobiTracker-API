@@ -75,8 +75,10 @@ wss.on('connection', function(ws){
         if(err){
           ws.terminate();
         }else{
+          decoded = JSON.parse(decoded);
+          ws.user = decoded.user;
           ws.isAlive = true;
-          console.log(decoded);
+          console.log(ws);
         }
       });
     })
