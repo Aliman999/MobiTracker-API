@@ -148,6 +148,7 @@ function update(key){
       path: '/'+apiKey+'/v1/me',
       method: 'GET'
     }
+    console.log(options);
     const req = https.request(options, res =>{
       var body = "";
       res.on('data', d => {
