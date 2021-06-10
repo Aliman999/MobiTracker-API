@@ -109,7 +109,7 @@ wss.on('close', function close(e) {
 //Key Management
 async function keys(){
   await getKeys().then((result)=>{
-
+    console.log(result);
   });
   /*
   limiter.schedule()
@@ -127,8 +127,8 @@ function getKeys(){
     var sql = "SELECT * FROM apiKeys";
     con.query(sql, function (err, result, fields) {
       if(err) throw err;
-      console.log(result);
-      callback();
+      var keys = result;
+      callback(keys);
     });
   })
 }
