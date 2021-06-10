@@ -19,7 +19,7 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null;
 var clients=[];
-var thirty = Date.now()+10000;
+var thirty = Date.now()+1800000;
 
 const limiter = new Bottleneck({
   maxConcurrent: 3,
@@ -186,15 +186,11 @@ async function keys(){
   }
 }
 
-var bool = true;
 setInterval(()=>{
-  if(bool == true){
-    keys();
-    console.log("starting");
-    timeToJob.stop();
-    bool = false;
-  }
-}, 10000)
+  keys();
+  console.log("starting");
+  timeToJob.stop();
+}, 1800000)
 
 function getKeys(){
   return new Promise(callback =>{
