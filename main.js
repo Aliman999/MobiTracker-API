@@ -221,7 +221,9 @@ const program = async () => {
   instance.on(MySQLEvents.EVENTS.ZONGJI_ERROR, console.error);
 };
 program()
-.catch(err);
+.catch((err) =>{
+  
+});
 
 
 /*
