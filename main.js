@@ -22,7 +22,7 @@ const limiter = new Bottleneck({
   maxConcurrent: 3,
 });
 
-limiter.on("executeing", function(info){
+limiter.on("executing", function(info){
   console.log(limiter.jobs("EXECUTING").join(", ")+" executing");
 })
 
