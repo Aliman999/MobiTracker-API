@@ -201,7 +201,6 @@ function update(key){
 }
 
 const program = async () => {
-  console.log("Waiting for database events");
   const instance = new MySQLEvents(con, {
     startAtEnd: true,
     serverId:3,
@@ -221,10 +220,7 @@ const program = async () => {
   instance.on(MySQLEvents.EVENTS.CONNECTION_ERROR, console.error);
   instance.on(MySQLEvents.EVENTS.ZONGJI_ERROR, console.error);
 };
-program()
-.catch((err) =>{
-
-});
+program().then(() => console.log('Waiting for database events...')).catch(console.error);
 
 
 /*
