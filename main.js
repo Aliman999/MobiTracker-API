@@ -1,5 +1,4 @@
 'use strict';
-/*
 const config  = require('./config');
 const WebSocket = require('ws');
 const Bottleneck = require('bottleneck');
@@ -16,7 +15,7 @@ const server = https.createServer({
   key: fs.readFileSync('/etc/nginx/.ssl/mobitracker_co.key'),
 });
 const wss = new WebSocket.Server({ server, clientTracking:true });
-*/
+
 var clients=[];
 const con = mysql.createPool({
   host:config.MysqlHost,
