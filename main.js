@@ -26,6 +26,10 @@ limiter.on("executing", function(info){
   console.log(limiter.jobs("EXECUTING").join(", ")+" executing");
 })
 
+limiter.on("done", function(info){
+  console.log(info.id+" finished");
+})
+
 const con = mysql.createPool({
   host:config.MysqlHost,
   user:config.MysqlUsername,
