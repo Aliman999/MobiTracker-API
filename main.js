@@ -30,6 +30,14 @@ limiter.on("done", function(info){
   console.log("KEY ID:"+info.options.id+" updated");
 })
 
+Object.size = function(obj) {
+  var size = 0, key;
+  for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+  }
+  return size;
+};
+
 const con = mysql.createPool({
   host:config.MysqlHost,
   user:config.MysqlUsername,
@@ -155,7 +163,6 @@ function update(key){
       path: '/'+key+'/v1/me',
       method: 'GET'
     }
-    console.log(options);
     const req = https.request(options, res =>{
       var body = "";
       res.on('data', d => {
