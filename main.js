@@ -127,11 +127,11 @@ async function keys(){
   async function pushKey(key){
     await update(key)
     .then((result)=>{
-      console.log(result);
       if(result.status == 0){
         throw new Error();
       }else{
-        //var sql = "UPDATE apiKeys SET count = ";
+        var sql = "UPDATE apiKeys SET count = "result.value+" WHERE apiKey = '"+result.key+"'";
+        console.log(sql);
       }
     })
   };
