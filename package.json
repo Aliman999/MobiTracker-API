@@ -1,0 +1,11 @@
+{
+  "name": "keymaintenance",
+  "version": "1.0.0",
+  "description": "Maintains the queries available for each key in MobiTracker's Database and provides datastream for admin panel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "J.Dusky",
+  "license": "ISC"
+}
