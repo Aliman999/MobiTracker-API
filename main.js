@@ -76,8 +76,11 @@ wss.on('connection', function(ws){
           ws.terminate();
         }else{
           ws.isAlive = true;
+          console.log(decoded);
         }
       });
+    })
+    .on('job', function(data){
     })
 });
 
@@ -121,7 +124,7 @@ program().then(() => console.log('Waiting for database events...')).catch(consol
 
 
 
-
+//INNER CLIENT TESTING
 
 function socket(){
   var payload = jwt.sign({ user:"bot" }, config.Secret);
@@ -135,13 +138,10 @@ function socket(){
     webSocket.send(JSON.stringify(message));
     heartbeat();
   }
-  /*
-  webSocket.onmessage = function(event){
-  }
-  */
   webSocket.onclose = function(){
     socket();
   };
+
   function heartbeat() {
     if (!webSocket) return;
     if (webSocket.readyState !== 1) return;
