@@ -117,3 +117,37 @@ const program = async () => {
   instance.on(MySQLEvents.EVENTS.ZONGJI_ERROR, console.error);
 };
 program().then(() => console.log('Waiting for database events...')).catch(console.error);
+
+
+
+
+
+
+function socket(){
+  var payload = jwt.sign({ user:"bot" }, client.secret, { algorithm: 'HS265' });
+  webSocket = new WebSocket("wss://mobitracker.co:2599");
+  webSocket.onopen = function(){
+    message = {
+      type:"auth",
+      token:payload
+    };
+    webSocket.send(JSON.stringify(message));
+    heartbeat();
+  }
+  /*
+  webSocket.onmessage = function(event){
+  }
+  */
+  webSocket.onclose = function(){
+    socket();
+  };
+}
+
+function heartbeat() {
+  if (!webSocket) return;
+  if (webSocket.readyState !== 1) return;
+  webSocket.send(JSON.stringify({type:"ping"}));
+  setTimeout(heartbeat, 3000);
+}
+
+socket();
