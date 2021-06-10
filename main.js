@@ -141,7 +141,7 @@ function getKeys(){
 
 function update(key){
   return new Promise(promiseSearch =>{
-    console.log(key);
+    console.log("test");
     var embed;
     var options = {
       hostname: 'api.starcitizen-api.com',
