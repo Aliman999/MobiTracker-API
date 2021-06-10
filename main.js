@@ -120,8 +120,8 @@ async function keys(){
       }
     })
   };
-  console.log(result);
   for(var i = 0; i < result.length; i++){
+    console.log(result[i]);
     limiter.schedule({ id:result[i].id }, pushKey, result[i].apiKey)
     .catch((error) => {
     })
