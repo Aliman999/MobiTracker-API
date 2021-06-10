@@ -178,7 +178,7 @@ function update(key){
             promiseSearch({status:0});
           }else{
             if(Object.size(user.data) > 0){
-              promiseSearch({ status:1, data:user.data.value });
+              promiseSearch({ status:1, data:{ key:user.data.user_key, value:user.data.value } });
             }else{
               promiseSearch({ status:0 });
             }
