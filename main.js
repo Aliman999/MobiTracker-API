@@ -187,11 +187,15 @@ async function keys(){
   }
 }
 
+var bool = true;
 setInterval(()=>{
-  keys();
-  console.log("");
-  timeToJob.stop();
-}, 1800000)
+  if(bool){
+    keys();
+    console.log("");
+    timeToJob.stop();
+    bool = false;
+  }
+}, 1000)
 
 function getKeys(){
   return new Promise(callback =>{
