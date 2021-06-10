@@ -17,6 +17,13 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null;
 var clients=[];
+
+const limiter = new Bottleneck();
+
+limiter.on("executeing", function(info){
+
+})
+
 const con = mysql.createPool({
   host:config.MysqlHost,
   user:config.MysqlUsername,
@@ -24,6 +31,7 @@ const con = mysql.createPool({
   database:config.MysqlDatabase,
   multipleStatements:true
 });
+
 con.getConnection(function(err, connection) {
   if (err) throw err;
 });
@@ -99,6 +107,69 @@ wss.on('close', function close(e) {
   clearInterval(interval);
 });
 
+//Key Management
+function keys(){
+  await getKeys().then((result)=>{
+
+  });
+  /*
+  limiter.schedule()
+  .catch((error) => {
+    if (error instanceof Bottleneck.BottleneckError) {
+
+    }
+  })
+  */
+}
+
+function getKeys(){
+  return new Promise(callback =>{
+    var sql = "SELECT * FROM apiKeys";
+    con.query(sql, function (err, result, fields) {
+      if(err) throw err;
+      console.log(result);
+      callback();
+    });
+  })
+}
+
+function update(){
+  return new Promise(promiseSearch =>{
+    var embed;
+    var options = {
+      hostname: 'api.starcitizen-api.com',
+      port: 443,
+      path: '/'+apiKey+'/v1/live/user/'+escape(args),
+      method: 'GET'
+    }
+    const req = https.request(options, res =>{
+      var body = "";
+      res.on('data', d => {
+        body += d;
+      })
+      res.on('error', error => {
+        promiseSearch({status:0})
+      })
+      res.on('end', function(){
+        try{
+          var user = JSON.parse(body);
+          if(user.data == null){
+            promiseSearch({status:0});
+          }else{
+            if(Object.size(user.data) > 0){
+              promiseSearch({ status:1 });
+            }else{
+              promiseSearch({ status:0 });
+            }
+          }
+        }catch(err){
+          promiseSearch({ status:0 });
+        };
+      })
+    })
+    req.end()
+  });
+}
 
 const program = async () => {
   const instance = new MySQLEvents(con, {
