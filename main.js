@@ -224,7 +224,7 @@ const program = async () => {
 program().then(() => console.log('Waiting for database events...')).catch(console.error);
 
 
-
+/*
 
 //INNER CLIENT TESTING
 
@@ -254,3 +254,4 @@ function socket(){
 
 
 socket();
+*/
