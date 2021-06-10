@@ -148,7 +148,9 @@ async function keys(){
     })
   }
 }
-keys();
+setInterval(()=>{
+  keys();
+}, 1800000)
 
 function getKeys(){
   return new Promise(callback =>{
