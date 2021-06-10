@@ -15,7 +15,7 @@ const server = https.createServer({
   key: fs.readFileSync('/etc/nginx/.ssl/mobitracker_co.key'),
 });
 const wss = new WebSocket.Server({ server, clientTracking:true });
-
+var webSocket = null;
 var clients=[];
 const con = mysql.createPool({
   host:config.MysqlHost,
