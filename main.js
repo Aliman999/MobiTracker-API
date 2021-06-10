@@ -18,9 +18,7 @@ const server = https.createServer({
   key: fs.readFileSync('/etc/nginx/.ssl/mobitracker_co.key'),
 });
 const wss = new WebSocket.Server({ server, clientTracking:true });
-var webSocket = null;
-var clients=[];
-var hourly;
+var webSocket = null, clients=[], hourly, sql;
 
 Object.size = function(obj) {
   var size = 0, key;
