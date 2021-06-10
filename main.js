@@ -3,6 +3,7 @@ const config  = require('./config');
 const WebSocket = require('ws');
 const Bottleneck = require('bottleneck');
 const MySQLEvents = require('@rodrigogs/mysql-events');
+const schedule = require('node-schedule');
 const fs = require('fs');
 const https = require('https');
 const countdown = require('countdown');
@@ -19,7 +20,7 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null;
 var clients=[];
-var thirty = Date.now()+1800000;
+var hourly;
 
 const limiter = new Bottleneck({
   maxConcurrent: 3,
@@ -28,7 +29,6 @@ const limiter = new Bottleneck({
 limiter.on("done", function(info){
   if(info.options.id == info.args[1]){
     console.log("Finished updating "+info.args[1]+" keys.");
-    thirty += 1800000;
     timeToJob.start();
   }
 })
@@ -53,11 +53,14 @@ function Timer(fn, t) {
         return this;
     }
     this.start = function() {
-      if (!timerObj) {
-          this.stop();
-          timerObj = setInterval(fn, t);
-      }
-      return this;
+        persist(3).then((param) => {
+          hourly = parseInt(param);
+          if (!timerObj) {
+              this.stop();
+              timerObj = setInterval(fn, t);
+          }
+          return this;
+        });
     }
     this.reset = function(newT = t) {
         t = newT;
@@ -65,8 +68,26 @@ function Timer(fn, t) {
     }
 }
 
+function persist(id){
+  return new Promise(callback => {
+    sql = "SELECT param FROM persist WHERE id = "+id;
+    con.query(sql, function(err, result, fields){
+      if(err) throw err;
+
+      callback(result[0].param);
+    })
+  })
+}
+
+function saveParam(val, id){
+  sql = "UPDATE persist SET param = '"+val+"' WHERE id = "+id+";";
+  con.query(sql, function(err, result, fields){
+    if(err) throw err;
+  })
+}
+
 function calcTime(){
-  const timeLeft = countdown(Date.now(), thirty);
+  const timeLeft = countdown(Date.now(), hourly);
   log("Running job in "+timeLeft.hours+":"+timeLeft.minutes+":"+timeLeft.seconds);
 }
 
@@ -174,7 +195,6 @@ async function keys(){
         throw new Error();
       }else{
         var sql = "UPDATE apiKeys SET count = "+result.data.value+" WHERE apiKey = '"+result.data.key+"'";
-        console.log(sql);
         con.query(sql, function (err, result, fields) {
           if(err) throw err;
         });
@@ -188,15 +208,14 @@ async function keys(){
   }
 }
 
-var bool = true;
-setInterval(()=>{
-  if(bool){
-    keys();
-    console.log("");
-    timeToJob.stop();
-    bool = false;
-  }
-}, 1000)
+
+schedule.scheduleJob('0 * * * *', function(){
+  saveParam((Date.now()+3600000), 3);
+  keys();
+  console.log("");
+  timeToJob.stop();
+});
+
 
 function getKeys(){
   return new Promise(callback =>{
