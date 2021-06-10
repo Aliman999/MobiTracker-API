@@ -50,14 +50,11 @@ function Timer(fn, t) {
         return this;
     }
     this.start = function() {
-        persist(2).then((param) => {
-          day = parseInt(param);
-          if (!timerObj) {
-              this.stop();
-              timerObj = setInterval(fn, t);
-          }
-          return this;
-        });
+      if (!timerObj) {
+          this.stop();
+          timerObj = setInterval(fn, t);
+      }
+      return this;
     }
     this.reset = function(newT = t) {
         t = newT;
