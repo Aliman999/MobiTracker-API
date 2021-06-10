@@ -108,7 +108,7 @@ wss.on('close', function close(e) {
 });
 
 //Key Management
-function keys(){
+async function keys(){
   await getKeys().then((result)=>{
 
   });
