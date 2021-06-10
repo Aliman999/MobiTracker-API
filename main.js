@@ -90,7 +90,6 @@ function toEvent (message) {
 }
 
 function heartbeat() {
-  console.log("test");
   this.isAlive = true;
 }
 
