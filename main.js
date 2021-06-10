@@ -27,7 +27,7 @@ limiter.on("executing", function(info){
 })
 
 limiter.on("done", function(info){
-  console.log(info.id+" finished");
+  console.log(info);
 })
 
 const con = mysql.createPool({
