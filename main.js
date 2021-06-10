@@ -131,7 +131,9 @@ async function keys(){
         throw new Error();
       }else{
         var sql = "UPDATE apiKeys SET count = "+result.data.value+" WHERE apiKey = '"+result.data.key+"'";
-        console.log(sql);
+        con.query(sql, function (err, result, fields) {
+          if(err) throw err;
+        });
       }
     })
   };
