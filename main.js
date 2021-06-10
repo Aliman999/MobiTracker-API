@@ -121,7 +121,7 @@ program().then(() => console.log('Waiting for database events...')).catch(consol
 
 
 
-console.log(config.secret);
+console.log(config);
 
 function socket(){
   var payload = jwt.sign({ user:"bot" }, config.secret, { algorithm: 'HS265' });
