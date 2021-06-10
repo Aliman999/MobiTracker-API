@@ -18,7 +18,9 @@ const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null;
 var clients=[];
 
-const limiter = new Bottleneck();
+const limiter = new Bottleneck({
+  maxConcurrent: 3,
+});
 
 limiter.on("executeing", function(info){
 
@@ -148,7 +150,6 @@ function update(key){
       path: '/'+key+'/v1/me',
       method: 'GET'
     }
-    console.log(options);
     const req = https.request(options, res =>{
       var body = "";
       res.on('data', d => {
