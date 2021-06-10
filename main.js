@@ -141,12 +141,11 @@ function getKeys(){
 
 function update(key){
   return new Promise(promiseSearch =>{
-    console.log("test");
     var embed;
     var options = {
       hostname: 'api.starcitizen-api.com',
       port: 443,
-      path: '/'+apiKey+'/v1/me',
+      path: '/'+key+'/v1/me',
       method: 'GET'
     }
     console.log(options);
