@@ -151,7 +151,11 @@ wss.on('connection', function(ws){
 
 const interval = setInterval(function (){
   clients.forEach((item, i) => {
-    console.log(item+" | "+i);
+    if(item.isAlive === false){
+      item.terminate();
+    }else{
+      item.isAlive = false;
+    }
   });
 }, 6000);
 
