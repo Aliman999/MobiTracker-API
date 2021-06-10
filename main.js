@@ -74,7 +74,6 @@ wss.on('connection', function(ws){
         if(err){
           ws.terminate();
         }else{
-          console.log(ws);
           ws.isAlive = true;
         }
       });
