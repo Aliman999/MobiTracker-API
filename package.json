@@ -17,6 +17,7 @@
     "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
+    "single-line-log": "^1.1.2",
     "ws": "^7.4.6"
   }
 }

@@ -6,6 +6,7 @@ const MySQLEvents = require('@rodrigogs/mysql-events');
 const fs = require('fs');
 const https = require('https');
 const mysql = require('mysql');
+const log = require('single-line-log').stdout;
 require('console-stamp')(console, {
     format: ':date(mm/dd/yyyy HH:MM:ss)'
 });
@@ -25,6 +26,7 @@ const limiter = new Bottleneck({
 limiter.on("done", function(info){
   if(info.options.id == info.args[1]){
     console.log("Finished updating "+info.args[1]+" keys.");
+    timeToJob.start();
   }
 })
 
@@ -34,6 +36,41 @@ limiter.on("failed", async (error, jobInfo) => {
     return 1000;
   }
 });
+
+function Timer(fn, t) {
+    var timerObj = setInterval(fn, t);
+
+    this.stop = function() {
+        if (timerObj) {
+            clearInterval(timerObj);
+            timerObj = null;
+            log.clear();
+            console.log("");
+        }
+        return this;
+    }
+    this.start = function() {
+        persist(2).then((param) => {
+          day = parseInt(param);
+          if (!timerObj) {
+              this.stop();
+              timerObj = setInterval(fn, t);
+          }
+          return this;
+        });
+    }
+    this.reset = function(newT = t) {
+        t = newT;
+        return this.stop().start();
+    }
+}
+
+function calcTime(){
+  const timeLeft = countdown(Date.now(), day);
+  log("Running job in "+timeLeft.hours+":"+timeLeft.minutes+":"+timeLeft.seconds);
+}
+
+const timeToJob = new Timer(calcTime, 500);
 
 Object.size = function(obj) {
   var size = 0, key;
@@ -57,6 +94,7 @@ con.getConnection(function(err, connection) {
 
 if(server.listen(2599)){
   console.log("Key Maintenance is Online");
+  timeToJob.start();
 }
 
 var trueLog = console.log;
@@ -149,6 +187,7 @@ async function keys(){
 }
 setInterval(()=>{
   keys();
+  timeToJob.stop();
 }, 1800000)
 
 function getKeys(){
