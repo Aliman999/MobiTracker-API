@@ -111,6 +111,7 @@ async function keys(){
   var result = await getKeys();
 
   async function pushKey(key){
+    console.log(key);
     await update(key)
     .then((result)=>{
       if(result.status == 0){
@@ -121,7 +122,6 @@ async function keys(){
     })
   };
   for(var i = 0; i < result.length; i++){
-    console.log(result[i]);
     limiter.schedule({ id:result[i].id }, pushKey, result[i].apiKey)
     .catch((error) => {
     })
