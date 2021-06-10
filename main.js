@@ -111,7 +111,6 @@ async function keys(){
   var result = await getKeys();
 
   async function pushKey(key){
-    console.log(key);
     await update(key)
     .then((result)=>{
       if(result.status == 0){
@@ -142,6 +141,7 @@ function getKeys(){
 
 function update(key){
   return new Promise(promiseSearch =>{
+    console.log(key);
     var embed;
     var options = {
       hostname: 'api.starcitizen-api.com',
