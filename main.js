@@ -120,10 +120,11 @@ async function keys(){
       }
     })
   };
-
-  limiter.schedule()
-  .catch((error) => {
-  })
+  for(var i = 0; i < result.length; i++){
+    limiter.schedule({ id:result[i].id }, pushKey, result[i].apiKey)
+    .catch((error) => {
+    })
+  }
 }
 keys();
 
