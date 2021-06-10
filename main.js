@@ -27,8 +27,14 @@ limiter.on("executing", function(info){
 })
 
 limiter.on("done", function(info){
-  console.log("KEY ID:"+info.options.id+" updated");
+  console.log(info);
 })
+
+limiter.on("failed", async (error, jobInfo) => {
+  if(jobInfo.retryCount < 10){
+    return 1000;
+  }
+});
 
 Object.size = function(obj) {
   var size = 0, key;
