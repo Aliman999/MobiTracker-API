@@ -210,7 +210,7 @@ async function keys(){
 schedule.scheduleJob('0 * * * *', function(){
   saveParam((Date.now()+3600000), 3);
   keys();
-  console.log("");
+  log.clear();
   timeToJob.stop();
 });
 
