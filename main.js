@@ -39,6 +39,7 @@ const con = mysql.createPool({
 con.getConnection(function(err, connection) {
   if (err) throw err;
 });
+
 const limiter = new Bottleneck({
   maxConcurrent: 3,
 });
@@ -217,7 +218,7 @@ schedule.scheduleJob('0 * * * *', function(){
 
 function getKeys(){
   return new Promise(callback =>{
-    var sql = "SELECT * FROM apiKeys";
+    var sql = "SELECT * FROM apiKeys WHERE note LIKE '%Reserved%';";
     con.query(sql, function (err, result, fields) {
       if(err) throw err;
       callback(result);
