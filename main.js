@@ -29,9 +29,9 @@ limiter.on("failed", async (error, jobInfo) => {
   console.warn(`${id} failed: ${error}`);
 
   if (jobInfo.retryCount < 2) {
-    return (2000);
+    return 2000;
   }else{
-    console.log("Failed to find "+id);
+    console.log(jobInfo.args[2]);
     cachePlayer(info.args[0]);
   }
 });
