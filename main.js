@@ -107,11 +107,12 @@ wss.on('connection', function(ws){
             message:"Success",
             status:1
           }));
+
+          ws.on('job', function(data){
+            console.log(data);
+          })
         }
       });
-    })
-    .on('job', function(data){
-      console.log(data);
     })
 });
 
