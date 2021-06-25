@@ -103,7 +103,9 @@ wss.on('connection', function(ws){
           ws.isAlive = true;
           ws.send(JSON.stringify({
             type:"response",
-            token:1
+            data:"Authenticated",
+            message:"Success"
+            status:1
           }));
         }
       });
