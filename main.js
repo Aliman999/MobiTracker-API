@@ -18,10 +18,10 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
 
-Object.size = function(obj) {
+Object.size = function(obj){
   var size = 0, key;
   for (key in obj) {
-      if (obj.hasOwnProperty(key)) size++;
+    if (obj.hasOwnProperty(key)) size++;
   }
   return size;
 };
@@ -82,12 +82,12 @@ console.save = function(msg){
   });
 }
 
-function toEvent (message) {
+function toEvent(message){
   var event = JSON.parse(message);
   this.emit(event.type, event.token);
 }
 
-function heartbeat() {
+function heartbeat(){
   this.isAlive = true;
 }
 
@@ -101,6 +101,7 @@ wss.on('connection', function(ws){
         }else{
           ws.user = decoded.user;
           ws.isAlive = true;
+          ws.send();
         }
       });
     })
