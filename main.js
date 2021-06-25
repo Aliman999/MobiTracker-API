@@ -37,7 +37,7 @@ limiter.on("failed", async (error, jobInfo) => {
       message:"Error",
       status:0
     }));
-    cachePlayer(info.args[0]);
+    cachePlayer(jobInfo.args[0]);
   }
 });
 
