@@ -23,8 +23,6 @@ const limiter = new Bottleneck({
   minTime: 2000
 });
 
-
-
 limiter.on("failed", async (error, jobInfo) => {
   const id = jobInfo.options.id;
   console.warn(`${id} failed: ${error}`);
@@ -59,20 +57,6 @@ const con = mysql.createPool({
 
 con.getConnection(function(err, connection) {
   if (err) throw err;
-});
-
-const limiter = new Bottleneck({
-  maxConcurrent: 1
-});
-
-limiter.on("done", function(info){
-  console.log(info);
-})
-
-limiter.on("failed", async (error, jobInfo) => {
-  if(jobInfo.retryCount < 2){
-    return 1000;
-  }
 });
 
 if(server.listen(2599)){
@@ -145,7 +129,7 @@ wss.on('connection', function(ws){
             limiter.schedule( {id:data}, query, data, key)
             .catch((error) => {
             });
-            
+
           })
         }
       });
