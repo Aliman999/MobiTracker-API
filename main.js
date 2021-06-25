@@ -33,7 +33,7 @@ limiter.on("failed", async (error, jobInfo) => {
   }else{
     jobInfo.args[2].send(JSON.stringify({
       type:"response",
-      data:info.args[0]+" not found.",
+      data:"bleh",
       message:"Error",
       status:0
     }));
