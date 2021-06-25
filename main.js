@@ -120,7 +120,6 @@ wss.on('connection', function(ws){
 
             async function query(username, key, i){
               await queryApi(username, key).then((result) => {
-                saveParam(i, 1);
                 if(result.status == 0){
                   throw new Error(result.data);
                 }
