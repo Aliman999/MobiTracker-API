@@ -99,7 +99,6 @@ wss.on('connection', function(ws){
         if(err){
           ws.terminate();
         }else{
-          console.log(decoded);
           ws.user = decoded.username;
           ws.isAlive = true;
           ws.send(JSON.stringify({
@@ -119,7 +118,7 @@ wss.on('connection', function(ws){
 
 const interval = setInterval(function (){
   wss.clients.forEach((item, i) => {
-    //console.log(item);
+    console.log(item);
     if(item.isAlive === false){
       item.terminate();
     }else{
