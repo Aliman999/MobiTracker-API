@@ -129,8 +129,6 @@ wss.on('connection', function(ws){
         }else{
           ws.user = decoded.user;
           ws.isAlive = true;
-          clients.push(ws);
-          console.log(wss);
         }
       });
     })
@@ -139,7 +137,7 @@ wss.on('connection', function(ws){
 });
 
 const interval = setInterval(function (){
-  clients.forEach((item, i) => {
+  wss.clients.forEach((item, i) => {
     if(item.isAlive === false){
       item.terminate();
     }else{
