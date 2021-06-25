@@ -42,7 +42,7 @@ limiter.on("failed", async (error, info) => {
 });
 
 limiter.on("done", function(info){
-  console.log("Returned "+info.options.id);
+  console.log("Returned data for "+info.options.id);
 });
 
 Object.size = function(obj){
