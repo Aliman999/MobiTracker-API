@@ -24,20 +24,20 @@ const limiter = new Bottleneck({
   minTime: 2000
 });
 
-limiter.on("failed", async (error, jobInfo) => {
-  const id = jobInfo.options.id;
+limiter.on("failed", async (error, info) => {
+  const id = info.options.id;
   console.warn(`${id} failed: ${error}`);
 
-  if (jobInfo.retryCount < 2) {
+  if (info.retryCount < 2) {
     return 2000;
   }else{
-    jobInfo.args[2].send(JSON.stringify({
+    info.args[2].send(JSON.stringify({
       type:"response",
-      data:"bleh",
+      data:info.args[0]+" not found.",
       message:"Error",
       status:0
     }));
-    cachePlayer(jobInfo.args[0]);
+    cachePlayer(info.args[0]);
   }
 });
 
