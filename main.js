@@ -111,7 +111,7 @@ wss.on('connection', function(ws){
       });
     })
     .on('job', function(data){
-      
+      console.log(data);
     })
 });
 
