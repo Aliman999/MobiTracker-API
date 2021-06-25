@@ -3,10 +3,8 @@ const config  = require('./config');
 const WebSocket = require('ws');
 const Bottleneck = require('bottleneck');
 const MySQLEvents = require('@rodrigogs/mysql-events');
-const schedule = require('node-schedule');
 const fs = require('fs');
 const https = require('https');
-const countdown = require('countdown');
 const mysql = require('mysql');
 const log = require('single-line-log').stdout;
 require('console-stamp')(console, {
@@ -41,19 +39,15 @@ con.getConnection(function(err, connection) {
 });
 
 const limiter = new Bottleneck({
-  maxConcurrent: 3,
+  maxConcurrent: 1
 });
 
 limiter.on("done", function(info){
-  if(info.options.id == info.args[1]){
-    console.log("Finished updating "+info.args[1]+" keys.");
-    timeToJob.start();
-  }
+  console.log(info);
 })
 
 limiter.on("failed", async (error, jobInfo) => {
-  if(jobInfo.retryCount < 10){
-    console.log("KEY ID: "+jobInfo.options.id+" failed. Retrying.");
+  if(jobInfo.retryCount < 2){
     return 1000;
   }
 });
@@ -86,39 +80,13 @@ function Timer(fn, t) {
     }
 }
 
-function persist(id){
-  return new Promise(callback => {
-    sql = "SELECT param FROM persist WHERE id = "+id;
-    con.query(sql, function(err, result, fields){
-      if(err) throw err;
-
-      callback(result[0].param);
-    })
-  })
-}
-
-function saveParam(val, id){
-  sql = "UPDATE persist SET param = '"+val+"' WHERE id = "+id+";";
-  con.query(sql, function(err, result, fields){
-    if(err) throw err;
-  })
-}
-
-function calcTime(){
-  const timeLeft = countdown(Date.now(), hourly);
-  log("Running job in "+timeLeft.hours+":"+timeLeft.minutes+":"+timeLeft.seconds);
-}
-
-const timeToJob = new Timer(calcTime, 500);
-
 
 if(server.listen(2599)){
-  console.log("Key Maintenance is Online");
-  timeToJob.start();
+  console.log("MobiTracker API is Online");
 }
 
 var trueLog = console.log;
-console.log = function(msg) {
+console.log = function(msg){
   const date = new Date();
   const day = ("0" + date.getDate()).slice(-2);
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -131,7 +99,7 @@ console.log = function(msg) {
 }
 
 var logSave = console.save;
-console.save = function(msg) {
+console.save = function(msg){
   const date = new Date();
   const day = ("0" + date.getDate()).slice(-2);
   const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -162,6 +130,7 @@ wss.on('connection', function(ws){
           ws.user = decoded.user;
           ws.isAlive = true;
           clients.push(ws);
+          console.log(wss);
         }
       });
     })
@@ -182,88 +151,6 @@ const interval = setInterval(function (){
 wss.on('close', function close(e) {
   clearInterval(interval);
 });
-
-//Key Management
-async function keys(){
-  var result = await getKeys();
-
-  async function pushKey(key){
-    await update(key)
-    .then((result)=>{
-      if(result.status == 0){
-        throw new Error();
-      }else{
-        var sql = "UPDATE apiKeys SET count = "+result.data.value+" WHERE apiKey = '"+result.data.key+"'";
-        con.query(sql, function (err, result, fields) {
-          if(err) throw err;
-        });
-      }
-    })
-  };
-  for(var i = 0; i < result.length; i++){
-    limiter.schedule({ id:result[i].id }, pushKey, result[i].apiKey, result.length)
-    .catch((error) => {
-    })
-  }
-}
-
-
-schedule.scheduleJob('0 * * * *', function(){
-  saveParam((Date.now()+3600000), 3);
-  keys();
-  log.clear();
-  timeToJob.stop();
-});
-
-
-function getKeys(){
-  return new Promise(callback =>{
-    var sql = "SELECT * FROM apiKeys WHERE note LIKE '%Reserved%';";
-    con.query(sql, function (err, result, fields) {
-      if(err) throw err;
-      callback(result);
-    });
-  })
-}
-
-
-function update(key){
-  return new Promise(promiseSearch =>{
-    var embed;
-    var options = {
-      hostname: 'api.starcitizen-api.com',
-      port: 443,
-      path: '/'+key+'/v1/me',
-      method: 'GET'
-    }
-    const req = https.request(options, res =>{
-      var body = "";
-      res.on('data', d => {
-        body += d;
-      })
-      res.on('error', error => {
-        promiseSearch({status:0})
-      })
-      res.on('end', function(){
-        try{
-          var user = JSON.parse(body);
-          if(user.data == null){
-            promiseSearch({status:0});
-          }else{
-            if(Object.size(user.data) > 0){
-              promiseSearch({ status:1, data:{ key:user.data.user_key, value:user.data.value } });
-            }else{
-              promiseSearch({ status:0 });
-            }
-          }
-        }catch(err){
-          promiseSearch({ status:0 });
-        };
-      })
-    })
-    req.end()
-  });
-}
 
 const program = async () => {
   const instance = new MySQLEvents(con, {
