@@ -18,6 +18,29 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
 
+const limiter = new Bottleneck({
+  maxConcurrent: 1,
+  minTime: 2000
+});
+
+
+
+limiter.on("failed", async (error, jobInfo) => {
+  const id = jobInfo.options.id;
+  console.warn(`${id} failed: ${error}`);
+
+  if (jobInfo.retryCount < 2) {
+    return (2000);
+  }else{
+    console.log("Failed to find "+id);
+    cachePlayer(info.args[0]);
+  }
+});
+
+limiter.on("done", function(info){
+  console.log("Completed "+info.options.id);
+});
+
 Object.size = function(obj){
   var size = 0, key;
   for (key in obj) {
@@ -109,7 +132,20 @@ wss.on('connection', function(ws){
           }));
 
           ws.on('job', function(data){
-            console.log(data);
+
+            async function query(username, key, i){
+              await queryApi(username, key).then((result) => {
+                saveParam(i, 1);
+                if(result.status == 0){
+                  throw new Error(result.data);
+                }
+              })
+            }
+
+            limiter.schedule( {id:data}, query, data, key)
+            .catch((error) => {
+            });
+            
           })
         }
       });
