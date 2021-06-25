@@ -104,7 +104,7 @@ wss.on('connection', function(ws){
           ws.send(JSON.stringify({
             type:"response",
             data:"Authenticated",
-            message:"Success"
+            message:"Success",
             status:1
           }));
         }
