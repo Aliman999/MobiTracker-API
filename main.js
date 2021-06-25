@@ -122,7 +122,6 @@ wss.on('connection', function(ws){
           }));
 
           ws.on('job', function(data){
-
             async function query(username, key, ws){
               await queryApi(username, key).then((result) => {
                 if(result.status == 0){
@@ -137,7 +136,7 @@ wss.on('connection', function(ws){
                 }
               })
             }
-
+            console.log(ws.user+" started job for "+data);
             limiter.schedule( {id:data}, query, data, key, ws)
             .catch((error) => {
             });
