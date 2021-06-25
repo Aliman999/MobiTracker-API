@@ -123,7 +123,12 @@ wss.on('connection', function(ws){
                 if(result.status == 0){
                   throw new Error(result.data);
                 }else{
-                  console.log(ws);
+                  ws.send(JSON.stringify({
+                    type:"response",
+                    data:result.data,
+                    message:"Success",
+                    status:1
+                  }));
                 }
               })
             }
