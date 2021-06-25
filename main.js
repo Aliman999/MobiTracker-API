@@ -101,10 +101,10 @@ wss.on('connection', function(ws){
         }else{
           ws.user = decoded.user;
           ws.isAlive = true;
-          ws.send({
+          ws.send(JSON.stringify({
             type:"response",
             token:1
-          });
+          }));
         }
       });
     })
