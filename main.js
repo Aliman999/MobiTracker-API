@@ -100,7 +100,7 @@ wss.on('connection', function(ws){
           ws.terminate();
         }else{
           console.log(decoded);
-          ws.user = decoded.user;
+          ws.user = decoded.username;
           ws.isAlive = true;
           ws.send(JSON.stringify({
             type:"response",
