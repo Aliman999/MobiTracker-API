@@ -17,6 +17,7 @@ const server = https.createServer({
 });
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
+var key;
 
 const limiter = new Bottleneck({
   maxConcurrent: 1,
@@ -152,7 +153,7 @@ wss.on('close', function close(e) {
 });
 
 async function init(){
-  const key = await getKey();
+  key = await getKey();
 }
 
 function getKey(i){
