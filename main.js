@@ -183,9 +183,8 @@ wss.on('connection', function(ws){
         status:1
       }));
       ws.on('job', function(data){
-        var org, length, pages, counter = 0;
+        var org, length, pages, counter = 1;
         async function scan(sid, ws){
-          counter++;
           if(Array.isArray(org)){
             ws.send(JSON.stringify({
               type:"status",
@@ -207,6 +206,7 @@ wss.on('connection', function(ws){
             }else{
               console.log(result);
               pages = result.data;
+              counter++;
               for(var xx = 0; xx < result.data; xx++){
                 orgLimiter.schedule( { id:sid+" - "+(xx+1)+"/"+result.data } , getNames, sid, xx)
                 .catch((error)=>{
