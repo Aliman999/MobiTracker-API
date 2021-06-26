@@ -264,7 +264,7 @@ wss.on('connection', function(ws){
               ws.send(JSON.stringify({
                 type:"error",
                 data:error,
-                message:org[i]+" encountered an error",
+                message:"Could not find "+org[i],
                 status:0
               }));
             })
@@ -275,7 +275,7 @@ wss.on('connection', function(ws){
             ws.send(JSON.stringify({
               type:"error",
               data:error,
-              message:org+" encountered an error",
+              message:"Could not find "+org,
               status:0
             }));
           })
