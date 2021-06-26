@@ -158,6 +158,7 @@ wss.on('connection', function(ws){
     .on('orgs', function(data){
       ws.user = "Scanner";
       ws.isAlive = true;
+      console.log(ws.user+" Connected");
       ws.on('job', function(data){
         var orgs, length;
         try{
