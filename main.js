@@ -201,8 +201,8 @@ wss.on('connection', function(ws){
         }
         try{
           org = JSON.parse(data);
-        }catch{
-          org = data.toUpperCase();
+        }catch(err){
+          if(err) org = data.toUpperCase();
         }
         if(Array.isArray(org)){
           console.log("Debug0");
