@@ -194,7 +194,7 @@ wss.on('connection', function(ws){
         }
         async function getNames(sid, page){
           await orgPlayers(sid, page).then((result)=>{
-
+            console.log(result);
           })
         }
         try{
