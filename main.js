@@ -182,9 +182,8 @@ wss.on('connection', function(ws){
         status:1
       }));
       ws.on('job', function(data){
-        var org, length, pages, counter = 1;
+        var org, length, pages, counter = 1, orgResponse = [];
         async function scan(sid, ws){
-          var orgResponse = [];
           if(Array.isArray(org)){
             wss.clients.forEach((ws, i) => {
               if(ws.user == "Scanner"){
