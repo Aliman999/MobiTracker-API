@@ -203,11 +203,11 @@ wss.on('connection', function(ws){
               console.log((page+1)+" | "+pages);
               if(Array.isArray(org)){
                 if((page+1) == pages){
-                  ws.send("finished");
+                  ws.send("finished array of orgs");
                 }
               }else{
                 if((page+1) == pages){
-                  ws.send("finished");
+                  ws.send("finished single org");
                 }
               }
             }
