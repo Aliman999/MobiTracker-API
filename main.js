@@ -430,16 +430,16 @@ function orgScan(sid){
       })
       res.on('end', function(){
         try{
-          var user = JSON.parse(body);
-          if(user.data == null){
-            callback({status:0, data:args+" returned null. Retrying."});
+          var org = JSON.parse(body);
+          if(org.data == null){
+            callback({status:0, data:sid+" returned null. Retrying."});
           }
         }catch(err){
           var result = "Failed to parse "+sid;
           callback({ status:0, data:result });
         };
-        if(user){
-          if(Object.size(org.data) > 0){
+        if(org){
+          if(Object.size(org) > 0){
             var grossPages = Math.Ceil(result.data/32);
             callback({ status:1, data:grossPages });
           }else{
