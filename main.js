@@ -500,8 +500,7 @@ function orgPlayers(sid, page){
         };
         if(user){
           if(Object.size(user.data) > 0){
-            var grossPages = Math.ceil(user.data.members/32);
-            console.log(user.data.members+" / "+32);
+            console.log(user.data);
             //callback({ status:1, data:grossPages });
           }else{
             callback({ status:0, data:sid+" not found." });
