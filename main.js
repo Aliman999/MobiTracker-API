@@ -145,6 +145,9 @@ wss.on('connection', function(ws){
         }
       });
     })
+    .on('orgs', function(data){
+      console.log("Debug");
+    })
 });
 
 const interval = setInterval(function (){
