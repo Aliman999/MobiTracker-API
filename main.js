@@ -185,11 +185,6 @@ wss.on('connection', function(ws){
       }));
       ws.on('job', function(data){
         var org, length, pages, counter = 1;
-        clientJobs.push({
-            ws.user:{
-              ws:ws
-            }
-        });
         try{
           org = JSON.parse(data);
         }catch(err){
