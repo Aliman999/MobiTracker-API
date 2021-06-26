@@ -24,6 +24,16 @@ const limiter = new Bottleneck({
   minTime: 2000
 });
 
+const orgLength = new Bottleneck({
+  maxConcurrent: 1,
+  minTime: 2000
+});
+
+const orgScanner = new Bottleneck({
+  maxConcurrent: 1,
+  minTime: 2000
+});
+
 limiter.on("failed", async (error, info) => {
   const id = info.options.id;
   console.warn(`${id} failed: ${error}`);
