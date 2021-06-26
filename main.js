@@ -185,23 +185,23 @@ wss.on('connection', function(ws){
       ws.on('job', function(data){
         var org, length, pages, counter = 0;
         async function scan(sid, ws){
+          counter++;
+          if(Array.isArray(org)){
+            ws.send(JSON.stringify({
+              type:"status",
+              data:"Getting Members of "+sid+" "+counter+" of "+org.length,
+              message:"Success",
+              status:1
+            }));
+          }else{
+            ws.send(JSON.stringify({
+              type:"status",
+              data:"Getting Members of "+sid,
+              message:"Success",
+              status:1
+            }));
+          }
           await orgScan(sid).then(async (result) => {
-            counter++;
-            if(Array.isArray(org)){
-              ws.send(JSON.stringify({
-                type:"status",
-                data:"Running "+sid+" "+counter+" of "+org.length,
-                message:"Success",
-                status:1
-              }));
-            }else{
-              ws.send(JSON.stringify({
-                type:"status",
-                data:"Running "+sid,
-                message:"Success",
-                status:1
-              }));
-            }
             if(result.status === 0){
               throw new Error(result.data, sid);
             }else{
@@ -222,6 +222,12 @@ wss.on('connection', function(ws){
           });
         }
         async function getNames(sid, page){
+          ws.send(JSON.stringify({
+            type:"status",
+            data:"Running "+sid+" member list.",
+            message:"Success",
+            status:1
+          }));
           await orgPlayers(sid, page).then((result)=>{
             if(result.status == 1){
               result.data.forEach((item, i) => {
