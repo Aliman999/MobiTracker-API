@@ -174,6 +174,7 @@ wss.on('connection', function(ws){
     .on('orgs', function(data){
       ws.user = "Scanner";
       ws.isAlive = true;
+      ws.orgResponse = [];
       console.log(ws.user+" Connected");
       ws.on('job', function(data){
         var org, length;
@@ -182,12 +183,17 @@ wss.on('connection', function(ws){
             if(result.status === 0){
               throw new Error(result.data);
             }else{
-              console.log(result.data+" pages");
+              for(var xx = 0; xx < result.data.length; xx++){
+                orgLimiter.schedule( { id:sid+"-"+xx } , getNames, sid, xx)
+                .catch((error)=>{
+
+                });
+              }
             }
           });
         }
-        async function getNames(){
-          await orgPlayers().then((result)=>{
+        async function getNames(sid, page){
+          await orgPlayers(sid, page).then((result)=>{
 
           })
         }
@@ -479,12 +485,23 @@ function orgPlayers(sid, page){
         try{
           var user = JSON.parse(body);
           if(user.data == null){
-            callback({status:0, data:args+" returned null. Retrying."});
+            callback({status:0, data:sid+" returned null. Retrying."});
           }
         }catch(err){
           var result = "Failed to parse "+sid;
           callback({ status:0, data:result });
         };
+        if(user){
+          if(Object.size(user.data) > 0){
+            var grossPages = Math.ceil(user.data.members/32);
+            console.log(user.data.members+" / "+32);
+            //callback({ status:1, data:grossPages });
+          }else{
+            callback({ status:0, data:sid+" not found." });
+          }
+        }else{
+          callback({ status:0, data:"Server Error." });
+        }
       })
     })
     req.on('error', (err) => {
