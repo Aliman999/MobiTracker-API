@@ -24,14 +24,30 @@ const limiter = new Bottleneck({
   minTime: 2000
 });
 
-const orgLength = new Bottleneck({
+const orgLimiter = new Bottleneck({
   maxConcurrent: 1,
   minTime: 2000
 });
 
-const orgScanner = new Bottleneck({
-  maxConcurrent: 1,
-  minTime: 2000
+orgLimiter.on("failed", async (error, info) => {
+  const id = info.options.id;
+  console.warn(`${id} failed: ${error}`);
+
+  if (info.retryCount < 2) {
+    return 2000;
+  }else{
+    info.args[2].send(JSON.stringify({
+      type:"response",
+      data:info.args[0]+" not found.",
+      message:"Error",
+      status:0
+    }));
+    cachePlayer(info.args[0]);
+  }
+});
+
+orgLimiter.on("done", function(info){
+  console.log("Returned data for "+info.options.id);
 });
 
 limiter.on("failed", async (error, info) => {
@@ -160,23 +176,37 @@ wss.on('connection', function(ws){
       ws.isAlive = true;
       console.log(ws.user+" Connected");
       ws.on('job', function(data){
-        var orgs, length;
+        var org, length;
         try{
-          orgs = JSON.parse(data);
-          length = orgs.length;
+          org = JSON.parse(data);
+          length = org.length;
         }catch{
-          orgs = data;
+          org = data;
           length = 1;
         }
         async function scan(sid){
-          await orgScan(sid).then((result) => {
+          await orgScan(sid).then(async (result) => {
+            orgLimiter.schedule(orgPlayers, result)
+            .catch((error) => {
 
+            })
+            if(result.status === 0){
+              throw new Error(result.data);
+            }
           });
         }
-        for(var i = 0; i < length; i++){
-          limiter.schedule(scan, orgs[i])
+        if(length == 1){
+          orgLimiter.schedule( {id:org}, scan, org)
           .catch((error) => {
           })
+        }else if(length > 1){
+          for(var i = 0; i < length; i++){
+            orgLimiter.schedule( {id:org[i]}, scan, org[i])
+            .catch((error) => {
+            })
+          }
+        }else{
+          ws.terminate();
         }
       })
     })
@@ -392,6 +422,57 @@ function orgScan(sid){
       hostname: 'api.starcitizen-api.com',
       port: 443,
       path: '/'+key+'/v1/live/organization/'+escape(sid),
+      method: 'GET'
+    }
+    const req = https.request(options, res =>{
+      var body = "";
+      res.on('data', d => {
+        body += d;
+      })
+      res.on('error', error => {
+        callback({ status:0, data:error});
+      })
+      res.on('end', function(){
+        try{
+          var user = JSON.parse(body);
+          if(user.data == null){
+            callback({status:0, data:args+" returned null. Retrying."});
+          }
+        }catch(err){
+          var result = "Failed to parse "+sid;
+          callback({ status:0, data:result });
+        };
+        if(user){
+          if(Object.size(org.data) > 0){
+            callback({ status:1, data:sid+" not found." });
+            var grossPages = Math.Ceil(result.data);
+            for(var ii = 0; ii < grossPages; ii++){
+              orgScanner.schedule(orgPlayers, grossPages)
+              .catch((error) => {
+
+              })
+            }
+          }else{
+            callback({ status:0, data:sid+" not found." });
+          }
+        }else{
+          callback({ status:0, data:"Server Error." });
+        }
+      })
+    })
+    req.on('error', (err) => {
+      callback({ status:0, data:err});
+    })
+    req.end();
+  });
+}
+
+function orgPlayers(sid){
+  return new Promise(callback => {
+    var options = {
+      hostname: 'api.starcitizen-api.com',
+      port: 443,
+      path: '/'+key+'/v1/live/organization_members/'+escape(sid),
       method: 'GET'
     }
     const req = https.request(options, res =>{
