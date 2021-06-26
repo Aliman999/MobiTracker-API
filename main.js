@@ -146,12 +146,14 @@ wss.on('connection', function(ws, req){
           orgJob.ip = req.socket.remoteAddress;
           orgJob.user = decoded.username;
           orgJob.isAlive = true;
+          /*
           orgJob.send(JSON.stringify({
             type:"response",
             data:"Authenticated",
             message:"Success",
             status:1
           }));
+          */
           console.log(orgJob);
           orgJob.on('job', function(data){
             async function query(username, key){
