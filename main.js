@@ -205,6 +205,7 @@ wss.on('connection', function(ws){
           org = data.toUpperCase();
         }
         if(Array.isArray(org)){
+          console.log("Debug0");
           for(var i = 0; i < org.length; i++){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]}, scan, org[i], ws)
@@ -212,6 +213,7 @@ wss.on('connection', function(ws){
             })
           }
         }else{
+          console.log("Debug1");
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
           })
