@@ -133,6 +133,7 @@ function heartbeat(){
 }
 
 wss.on('connection', function(ws){
+  console.log(ws);
   ws.on('message', toEvent)
     .on('ping', heartbeat)
     .on('auth', function (data){
