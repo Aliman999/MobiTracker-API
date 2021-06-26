@@ -200,7 +200,7 @@ wss.on('connection', function(ws){
               result.data.forEach((item, i) => {
                 ws.orgResponse.push(item);
               });
-              console.log((page+1)+" | "+pages);
+              console.log(org[org.length-1]+" | "+sid);
               if(Array.isArray(org)){
                 if(org[org.length-1] === sid){
                   if((page+1) == pages){
