@@ -133,7 +133,7 @@ function heartbeat(){
   this.isAlive = true;
 }
 
-wss.on('connection', function(ws, req){
+wss.on('connection', function(ws){
   ws.on('message', toEvent)
     .on('ping', heartbeat)
     .on('auth', function (data){
@@ -141,28 +141,22 @@ wss.on('connection', function(ws, req){
         if(err){
           ws.close();
         }else{
-          var ip = req.socket.remoteAddress;
-          orgJob[req.socket.remoteAddress] = ws;
-          orgJob.ip = req.socket.remoteAddress;
-          orgJob.user = decoded.username;
-          orgJob.isAlive = true;
-          /*
-          orgJob.send(JSON.stringify({
+          ws.user = decoded.username;
+          ws.isAlive = true;
+          ws.send(JSON.stringify({
             type:"response",
             data:"Authenticated",
             message:"Success",
             status:1
           }));
-          */
-          console.log(orgJob);
-          /*
-          orgJob.on('job', function(data){
-            async function query(username, key){
+
+          ws.on('job', function(data){
+            async function query(username, key, ws){
               await queryApi(username, key).then((result) => {
                 if(result.status == 0){
                   throw new Error(result.data);
                 }else{
-                  orgJob.send(JSON.stringify({
+                  ws.send(JSON.stringify({
                     type:"response",
                     data:result.data,
                     message:"Success",
@@ -172,12 +166,11 @@ wss.on('connection', function(ws, req){
               })
             }
             console.log(ws.user+" started job for "+data);
-            limiter.schedule( {id:data}, query, data, key)
+            limiter.schedule( {id:data}, query, data, key, ws)
             .catch((error) => {
             });
 
           })
-          */
         }
       });
     })
