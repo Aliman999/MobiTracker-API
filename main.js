@@ -462,7 +462,7 @@ function orgPlayers(sid, page){
     var options = {
       hostname: 'api.starcitizen-api.com',
       port: 443,
-      path: '/'+key+'/v1/live/organization_members/'+escape(sid)+"?page="page,
+      path: '/'+key+'/v1/live/organization_members/'+escape(sid)+"?page="+page,
       method: 'GET'
     }
     const req = https.request(options, res =>{
