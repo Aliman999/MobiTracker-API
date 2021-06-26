@@ -177,36 +177,27 @@ wss.on('connection', function(ws){
       console.log(ws.user+" Connected");
       ws.on('job', function(data){
         var org, length;
-        try{
-          org = JSON.parse(data);
-          length = org.length;
-        }catch{
-          org = data;
-          length = 1;
-        }
         async function scan(sid){
           await orgScan(sid).then(async (result) => {
-            orgLimiter.schedule(orgPlayers, result)
-            .catch((error) => {
-
-            })
             if(result.status === 0){
               throw new Error(result.data);
+            }else{
+
             }
           });
         }
-        if(length == 1){
-          orgLimiter.schedule( {id:org}, scan, org)
-          .catch((error) => {
-          })
-        }else if(length > 1){
-          for(var i = 0; i < length; i++){
+        try{
+          org = JSON.parse(data);
+          for(var i = 0; i < org.length; i++){
             orgLimiter.schedule( {id:org[i]}, scan, org[i])
             .catch((error) => {
             })
           }
-        }else{
-          ws.terminate();
+        }catch{
+          org = data;
+          orgLimiter.schedule( {id:org}, scan, org)
+          .catch((error) => {
+          })
         }
       })
     })
@@ -444,14 +435,8 @@ function orgScan(sid){
         };
         if(user){
           if(Object.size(org.data) > 0){
-            callback({ status:1, data:sid+" not found." });
-            var grossPages = Math.Ceil(result.data);
-            for(var ii = 0; ii < grossPages; ii++){
-              orgScanner.schedule(orgPlayers, grossPages)
-              .catch((error) => {
-
-              })
-            }
+            var grossPages = Math.Ceil(result.data/32);
+            callback({ status:1, data:grossPages });
           }else{
             callback({ status:0, data:sid+" not found." });
           }
@@ -467,12 +452,12 @@ function orgScan(sid){
   });
 }
 
-function orgPlayers(sid){
+function orgPlayers(sid, page){
   return new Promise(callback => {
     var options = {
       hostname: 'api.starcitizen-api.com',
       port: 443,
-      path: '/'+key+'/v1/live/organization_members/'+escape(sid),
+      path: '/'+key+'/v1/live/organization_members/'+escape(sid)+"?page="page,
       method: 'GET'
     }
     const req = https.request(options, res =>{
@@ -493,15 +478,6 @@ function orgPlayers(sid){
           var result = "Failed to parse "+sid;
           callback({ status:0, data:result });
         };
-        if(user){
-          if(Object.size(org.data) > 0){
-            callback({ status:1, data:sid+" not found." });
-          }else{
-            callback({ status:0, data:sid+" not found." });
-          }
-        }else{
-          callback({ status:0, data:"Server Error." });
-        }
       })
     })
     req.on('error', (err) => {
