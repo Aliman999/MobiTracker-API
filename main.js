@@ -501,6 +501,11 @@ function orgPlayers(sid, page){
         if(user){
           if(Object.size(user.data) > 0){
             console.log(user.data);
+            var result = [];
+            user.data.forEach((item, i) => {
+              result.push(item.handle);
+            });
+            console.log(result);
             //callback({ status:1, data:grossPages });
           }else{
             callback({ status:0, data:sid+" not found." });
