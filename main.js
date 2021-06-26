@@ -440,6 +440,7 @@ function orgScan(sid){
         };
         if(org){
           if(Object.size(org) > 0){
+            console.log(org.data);
             var grossPages = Math.ceil(org.data.members/32);
             callback({ status:1, data:grossPages });
           }else{
