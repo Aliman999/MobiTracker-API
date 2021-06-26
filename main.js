@@ -19,6 +19,7 @@ const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
 var key;
 var clientJobs = [];
+var counter = 1;
 
 const limiter = new Bottleneck({
   maxConcurrent: 1,
@@ -185,6 +186,7 @@ wss.on('connection', function(ws){
         status:1
       }));
       ws.on('job', function(data){
+        counter = 0;
         var org, length;
         try{
           org = JSON.parse(data);
@@ -459,7 +461,6 @@ async function getNames(sid, page, ws){
     }
   })
 }
-var counter = 1;
 async function scan(sid, ws, org){
   var pages;
   if(Array.isArray(org)){
