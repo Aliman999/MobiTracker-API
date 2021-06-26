@@ -156,7 +156,8 @@ wss.on('connection', function(ws){
       });
     })
     .on('orgs', function(data){
-      ws.user = "Org Scanner";
+      console.log(ws);
+      ws.user = "Scanner";
       ws.isAlive = true;
       var orgs, length;
       try{
