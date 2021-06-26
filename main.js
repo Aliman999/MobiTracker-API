@@ -386,21 +386,49 @@ function cachePlayer(user){
   }
 }
 
-function orgScan(){
+function orgScan(sid){
   return new Promise(callback => {
-    const sql = "SELECT * FROM `CACHE players` WHERE username = '"+user+"'";
-    con.query(sql, function (err, result, fields) {
-      if(err) throw err;
-      if(result.length > 0){
-        const last = result.length-1;
-        if(result[last].event != "Changed Name"){
-          const sql = "INSERT INTO `CACHE players` (event, cID, username, bio, badge, organization, avatar) VALUES ( 'Changed Name', "+result[last].cID+", '"+result[last].username+"', ?, '"+result[last].badge+"', '"+result[last].organization+"', '"+result[last].avatar+"' );";
-          con.query(sql, [result[last].bio], function (err, result, fields) {
-            if(err) throw err;
-          });
+    var options = {
+      hostname: 'api.starcitizen-api.com',
+      port: 443,
+      path: '/'+key+'/v1/live/user/'+escape(username),
+      method: 'GET'
+    }
+    const req = https.request(options, res =>{
+      var body = "";
+      res.on('data', d => {
+        body += d;
+      })
+      res.on('error', error => {
+        callback({ status:0, data:error});
+      })
+      res.on('end', function(){
+        try{
+          var user = JSON.parse(body);
+          if(user.data == null){
+            callback({status:0, data:args+" returned null. Retrying."});
+          }
+        }catch(err){
+          var result = "Failed to parse "+username;
+          callback({ status:0, data:result });
+        };
+        if(user){
+          if(Object.size(user.data) > 0){
+            cachePlayer(user.data);
+            callback({ status:1, data:user.data });
+          }else{
+            callback({ status:0, data:username+" not found." });
+          }
+        }else{
+          console.log("User Not Found");
+          callback({ status:0, data:username+" not found." });
         }
-      }
-    });
+      })
+    })
+    req.on('error', (err) => {
+      callback({ status:0, data:err});
+    })
+    req.end();
   });
 }
 
