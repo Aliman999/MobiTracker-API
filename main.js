@@ -146,7 +146,9 @@ wss.on('connection', function(ws){
       });
     })
     .on('orgs', function(data){
-      console.log(data);
+      ws.isAlive = true;
+      var orgs = JSON.parse(data);
+      console.log(orgs);
     })
 });
 
