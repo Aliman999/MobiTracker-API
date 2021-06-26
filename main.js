@@ -422,7 +422,7 @@ function cachePlayer(user){
   }
 }
 
-async function getNames(sid, page){
+async function getNames(sid, page, ws){
   ws.send(JSON.stringify({
     type:"status",
     data:"Running "+sid+" member list.",
@@ -484,7 +484,7 @@ async function scan(sid, ws, org){
       pages = result.data;
       counter++;
       for(var xx = 0; xx < result.data; xx++){
-        orgLimiter.schedule( { id:sid+" - "+(xx+1)+"/"+result.data } , getNames, sid, xx)
+        orgLimiter.schedule( { id:sid+" - "+(xx+1)+"/"+result.data } , getNames, sid, xx, ws)
         .catch((error)=>{
           ws.send(JSON.stringify({
             type:"error",
