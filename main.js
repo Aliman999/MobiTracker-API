@@ -186,25 +186,25 @@ wss.on('connection', function(ws){
         var org, length, pages, counter = 0;
         async function scan(sid, ws){
           await orgScan(sid).then(async (result) => {
+            counter++;
+            if(Array.isArray(org)){
+              ws.send(JSON.stringify({
+                type:"status",
+                data:"Running "+sid+" "+counter+" of "+org.length,
+                message:"Success",
+                status:1
+              }));
+            }else{
+              ws.send(JSON.stringify({
+                type:"status",
+                data:"Running "+sid,
+                message:"Success",
+                status:1
+              }));
+            }
             if(result.status === 0){
               throw new Error(result.data, sid);
             }else{
-              counter++;
-              if(Array.isArray(org)){
-                ws.send(JSON.stringify({
-                  type:"status",
-                  data:"Running "+sid+" "+counter+" of "+org.length,
-                  message:"Success",
-                  status:1
-                }));
-              }else{
-                ws.send(JSON.stringify({
-                  type:"status",
-                  data:"Running "+sid,
-                  message:"Success",
-                  status:1
-                }));
-              }
               console.log(result);
               pages = result.data;
               for(var xx = 0; xx < result.data; xx++){
@@ -340,7 +340,7 @@ const queryApi = function(username, key){
         try{
           var user = JSON.parse(body);
           if(user.data == null){
-            callback({status:0, data:args+" returned null. Retrying."});
+            callback({status:0, data:args+" returned null."});
           }
         }catch(err){
           var result = "Failed to parse "+username;
