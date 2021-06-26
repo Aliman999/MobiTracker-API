@@ -186,19 +186,27 @@ wss.on('connection', function(ws){
         var org, length, pages, counter = 1;
         async function scan(sid, ws){
           if(Array.isArray(org)){
-            ws.send(JSON.stringify({
-              type:"status",
-              data:"Getting Members of "+sid+" "+counter+" of "+org.length,
-              message:"Success",
-              status:1
-            }));
+            wss.forEach((ws, i) => {
+              if(ws.user == "Scanner"){
+                ws.send(JSON.stringify({
+                  type:"status",
+                  data:"Getting Members of "+sid+" "+counter+" of "+org.length,
+                  message:"Success",
+                  status:1
+                }));
+              }
+            });
           }else{
-            ws.send(JSON.stringify({
-              type:"status",
-              data:"Getting Members of "+sid,
-              message:"Success",
-              status:1
-            }));
+            wss.forEach((ws, i) => {
+              if(ws.user == "Scanner"){
+                ws.send(JSON.stringify({
+                  type:"status",
+                  data:"Getting Members of "+sid,
+                  message:"Success",
+                  status:1
+                }));
+              }
+            });
           }
           await orgScan(sid).then(async (result) => {
             if(result.status === 0){
@@ -210,24 +218,32 @@ wss.on('connection', function(ws){
               for(var xx = 0; xx < result.data; xx++){
                 orgLimiter.schedule( { id:sid+" - "+(xx+1)+"/"+result.data } , getNames, sid, xx)
                 .catch((error)=>{
-                  ws.send(JSON.stringify({
-                    type:"error",
-                    data:error,
-                    message:"There was an error getting org members, members may be missing so run "+sid+" to ensure you have every member.",
-                    status:0
-                  }));
+                  wss.forEach((ws, i) => {
+                    if(ws.user == "Scanner"){
+                      ws.send(JSON.stringify({
+                        type:"error",
+                        data:error,
+                        message:"There was an error getting org members, members may be missing so run "+sid+" to ensure you have every member.",
+                        status:0
+                      }));
+                    }
+                  });
                 });
               }
             }
           });
         }
         async function getNames(sid, page){
-          ws.send(JSON.stringify({
-            type:"status",
-            data:"Running "+sid+" member list.",
-            message:"Success",
-            status:1
-          }));
+          wss.forEach((ws, i) => {
+            if(ws.user == "Scanner"){
+              ws.send(JSON.stringify({
+                type:"status",
+                data:"Running "+sid+" member list.",
+                message:"Success",
+                status:1
+              }));
+            }
+          });
           await orgPlayers(sid, page).then((result)=>{
             if(result.status == 1){
               result.data.forEach((item, i) => {
@@ -236,22 +252,30 @@ wss.on('connection', function(ws){
               if(Array.isArray(org)){
                 if(org[org.length-1] === sid){
                   if((page+1) == pages){
-                    ws.send(JSON.stringify({
-                      type:"finished",
-                      data:ws.orgResponse,
-                      message:"Finished "+org.length+" organizations",
-                      status:1
-                    }));
+                    wss.forEach((ws, i) => {
+                      if(ws.user == "Scanner"){
+                        ws.send(JSON.stringify({
+                          type:"finished",
+                          data:ws.orgResponse,
+                          message:"Finished "+org.length+" organizations",
+                          status:1
+                        }));
+                      }
+                    });
                   }
                 }
               }else{
                 if((page+1) == pages){
-                  ws.send(JSON.stringify({
-                    type:"finished",
-                    data:ws.orgResponse,
-                    message:"Finished "+sid,
-                    status:1
-                  }));
+                  wss.forEach((ws, i) => {
+                    if(ws.user == "Scanner"){
+                      ws.send(JSON.stringify({
+                        type:"finished",
+                        data:ws.orgResponse,
+                        message:"Finished "+sid,
+                        status:1
+                      }));
+                    }
+                  });
                 }
               }
             }
@@ -267,23 +291,31 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
-              ws.send(JSON.stringify({
-                type:"error",
-                data:null,
-                message:error.message,
-                status:0
-              }));
+              wss.forEach((ws, i) => {
+                if(ws.user == "Scanner"){
+                  ws.send(JSON.stringify({
+                    type:"error",
+                    data:null,
+                    message:error.message,
+                    status:0
+                  }));
+                }
+              });
             })
           }
         }else{
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
-            ws.send(JSON.stringify({
-              type:"error",
-              data:null,
-              message:error.message,
-              status:0
-            }));
+            wss.forEach((ws, i) => {
+              if(ws.user == "Scanner"){
+                ws.send(JSON.stringify({
+                  type:"error",
+                  data:null,
+                  message:error.message,
+                  status:0
+                }));
+              }
+            });
           })
         }
       })
