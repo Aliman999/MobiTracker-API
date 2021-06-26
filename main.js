@@ -228,7 +228,7 @@ wss.on('connection', function(ws){
                     ws.send(JSON.stringify({
                       type:"finished",
                       data:ws.orgResponse,
-                      message:"Success",
+                      message:"Finished "+org.length+" organizations",
                       status:1
                     }));
                   }
@@ -238,7 +238,7 @@ wss.on('connection', function(ws){
                   ws.send(JSON.stringify({
                     type:"finished",
                     data:ws.orgResponse,
-                    message:"Success",
+                    message:"Finished "+sid,
                     status:1
                   }));
                 }
