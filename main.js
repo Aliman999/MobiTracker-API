@@ -175,7 +175,6 @@ wss.on('connection', function(ws){
       ws.user = "Scanner";
       ws.isAlive = true;
       ws.orgResponse = [];
-      ws.orgErrors = [];
       console.log(ws.user+" Connected ["+wss.clients.size+"]");
       ws.send(JSON.stringify({
         type:"response",
@@ -211,7 +210,12 @@ wss.on('connection', function(ws){
               for(var xx = 0; xx < result.data; xx++){
                 orgLimiter.schedule( { id:sid+" - "+(xx+1)+"/"+result.data } , getNames, sid, xx)
                 .catch((error)=>{
-
+                  ws.send(JSON.stringify({
+                    type:"error",
+                    data:error,
+                    message:"There was an error getting org members, members may be missing so run "+sid+" to ensure you have every member.",
+                    status:0
+                  }));
                 });
               }
             }
@@ -257,13 +261,23 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
-              ws.orgErrors.push(org[i]+" encountered an error.");
+              ws.send(JSON.stringify({
+                type:"error",
+                data:error,
+                message:org[i]+" encountered an error",
+                status:0
+              }));
             })
           }
         }else{
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
-            ws.orgErrors.push(org+" encountered an error.");
+            ws.send(JSON.stringify({
+              type:"error",
+              data:error,
+              message:org+" encountered an error",
+              status:0
+            }));
           })
         }
       })
