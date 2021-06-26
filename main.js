@@ -261,7 +261,7 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
-              console.log(error.name);
+              console.log(error.message);
               ws.send(JSON.stringify({
                 type:"error",
                 data:error,
@@ -273,7 +273,7 @@ wss.on('connection', function(ws){
         }else{
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
-            console.log(error.name);
+            console.log(error.message);
             ws.send(JSON.stringify({
               type:"error",
               data:error,
