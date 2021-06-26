@@ -459,9 +459,9 @@ async function getNames(sid, page, ws){
     }
   })
 }
-
+var counter = 1;
 async function scan(sid, ws, org){
-  var pages, counter = 1;
+  var pages,;
   if(Array.isArray(org)){
     ws.send(JSON.stringify({
       type:"status",
