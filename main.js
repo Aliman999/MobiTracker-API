@@ -200,13 +200,13 @@ wss.on('connection', function(ws){
               result.data.forEach((item, i) => {
                 ws.orgResponse.push(item);
               });
-              console.log(page+" | "+pages);
+              console.log((page+1)+" | "+pages);
               if(Array.isArray(org)){
-                if(page == pages){
+                if((page+1) == pages){
                   ws.send("finished");
                 }
               }else{
-                if(page == pages){
+                if((page+1) == pages){
                   ws.send("finished");
                 }
               }
