@@ -186,7 +186,7 @@ wss.on('connection', function(ws){
         var org, length, pages, counter = 1;
         async function scan(sid, ws){
           if(Array.isArray(org)){
-            wss.forEach((ws, i) => {
+            wss.clients.forEach((ws, i) => {
               if(ws.user == "Scanner"){
                 ws.send(JSON.stringify({
                   type:"status",
@@ -197,7 +197,7 @@ wss.on('connection', function(ws){
               }
             });
           }else{
-            wss.forEach((ws, i) => {
+            wss.clients.forEach((ws, i) => {
               if(ws.user == "Scanner"){
                 ws.send(JSON.stringify({
                   type:"status",
@@ -218,7 +218,7 @@ wss.on('connection', function(ws){
               for(var xx = 0; xx < result.data; xx++){
                 orgLimiter.schedule( { id:sid+" - "+(xx+1)+"/"+result.data } , getNames, sid, xx)
                 .catch((error)=>{
-                  wss.forEach((ws, i) => {
+                  wss.clients.forEach((ws, i) => {
                     if(ws.user == "Scanner"){
                       ws.send(JSON.stringify({
                         type:"error",
@@ -234,7 +234,7 @@ wss.on('connection', function(ws){
           });
         }
         async function getNames(sid, page){
-          wss.forEach((ws, i) => {
+          wss.clients.forEach((ws, i) => {
             if(ws.user == "Scanner"){
               ws.send(JSON.stringify({
                 type:"status",
@@ -252,7 +252,7 @@ wss.on('connection', function(ws){
               if(Array.isArray(org)){
                 if(org[org.length-1] === sid){
                   if((page+1) == pages){
-                    wss.forEach((ws, i) => {
+                    wss.clients.forEach((ws, i) => {
                       if(ws.user == "Scanner"){
                         ws.send(JSON.stringify({
                           type:"finished",
@@ -266,7 +266,7 @@ wss.on('connection', function(ws){
                 }
               }else{
                 if((page+1) == pages){
-                  wss.forEach((ws, i) => {
+                  wss.clients.forEach((ws, i) => {
                     if(ws.user == "Scanner"){
                       ws.send(JSON.stringify({
                         type:"finished",
@@ -291,7 +291,7 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
-              wss.forEach((ws, i) => {
+              wss.clients.forEach((ws, i) => {
                 if(ws.user == "Scanner"){
                   ws.send(JSON.stringify({
                     type:"error",
@@ -306,7 +306,7 @@ wss.on('connection', function(ws){
         }else{
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
-            wss.forEach((ws, i) => {
+            wss.clients.forEach((ws, i) => {
               if(ws.user == "Scanner"){
                 ws.send(JSON.stringify({
                   type:"error",
