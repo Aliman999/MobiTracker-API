@@ -191,7 +191,7 @@ const interval = setInterval(function (){
       item.isAlive = false;
     }
   });
-}, 60000);
+}, 6000);
 
 wss.on('close', function close(e) {
   clearInterval(interval);
@@ -403,7 +403,24 @@ function orgScan(sid){
         callback({ status:0, data:error});
       })
       res.on('end', function(){
-        callback({ status:1, data:user.data });
+        try{
+          var user = JSON.parse(body);
+          if(user.data == null){
+            callback({status:0, data:args+" returned null. Retrying."});
+          }
+        }catch(err){
+          var result = "Failed to parse "+username;
+          callback({ status:0, data:result });
+        };
+        if(user){
+          if(Object.size(user.data) > 0){
+          }else{
+            callback({ status:0, data:username+" not found." });
+          }
+        }else{
+          console.log("User Not Found");
+          callback({ status:0, data:username+" not found." });
+        }
       })
     })
     req.on('error', (err) => {
