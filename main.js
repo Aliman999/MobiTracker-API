@@ -200,16 +200,15 @@ wss.on('connection', function(ws){
               result.data.forEach((item, i) => {
                 ws.orgResponse.push(item);
               });
-              console.log(org[org.length-1]+" | "+sid);
               if(Array.isArray(org)){
                 if(org[org.length-1] === sid){
                   if((page+1) == pages){
-                    ws.send("finished array of orgs");
+                    console.log(ws.orgResponse);
                   }
                 }
               }else{
                 if((page+1) == pages){
-                  ws.send("finished single org");
+                  console.log(ws.orgResponse);
                 }
               }
             }
