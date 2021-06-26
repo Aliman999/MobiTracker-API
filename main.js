@@ -156,27 +156,28 @@ wss.on('connection', function(ws){
       });
     })
     .on('orgs', function(data){
-      console.log(ws);
       ws.user = "Scanner";
       ws.isAlive = true;
-      var orgs, length;
-      try{
-        orgs = JSON.parse(data);
-        length = orgs.length;
-      }catch{
-        orgs = data;
-        length = 1;
-      }
-      async function scan(sid){
-        await orgScan(sid).then((result) => {
+      ws.on('job', function(data){
+        var orgs, length;
+        try{
+          orgs = JSON.parse(data);
+          length = orgs.length;
+        }catch{
+          orgs = data;
+          length = 1;
+        }
+        async function scan(sid){
+          await orgScan(sid).then((result) => {
 
-        });
-      }
-      for(var i = 0; i < length; i++){
-        limiter.schedule(scan, orgs[i])
-        .catch((error) => {
-        })
-      }
+          });
+        }
+        for(var i = 0; i < length; i++){
+          limiter.schedule(scan, orgs[i])
+          .catch((error) => {
+          })
+        }
+      })
     })
 });
 
