@@ -177,7 +177,7 @@ wss.on('connection', function(ws){
       ws.orgResponse = [];
       console.log(ws.user+" Connected ["+wss.clients.size+"]");
       ws.on('job', function(data){
-        var org, length, pages;
+        var org, length, pages, counter = 0, subCounter = 0;
         async function scan(sid, ws){
           await orgScan(sid).then(async (result) => {
             if(result.status === 0){
@@ -194,12 +194,19 @@ wss.on('connection', function(ws){
             }
           });
         }
-        async function getNames(sid, page){
+        async function getNames(sid, page, i){
           await orgPlayers(sid, page).then((result)=>{
             if(result.status == 1){
               result.data.forEach((item, i) => {
                 ws.orgResponse.push(item);
               });
+              if(Array.isArray(org)){
+                if((i+1) == pages){
+                  ws.send("finished");
+                }
+              }else{
+
+              }
             }
           })
         }
@@ -209,7 +216,6 @@ wss.on('connection', function(ws){
           if(err) org = data.toUpperCase();
         }
         if(Array.isArray(org)){
-          console.log("Debug0");
           for(var i = 0; i < org.length; i++){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
@@ -217,7 +223,6 @@ wss.on('connection', function(ws){
             })
           }
         }else{
-          console.log("Debug1");
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
           })
