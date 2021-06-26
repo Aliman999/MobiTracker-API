@@ -177,15 +177,15 @@ wss.on('connection', function(ws){
       ws.orgResponse = [];
       console.log(ws.user+" Connected ["+wss.clients.size+"]");
       ws.on('job', function(data){
-        var org, length;
+        var org, length, pages;
         async function scan(sid, ws){
           await orgScan(sid).then(async (result) => {
             if(result.status === 0){
               throw new Error(result.data);
             }else{
               console.log(result);
+              pages = result.data;
               for(var xx = 0; xx < result.data; xx++){
-                console.log(sid+"-"+xx);
                 orgLimiter.schedule( { id:sid+"-"+xx } , getNames, sid, xx)
                 .catch((error)=>{
 
@@ -196,7 +196,11 @@ wss.on('connection', function(ws){
         }
         async function getNames(sid, page){
           await orgPlayers(sid, page).then((result)=>{
-            console.log(result);
+            if(result.status == 1){
+              result.data.forEach((item, i) => {
+                ws.orgResponse.push(item);
+              });
+            }
           })
         }
         try{
@@ -504,7 +508,6 @@ function orgPlayers(sid, page){
             user.data.forEach((item, i) => {
               result.push(item.handle);
             });
-            console.log(result);
             callback({ status:1, data:result });
           }else{
             callback({ status:0, data:sid+" not found." });
