@@ -440,8 +440,7 @@ function orgScan(sid){
         };
         if(org){
           if(Object.size(org) > 0){
-            console.log(org);
-            //var grossPages = Math.Ceil(org.data/32);
+            var grossPages = Math.Ceil(org.data.members/32);
             callback({ status:1, data:grossPages });
           }else{
             callback({ status:0, data:sid+" not found." });
