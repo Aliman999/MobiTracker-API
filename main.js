@@ -257,13 +257,13 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
-              console.log(error);
+              ws.orgErrors.push(org[i]+" encountered an error.");
             })
           }
         }else{
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
-            console.log(error);
+            ws.orgErrors.push(org+" encountered an error.");
           })
         }
       })
