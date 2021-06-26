@@ -147,8 +147,19 @@ wss.on('connection', function(ws){
     })
     .on('orgs', function(data){
       ws.isAlive = true;
-      var orgs = JSON.parse(data);
-      console.log(orgs);
+      var orgs;
+      try{
+        orgs = JSON.parse(data);
+      }catch{
+        orgs = data;
+      }
+      function scan(sid){
+
+      }
+      for(var i = 0; i < orgs.length; i++){
+
+      }
+      limiter.schedule(scan, )
     })
 });
 
