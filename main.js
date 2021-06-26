@@ -186,7 +186,7 @@ wss.on('connection', function(ws){
               console.log(result);
               pages = result.data;
               for(var xx = 0; xx < result.data; xx++){
-                orgLimiter.schedule( { id:sid+" - "+xx+"/"+result.data } , getNames, sid, xx)
+                orgLimiter.schedule( { id:sid+" - "+(xx+1)+"/"+result.data } , getNames, sid, xx)
                 .catch((error)=>{
 
                 });
