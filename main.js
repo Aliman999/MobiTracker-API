@@ -199,8 +199,8 @@ wss.on('connection', function(ws){
             console.log(result);
           })
         }
-        console.log(ws.user+" Requested job for "+data);
         try{
+        console.log(ws.user+" Requested job for "+data);
           org = JSON.parse(data);
           for(var i = 0; i < org.length; i++){
             org[i] = org[i].toUpperCase();
@@ -209,6 +209,7 @@ wss.on('connection', function(ws){
             })
           }
         }catch{
+        console.log(ws.user+" Requested job for "+data);
           org = data.toUpperCase();
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
