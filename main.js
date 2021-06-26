@@ -200,17 +200,18 @@ wss.on('connection', function(ws){
           })
         }
         try{
-        console.log(ws.user+" Requested job for "+data);
           org = JSON.parse(data);
+        }catch{
+          org = data.toUpperCase();
+        }
+        if(Array.isArray(org)){
           for(var i = 0; i < org.length; i++){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]}, scan, org[i], ws)
             .catch((error) => {
             })
           }
-        }catch{
-        console.log(ws.user+" Requested job for "+data);
-          org = data.toUpperCase();
+        }else{
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
           })
