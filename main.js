@@ -133,13 +133,12 @@ function heartbeat(){
 }
 
 wss.on('connection', function(ws){
-  console.log(ws.send());
   ws.on('message', toEvent)
     .on('ping', heartbeat)
     .on('auth', function (data){
       jwt.verify(data, config.Secret, { algorithm: 'HS265' }, function(err, decoded){
         if(err){
-          ws.terminate();
+          ws.close();
         }else{
           ws.user = decoded.username;
           ws.isAlive = true;
