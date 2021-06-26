@@ -184,7 +184,7 @@ wss.on('connection', function(ws){
               throw new Error(result.data);
             }else{
               console.log(result);
-              for(var xx = 0; xx < result.data.length; xx++){
+              for(var xx = 0; xx < result.data; xx++){
                 console.log(sid+"-"+xx);
                 orgLimiter.schedule( { id:sid+"-"+xx } , getNames, sid, xx)
                 .catch((error)=>{
