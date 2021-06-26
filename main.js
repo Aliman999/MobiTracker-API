@@ -187,7 +187,7 @@ wss.on('connection', function(ws){
         async function scan(sid, ws){
           await orgScan(sid).then(async (result) => {
             if(result.status === 0){
-              throw new Error(result.data);
+              throw new Error(result.data, sid);
             }else{
               counter++;
               if(Array.isArray(org)){
@@ -261,6 +261,7 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
+              console.log(error.name);
               ws.send(JSON.stringify({
                 type:"error",
                 data:error,
@@ -272,6 +273,7 @@ wss.on('connection', function(ws){
         }else{
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
+            console.log(error.name);
             ws.send(JSON.stringify({
               type:"error",
               data:error,
