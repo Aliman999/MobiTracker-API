@@ -194,12 +194,13 @@ wss.on('connection', function(ws){
         try{
           org = JSON.parse(data);
           for(var i = 0; i < org.length; i++){
+            org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]}, scan, org[i])
             .catch((error) => {
             })
           }
         }catch{
-          org = data;
+          org = data.toUpperCase();
           orgLimiter.schedule( {id:org}, scan, org)
           .catch((error) => {
           })
