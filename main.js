@@ -175,8 +175,7 @@ wss.on('connection', function(ws){
       ws.user = "Scanner";
       ws.isAlive = true;
       ws.orgResponse = [];
-      console.log(wss.clients.size);
-      console.log(ws.user+" Connected");
+      console.log(ws.user+" Connected ["+wss.clients.size+"]");
       ws.on('job', function(data){
         var org, length;
         async function scan(sid, ws){
