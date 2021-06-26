@@ -191,7 +191,7 @@ const interval = setInterval(function (){
       item.isAlive = false;
     }
   });
-}, 6000);
+}, 60000);
 
 wss.on('close', function close(e) {
   clearInterval(interval);
@@ -391,7 +391,7 @@ function orgScan(sid){
     var options = {
       hostname: 'api.starcitizen-api.com',
       port: 443,
-      path: '/'+key+'/v1/live/user/'+escape(username),
+      path: '/'+key+'/v1/live/organization/'+escape(sid),
       method: 'GET'
     }
     const req = https.request(options, res =>{
@@ -403,26 +403,7 @@ function orgScan(sid){
         callback({ status:0, data:error});
       })
       res.on('end', function(){
-        try{
-          var user = JSON.parse(body);
-          if(user.data == null){
-            callback({status:0, data:args+" returned null. Retrying."});
-          }
-        }catch(err){
-          var result = "Failed to parse "+username;
-          callback({ status:0, data:result });
-        };
-        if(user){
-          if(Object.size(user.data) > 0){
-            cachePlayer(user.data);
-            callback({ status:1, data:user.data });
-          }else{
-            callback({ status:0, data:username+" not found." });
-          }
-        }else{
-          console.log("User Not Found");
-          callback({ status:0, data:username+" not found." });
-        }
+        callback({ status:1, data:user.data });
       })
     })
     req.on('error', (err) => {
