@@ -174,7 +174,6 @@ wss.on('connection', function(ws){
     .on('orgs', function(data){
       ws.user = "Scanner";
       ws.isAlive = true;
-      ws.orgResponse = [];
       console.log(ws.user+" Connected ["+wss.clients.size+"]");
       ws.send(JSON.stringify({
         type:"response",
@@ -185,6 +184,7 @@ wss.on('connection', function(ws){
       ws.on('job', function(data){
         var org, length, pages, counter = 1;
         async function scan(sid, ws){
+          var orgResponse = [];
           if(Array.isArray(org)){
             wss.clients.forEach((ws, i) => {
               if(ws.user == "Scanner"){
@@ -247,7 +247,7 @@ wss.on('connection', function(ws){
           await orgPlayers(sid, page).then((result)=>{
             if(result.status == 1){
               result.data.forEach((item, i) => {
-                ws.orgResponse.push(item);
+                orgResponse.push(item);
               });
               if(Array.isArray(org)){
                 if(org[org.length-1] === sid){
@@ -256,7 +256,7 @@ wss.on('connection', function(ws){
                       if(ws.user == "Scanner"){
                         ws.send(JSON.stringify({
                           type:"finished",
-                          data:ws.orgResponse,
+                          data:orgResponse,
                           message:"Finished "+org.length+" organizations",
                           status:1
                         }));
@@ -270,7 +270,7 @@ wss.on('connection', function(ws){
                     if(ws.user == "Scanner"){
                       ws.send(JSON.stringify({
                         type:"finished",
-                        data:ws.orgResponse,
+                        data:orgResponse,
                         message:"Finished "+sid,
                         status:1
                       }));
