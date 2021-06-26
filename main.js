@@ -261,11 +261,10 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
-              console.log(error.message);
               ws.send(JSON.stringify({
                 type:"error",
-                data:error,
-                message:"Could not find "+org[i],
+                data:null,
+                message:error.message,
                 status:0
               }));
             })
@@ -273,11 +272,10 @@ wss.on('connection', function(ws){
         }else{
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
-            console.log(error.message);
             ws.send(JSON.stringify({
               type:"error",
-              data:error,
-              message:"Could not find "+org,
+              data:null,
+              message:error.message,
               status:0
             }));
           })
