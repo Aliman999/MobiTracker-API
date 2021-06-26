@@ -186,7 +186,7 @@ wss.on('connection', function(ws){
               console.log(result);
               pages = result.data;
               for(var xx = 0; xx < result.data; xx++){
-                orgLimiter.schedule( { id:sid+"-"+xx } , getNames, sid, xx)
+                orgLimiter.schedule( { id:sid+" - "+xx+"/"+result.data } , getNames, sid, xx)
                 .catch((error)=>{
 
                 });
@@ -212,7 +212,7 @@ wss.on('connection', function(ws){
           console.log("Debug0");
           for(var i = 0; i < org.length; i++){
             org[i] = org[i].toUpperCase();
-            orgLimiter.schedule( {id:org[i]}, scan, org[i], ws)
+            orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
             })
           }
