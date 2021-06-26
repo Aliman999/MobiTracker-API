@@ -184,7 +184,7 @@ wss.on('connection', function(ws){
         status:1
       }));
       ws.on('job', function(data){
-        var org, length, counter = 1;
+        var org, length;
         try{
           org = JSON.parse(data);
         }catch(err){
@@ -460,7 +460,7 @@ async function getNames(sid, page){
 }
 
 async function scan(sid, ws, org){
-  var pages;
+  var pages, counter = 1;
   if(Array.isArray(org)){
     ws.send(JSON.stringify({
       type:"status",
