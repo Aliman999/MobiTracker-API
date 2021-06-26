@@ -193,7 +193,7 @@ wss.on('connection', function(ws){
         if(Array.isArray(org)){
           for(var i = 0; i < org.length; i++){
             org[i] = org[i].toUpperCase();
-            orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
+            orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws, org)
             .catch((error) => {
               ws.send(JSON.stringify({
                 type:"error",
@@ -459,7 +459,7 @@ async function getNames(sid, page){
   })
 }
 
-async function scan(sid, ws){
+async function scan(sid, ws, org){
   if(Array.isArray(org)){
     ws.send(JSON.stringify({
       type:"status",
