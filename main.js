@@ -409,17 +409,17 @@ function orgScan(sid){
             callback({status:0, data:args+" returned null. Retrying."});
           }
         }catch(err){
-          var result = "Failed to parse "+username;
+          var result = "Failed to parse "+sid;
           callback({ status:0, data:result });
         };
         if(user){
-          if(Object.size(user.data) > 0){
+          if(Object.size(org.data) > 0){
+            callback({ status:1, data:sid+" not found." });
           }else{
-            callback({ status:0, data:username+" not found." });
+            callback({ status:0, data:sid+" not found." });
           }
         }else{
-          console.log("User Not Found");
-          callback({ status:0, data:username+" not found." });
+          callback({ status:0, data:"Server Error." });
         }
       })
     })
