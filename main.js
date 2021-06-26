@@ -202,8 +202,10 @@ wss.on('connection', function(ws){
               });
               console.log((page+1)+" | "+pages);
               if(Array.isArray(org)){
-                if((page+1) == pages){
-                  ws.send("finished array of orgs");
+                if(org[org.length-1] === sid){
+                  if((page+1) == pages){
+                    ws.send("finished array of orgs");
+                  }
                 }
               }else{
                 if((page+1) == pages){
