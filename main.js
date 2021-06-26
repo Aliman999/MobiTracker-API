@@ -155,6 +155,7 @@ wss.on('connection', function(ws, req){
           }));
           */
           console.log(orgJob);
+          /*
           orgJob.on('job', function(data){
             async function query(username, key){
               await queryApi(username, key).then((result) => {
@@ -176,6 +177,7 @@ wss.on('connection', function(ws, req){
             });
 
           })
+          */
         }
       });
     })
