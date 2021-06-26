@@ -175,6 +175,7 @@ wss.on('connection', function(ws){
       ws.user = "Scanner";
       ws.isAlive = true;
       ws.orgResponse = [];
+      ws.orgErrors = [];
       console.log(ws.user+" Connected ["+wss.clients.size+"]");
       ws.send(JSON.stringify({
         type:"response",
@@ -256,11 +257,13 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
+              console.log(error);
             })
           }
         }else{
           orgLimiter.schedule( {id:org}, scan, org, ws)
           .catch((error) => {
+            console.log(error);
           })
         }
       })
