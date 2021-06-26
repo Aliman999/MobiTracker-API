@@ -194,19 +194,19 @@ wss.on('connection', function(ws){
             }
           });
         }
-        async function getNames(sid, page, xx){
+        async function getNames(sid, page){
           await orgPlayers(sid, page).then((result)=>{
             if(result.status == 1){
               result.data.forEach((item, i) => {
                 ws.orgResponse.push(item);
               });
-              console.log((xx+1)+" | "+pages);
+              console.log(page+" | "+pages);
               if(Array.isArray(org)){
-                if((xx+1) == pages){
+                if(page == pages){
                   ws.send("finished");
                 }
               }else{
-                if((xx+1) == pages){
+                if(page == pages){
                   ws.send("finished");
                 }
               }
