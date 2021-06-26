@@ -153,13 +153,16 @@ wss.on('connection', function(ws){
       }catch{
         orgs = data;
       }
-      function scan(sid){
+      async function scan(sid){
+        await orgScan(sid).then((result) => {
 
+        });
       }
       for(var i = 0; i < orgs.length; i++){
-
+        limiter.schedule(scan, orgs[i])
+        .catch((error) => {
+        })
       }
-      limiter.schedule(scan, )
     })
 });
 
