@@ -508,7 +508,7 @@ function orgScan(sid){
         try{
           var org = JSON.parse(body);
           if(org.data == null){
-            callback({status:0, data:sid+" returned null. Retrying."});
+            callback({status:0, data:sid+" returned null."});
           }
         }catch(err){
           var result = "Failed to parse "+sid;
@@ -554,7 +554,7 @@ function orgPlayers(sid, page){
         try{
           var user = JSON.parse(body);
           if(user.data == null){
-            callback({status:0, data:sid+" returned null. Retrying."});
+            callback({status:0, data:sid+" returned null."});
           }
         }catch(err){
           var result = "Failed to parse "+sid;
