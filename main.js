@@ -225,7 +225,6 @@ wss.on('connection', function(ws){
               if(Array.isArray(org)){
                 if(org[org.length-1] === sid){
                   if((page+1) == pages){
-                    console.log(ws.orgResponse);
                     ws.send(JSON.stringify({
                       type:"finished",
                       data:ws.orgResponse,
@@ -236,7 +235,12 @@ wss.on('connection', function(ws){
                 }
               }else{
                 if((page+1) == pages){
-                  console.log(ws.orgResponse);
+                  ws.send(JSON.stringify({
+                    type:"finished",
+                    data:ws.orgResponse,
+                    message:"Success",
+                    status:1
+                  }));
                 }
               }
             }
