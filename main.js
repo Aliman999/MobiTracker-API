@@ -151,8 +151,10 @@ wss.on('connection', function(ws){
       var orgs;
       try{
         orgs = JSON.parse(data);
+        orgs.count = orgs.length;
       }catch{
         orgs = data;
+        orgs.count = 1;
       }
       async function scan(sid){
         await orgScan(sid).then((result) => {
@@ -369,6 +371,24 @@ function cachePlayer(user){
       }
     });
   }
+}
+
+function orgScan(){
+  return new Promise(callback => {
+    const sql = "SELECT * FROM `CACHE players` WHERE username = '"+user+"'";
+    con.query(sql, function (err, result, fields) {
+      if(err) throw err;
+      if(result.length > 0){
+        const last = result.length-1;
+        if(result[last].event != "Changed Name"){
+          const sql = "INSERT INTO `CACHE players` (event, cID, username, bio, badge, organization, avatar) VALUES ( 'Changed Name', "+result[last].cID+", '"+result[last].username+"', ?, '"+result[last].badge+"', '"+result[last].organization+"', '"+result[last].avatar+"' );";
+          con.query(sql, [result[last].bio], function (err, result, fields) {
+            if(err) throw err;
+          });
+        }
+      }
+    });
+  });
 }
 
 const program = async () => {
