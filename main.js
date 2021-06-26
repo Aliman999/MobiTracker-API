@@ -176,13 +176,35 @@ wss.on('connection', function(ws){
       ws.isAlive = true;
       ws.orgResponse = [];
       console.log(ws.user+" Connected ["+wss.clients.size+"]");
+      ws.send(JSON.stringify({
+        type:"response",
+        data:"Ready for jobs.",
+        message:"Success",
+        status:1
+      }));
       ws.on('job', function(data){
-        var org, length, pages, counter = 0, subCounter = 0;
+        var org, length, pages, counter = 0;
         async function scan(sid, ws){
           await orgScan(sid).then(async (result) => {
             if(result.status === 0){
               throw new Error(result.data);
             }else{
+              counter++;
+              if(Array.isArray(org)){
+                ws.send(JSON.stringify({
+                  type:"status",
+                  data:"Running "+sid+" "+counter+" of "+org.length,
+                  message:"Success",
+                  status:1
+                }));
+              }else{
+                ws.send(JSON.stringify({
+                  type:"status",
+                  data:"Running "+sid,
+                  message:"Success",
+                  status:1
+                }));
+              }
               console.log(result);
               pages = result.data;
               for(var xx = 0; xx < result.data; xx++){
@@ -204,6 +226,12 @@ wss.on('connection', function(ws){
                 if(org[org.length-1] === sid){
                   if((page+1) == pages){
                     console.log(ws.orgResponse);
+                    ws.send(JSON.stringify({
+                      type:"finished",
+                      data:ws.orgResponse,
+                      message:"Success",
+                      status:1
+                    }));
                   }
                 }
               }else{
