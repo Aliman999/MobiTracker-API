@@ -173,6 +173,7 @@ wss.on('connection', function(ws){
       });
     })
     .on('orgs', function(data){
+      console.log(ws);
       ws.user = "Scanner";
       ws.isAlive = true;
       ws.orgResponse = [];
