@@ -4,7 +4,7 @@
   "description": "Maintains the queries available for each key in MobiTracker's Database and provides datastream for admin panel",
   "main": "index.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "node api.js"
   },
   "author": "J.Dusky",
   "license": "ISC",

@@ -141,7 +141,7 @@ wss.on('connection', function(ws){
           ws.user = decoded.username;
           ws.isAlive = true;
           ws.send(JSON.stringify({
-            type:"response",
+            type:"authentication",
             data:"Authenticated",
             message:"Success",
             status:1
