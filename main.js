@@ -327,7 +327,6 @@ const interval = setInterval(function (){
       console.log("Terminating "+item.user);
       item.terminate();
     }else{
-      console.log("Setting false");
       item.isAlive = false;
     }
   });
