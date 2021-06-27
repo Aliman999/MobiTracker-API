@@ -250,6 +250,7 @@ wss.on('connection', function(ws){
               });
               if(Array.isArray(org)){
                 console.log(org[org.length-1]+" | "+sid);
+                console.log(orgResponse);
                 if(org[org.length-1] === sid){
                   console.log((page+1)+" | "+pages);
                   if((page+1) == pages){
