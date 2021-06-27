@@ -322,6 +322,7 @@ wss.on('connection', function(ws){
 });
 
 const interval = setInterval(function (){
+  console.log("running");
   wss.clients.forEach((item, i) => {
     if(item.isAlive === false){
       console.log("Terminating "+item.user);
