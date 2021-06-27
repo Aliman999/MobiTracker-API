@@ -299,12 +299,9 @@ wss.on('connection', function(ws){
               console.log(error.message);
               org.forEach((item, i) => {
                 if(item == error.message){
-                  console.log("Test");
+                  org.splice(i, 1);
                 }
               });
-              console.log(org[i]);
-              org.splice(i, 1);
-              console.log(org[i]);
               wss.clients.forEach((ws, i) => {
                 if(ws.user == "Scanner"){
                   ws.send(JSON.stringify({
