@@ -299,7 +299,7 @@ wss.on('connection', function(ws){
               console.log(error.message);
               org.forEach((item, i) => {
                 if(item == error.message){
-
+                  console.log("Test");
                 }
               });
               console.log(org[i]);
