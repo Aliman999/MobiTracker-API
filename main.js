@@ -33,7 +33,7 @@ orgLimiter.on("failed", async (error, info) => {
   const id = info.options.id;
   console.warn(`${id} failed: ${error}`);
 
-  if (info.retryCount < 2) {
+  if (info.retryCount < 5) {
     return 2000;
   }else{
     info.args[2].send(JSON.stringify({
