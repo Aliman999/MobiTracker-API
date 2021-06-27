@@ -249,6 +249,9 @@ wss.on('connection', function(ws){
                 orgResponse.push(item);
               });
               if(Array.isArray(org)){
+                org = org.filter(function(item, pos, self) {
+                  return self.indexOf(item) == pos;
+                })
                 console.log(orgResponse);
                 console.log(org[org.length-1]+" | "+sid);
                 if(org[org.length-1] === sid){
