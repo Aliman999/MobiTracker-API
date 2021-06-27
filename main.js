@@ -331,7 +331,7 @@ const interval = setInterval(function (){
       item.isAlive = false;
     }
   });
-}, 10000);
+}, 30000 + 1000);
 
 wss.on('close', function close(e) {
   clearInterval(interval);
