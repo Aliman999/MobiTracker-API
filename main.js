@@ -33,7 +33,7 @@ orgLimiter.on("failed", async (error, info) => {
   const id = info.options.id;
   console.warn(`${id} failed: ${error}`);
 
-  if (info.retryCount < 5) {
+  if (info.retryCount < 3) {
     return 2000;
   }else{
     info.args[2].send(JSON.stringify({
@@ -209,7 +209,7 @@ wss.on('connection', function(ws){
           }
           await orgScan(sid).then(async (result) => {
             if(result.status === 0){
-              throw new Error(result.data, sid);
+              throw new Error(sid);
             }else{
               console.log(result);
               pages = result.data;
@@ -296,7 +296,12 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
-              console.log(error);
+              console.log(error.message);
+              org.forEach((item, i) => {
+                if(item == error.message){
+
+                }
+              });
               console.log(org[i]);
               org.splice(i, 1);
               console.log(org[i]);
