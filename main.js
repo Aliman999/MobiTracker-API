@@ -296,6 +296,7 @@ wss.on('connection', function(ws){
             org[i] = org[i].toUpperCase();
             orgLimiter.schedule( {id:org[i]+" - Get Members"}, scan, org[i], ws)
             .catch((error) => {
+              console.log(error);
               console.log(org[i]);
               org.splice(i, 1);
               console.log(org[i]);
