@@ -249,10 +249,10 @@ wss.on('connection', function(ws){
                 orgResponse.push(item);
               });
               if(Array.isArray(org)){
+                console.log(org[org.length-1]+" | "+sid);
                 if(org[org.length-1] === sid){
+                  console.log((page+1)+" | "+pages);
                   if((page+1) == pages){
-                    console.log((page+1)+" | "+pages);
-                    console.log(orgResponse);
                     wss.clients.forEach((ws, i) => {
                       if(ws.user == "Scanner"){
                         ws.send(JSON.stringify({
