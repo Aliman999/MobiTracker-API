@@ -251,6 +251,7 @@ wss.on('connection', function(ws){
               if(Array.isArray(org)){
                 if(org[org.length-1] === sid){
                   if((page+1) == pages){
+                    console.log(orgResponse);
                     wss.clients.forEach((ws, i) => {
                       if(ws.user == "Scanner"){
                         ws.send(JSON.stringify({
