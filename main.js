@@ -262,7 +262,7 @@ wss.on('connection', function(ws){
                         ws.send(JSON.stringify({
                           type:"finished",
                           data:orgResponse,
-                          message:"Finished "+org.length+" organizations",
+                          message:"Finished "+org.length+" organizations and found "+orgResponse.length+" players.",
                           status:1
                         }));
                       }
