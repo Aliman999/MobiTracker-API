@@ -307,7 +307,7 @@ wss.on('connection', function(ws){
                   ws.send(JSON.stringify({
                     type:"error",
                     data:null,
-                    message:error.message,
+                    message:error.message+" returned Null.",
                     status:0
                   }));
                 }
