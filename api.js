@@ -12,8 +12,8 @@ require('console-stamp')(console, {
 });
 var jwt = require('jsonwebtoken');
 const server = https.createServer({
-  cert: fs.readFileSync('/etc/nginx/.ssl/client-cert.crt'),
-  key: fs.readFileSync('/etc/nginx/.ssl/client-mobitracker_co.key'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/ws.mobitracker.co/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/ws.mobitracker.co/privkey.pem'),
 });
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
