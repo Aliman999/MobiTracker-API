@@ -12,8 +12,8 @@ require('console-stamp')(console, {
 });
 var jwt = require('jsonwebtoken');
 const server = https.createServer({
-  cert: fs.readFileSync('/etc/nginx/.ssl/client-cert.pem'),
-  key: fs.readFileSync('/etc/nginx/.ssl/client-mobitracker_co.pem'),
+  cert: fs.readFileSync('/etc/nginx/.ssl/client-cert.crt'),
+  key: fs.readFileSync('/etc/nginx/.ssl/client-mobitracker_co.key'),
 });
 server.on('error', function (e) {
   // Handle your error here
