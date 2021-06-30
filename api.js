@@ -15,10 +15,6 @@ const server = https.createServer({
   cert: fs.readFileSync('/etc/nginx/.ssl/client-cert.crt'),
   key: fs.readFileSync('/etc/nginx/.ssl/client-mobitracker_co.key'),
 });
-server.on('error', function (e) {
-  // Handle your error here
-  console.log(e);
-});
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
 var key;
@@ -335,7 +331,10 @@ wss.on('connection', function(ws){
         }
       })
     })
-});
+})
+.on('error', (error)=>{
+  console.log(error);
+})
 
 const interval = setInterval(function (){
   wss.clients.forEach((item, i) => {
