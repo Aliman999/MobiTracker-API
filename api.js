@@ -28,7 +28,7 @@ const orgLimiter = new Bottleneck({
   maxConcurrent: 1,
   minTime: 2000
 });
-//test
+
 orgLimiter.on("failed", async (error, info) => {
   const id = info.options.id;
   console.warn(`${id} failed: ${error}`);
