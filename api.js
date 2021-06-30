@@ -372,9 +372,9 @@ function getKey(i){
 const queryApi = function(username, key){
   return new Promise(callback => {
     var options = {
-      hostname: 'api.starcitizen-api.com',
+      hostname: 'api.mobitracker.co',
       port: 443,
-      path: '/'+key+'/v1/live/user/'+escape(username),
+      path: '/user/'+escape(username),
       method: 'GET'
     }
     const req = https.request(options, res =>{
