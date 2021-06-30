@@ -332,8 +332,8 @@ wss.on('connection', function(ws){
       })
     })
 })
-.on('error', (error)=>{
-  console.log(error);
+wss.on('error', (err) =>{
+  console.log(err);
 })
 
 const interval = setInterval(function (){
