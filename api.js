@@ -14,10 +14,11 @@ var jwt = require('jsonwebtoken');
 const server = https.createServer({
   cert: fs.readFileSync('/etc/nginx/.ssl/client-cert.pem'),
   key: fs.readFileSync('/etc/nginx/.ssl/client-mobitracker_co.pem'),
-})
-.catch((error)=>{
-  console.log(error);
-})
+});
+server.on('error', function (e) {
+  // Handle your error here
+  console.log(e);
+});
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
 var key;
