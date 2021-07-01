@@ -375,7 +375,7 @@ function getKey(i){
 const queryApi = function(username, key){
   return new Promise(callback => {
     var options = {
-      hostname: 'api.mobitracker.co',
+      hostname: 'api.dustytavern.com',
       port: 443,
       path: '/user/'+escape(username),
       method: 'GET'
