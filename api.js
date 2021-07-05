@@ -134,10 +134,8 @@ function heartbeat(){
 var rsaKeys = {};
 
 rsaKeys.getKey = function(orgSID){
-  return new Promise(callback =>{
   orgSID = orgSID.toLowerCase();
-  callback(fs.readFileSync('/home/ubuntu/mtapi/pubkeys/'+orgSID+'/api_rsa.key.pub'));
-})
+  return fs.readFileSync('/home/ubuntu/mtapi/pubkeys/'+orgSID+'/api_rsa.key.pub');
 }
 
 
@@ -182,8 +180,8 @@ wss.on('connection', function(ws){
         }
       });
     })
-    .on('rsa', function(data){
-      rsaKeys.getKey(data.org)
+    .on('rsa', async function(data){
+      await rsaKeys.getKey(data.org)
       .then((publicKey) => {
         jwt.verify(data.jwt, publicKey, { algorithm: 'RS256' }, function(err, decoded){
           if(err){
