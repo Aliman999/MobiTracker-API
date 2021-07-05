@@ -132,7 +132,7 @@ function heartbeat(){
 }
 
 var privateKey = fs.readFileSync('/home/ubuntu/mtapi/api_rsa');
-var token = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60), foo:"bar"}, privateKey, { algorithm: 'RS265' });
+var token = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60), foo:"bar"}, privateKey, { algorithm: 'RS256' });
 
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
