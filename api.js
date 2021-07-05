@@ -181,6 +181,7 @@ wss.on('connection', function(ws){
       });
     })
     .on('rsa', function(data, jwt){
+      /*
       rsaKeys.getKey(data, jwt)
       .then((publicKey) => {
         jwt.verify(data, publicKey, { algorithm: 'RS256' }, function(err, decoded){
@@ -198,6 +199,7 @@ wss.on('connection', function(ws){
           }
         });
       })
+      */
     })
     .on('orgs', function(data){
       ws.user = "Scanner";
