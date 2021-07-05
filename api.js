@@ -176,6 +176,46 @@ wss.on('connection', function(ws){
         }
       });
     })
+    .on('rsa', function (data){
+      /*
+      jwt.verify(data, config.Secret, { algorithm: 'RS256' }, function(err, decoded){
+        if(err){
+          ws.terminate();
+        }else{
+          ws.user = decoded.username;
+          ws.isAlive = true;
+          ws.send(JSON.stringify({
+            type:"authentication",
+            data:"Authenticated",
+            message:"Success",
+            status:1
+          }));
+
+          ws.on('job', function(data){
+            async function query(username, key, ws){
+              await queryApi(username, key).then((result) => {
+                if(result.status == 0){
+                  throw new Error(result.data);
+                }else{
+                  ws.send(JSON.stringify({
+                    type:"response",
+                    data:result.data,
+                    message:"Success",
+                    status:1
+                  }));
+                }
+              })
+            }
+            console.log(ws.user+" started job for "+data);
+            queryUser.schedule( {id:data}, query, data, key, ws)
+            .catch((error) => {
+            });
+
+          })
+        }
+      });
+      */
+    })
     .on('orgs', function(data){
       ws.user = "Scanner";
       ws.isAlive = true;
