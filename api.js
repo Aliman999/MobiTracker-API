@@ -201,7 +201,10 @@ wss.on('connection', function(ws){
             }));
             */
           }
-        });
+        })
+        .catch(err){
+          console.log(err);
+        }
       })
     })
     .on('orgs', function(data){
