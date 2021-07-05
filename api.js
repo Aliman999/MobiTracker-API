@@ -190,28 +190,6 @@ wss.on('connection', function(ws){
             message:"Success",
             status:1
           }));
-
-          ws.on('job', function(data){
-            async function query(username, key, ws){
-              await queryApi(username, key).then((result) => {
-                if(result.status == 0){
-                  throw new Error(result.data);
-                }else{
-                  ws.send(JSON.stringify({
-                    type:"response",
-                    data:result.data,
-                    message:"Success",
-                    status:1
-                  }));
-                }
-              })
-            }
-            console.log(ws.user+" started job for "+data);
-            queryUser.schedule( {id:data}, query, data, key, ws)
-            .catch((error) => {
-            });
-
-          })
         }
       });
     })
