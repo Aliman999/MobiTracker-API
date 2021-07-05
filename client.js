@@ -6,7 +6,7 @@ const fs = require('fs');
 var publicKey = fs.readFileSync('api.key.pub');
 
 function socket(){
-  var payload = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60), foo:"bar"}, { foo:"bar" }, publicKey, { algorithm: 'RS256' });
+  var payload = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60), foo:"bar"}, publicKey, { algorithm: 'RS256' });
   var message;
   webSocket = new WebSocket("wss://ws.mobitracker.co:2599");
   webSocket.onopen = function(){
