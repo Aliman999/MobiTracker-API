@@ -180,21 +180,24 @@ wss.on('connection', function(ws){
         }
       });
     })
-    .on('evil', function(){
-      jwt.verify(data, publicKey, { algorithm: 'RS256' }, function(err, decoded){
-        if(err){
-          ws.terminate();
-        }else{
-          ws.user = decoded.username;
-          ws.isAlive = true;
-          ws.send(JSON.stringify({
-            type:"authentication",
-            data:"Authenticated",
-            message:"Success",
-            status:1
-          }));
-        }
-      });
+    .on('rsa', function(data, jwt){
+      rsaKeys.getKey(data, jwt)
+      .then((publicKey) => {
+        jwt.verify(data, publicKey, { algorithm: 'RS256' }, function(err, decoded){
+          if(err){
+            ws.terminate();
+          }else{
+            ws.user = decoded.username;
+            ws.isAlive = true;
+            ws.send(JSON.stringify({
+              type:"authentication",
+              data:"Authenticated",
+              message:"Success",
+              status:1
+            }));
+          }
+        });
+      })
     })
     .on('orgs', function(data){
       ws.user = "Scanner";
