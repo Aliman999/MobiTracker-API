@@ -189,7 +189,7 @@ wss.on('connection', function(ws){
           if(err){
             ws.terminate();
           }else{
-            console.log(decoded);
+            console.log(decoded.foo);
             /*
             ws.user = decoded.username;
             ws.isAlive = true;
