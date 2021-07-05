@@ -131,7 +131,7 @@ function heartbeat(){
   this.isAlive = true;
 }
 
-var privateKey = fs.readFileSync('/home/ubuntu/mtapi/api_rsa.key');
+var privateKey = fs.readFileSync('/home/ubuntu/mtapi/pubkey/evilorg/api_rsa.key.pub');
 var token = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60), foo:"bar"}, privateKey, { algorithm: 'RS256' });
 
 
@@ -177,7 +177,7 @@ wss.on('connection', function(ws){
       });
     })
     .on('rsa', function (data){
-      jwt.verify(data, privateKey, function(err, decoded){
+      jwt.verify(data, privateKey, { algorithm: 'RS256' }, function(err, decoded){
         if(err){
           console.log(err);
           ws.terminate();
