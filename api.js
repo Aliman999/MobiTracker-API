@@ -181,6 +181,7 @@ wss.on('connection', function(ws){
       });
     })
     .on('rsa', function(data, jwt){
+      console.log(data);
       /*
       rsaKeys.getKey(data, jwt)
       .then((publicKey) => {
