@@ -190,6 +190,7 @@ wss.on('connection', function(ws){
             ws.terminate();
           }else{
             console.log(decoded);
+            /*
             ws.user = decoded.username;
             ws.isAlive = true;
             ws.send(JSON.stringify({
@@ -198,6 +199,7 @@ wss.on('connection', function(ws){
               message:"Success",
               status:1
             }));
+            */
           }
         });
       })
