@@ -19,10 +19,6 @@ const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
 var key;
 
-const limiter = new Bottleneck({
-  maxConcurrent: 1,
-  minTime: 2000
-});
 
 const orgLimiter = new Bottleneck({
   maxConcurrent: 1,
@@ -50,7 +46,12 @@ orgLimiter.on("done", function(info){
   console.log("Returned data for "+info.options.id);
 });
 
-limiter.on("failed", async (error, info) => {
+const queryUser = new Bottleneck({
+  maxConcurrent: 1,
+  minTime: 2000
+});
+
+queryUser.on("failed", async (error, info) => {
   const id = info.options.id;
   console.warn(`${id} failed: ${error}`);
 
@@ -67,7 +68,7 @@ limiter.on("failed", async (error, info) => {
   }
 });
 
-limiter.on("done", function(info){
+queryUser.on("done", function(info){
   console.log("Returned data for "+info.options.id);
 });
 
@@ -163,7 +164,7 @@ wss.on('connection', function(ws){
               })
             }
             console.log(ws.user+" started job for "+data);
-            limiter.schedule( {id:data}, query, data, key, ws)
+            queryUser.schedule( {id:data}, query, data, key, ws)
             .catch((error) => {
             });
 
