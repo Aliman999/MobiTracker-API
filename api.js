@@ -131,7 +131,7 @@ function heartbeat(){
   this.isAlive = true;
 }
 
-var privateKey = fs.readFileSync('/home/ubuntu/mtapi/pubkey/evilorg/api_rsa.key.pub');
+var privateKey = fs.readFileSync('/home/ubuntu/mtapi/pubkeys/evilorg/api_rsa.key.pub');
 var token = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60), foo:"bar"}, privateKey, { algorithm: 'RS256' });
 
 
