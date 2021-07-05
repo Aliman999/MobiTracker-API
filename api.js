@@ -130,11 +130,11 @@ function toEvent(message){
 function heartbeat(){
   this.isAlive = true;
 }
-/*
+
 var privateKey = fs.readFileSync('/home/ubuntu/mtapi/api_rsa.key');
 var token = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60), foo:"bar"}, privateKey, { algorithm: 'RS256' });
-console.log(token);
-*/
+
+
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
     .on('ping', heartbeat)
@@ -178,8 +178,7 @@ wss.on('connection', function(ws){
     })
     .on('rsa', function (data){
       console.log(data);
-      /*
-      jwt.verify(data, config.Secret, { algorithm: 'RS256' }, function(err, decoded){
+      jwt.verify(data, privateKey, { algorithm: 'RS256' }, function(err, decoded){
         if(err){
           ws.terminate();
         }else{
@@ -215,7 +214,6 @@ wss.on('connection', function(ws){
           })
         }
       });
-      */
     })
     .on('orgs', function(data){
       ws.user = "Scanner";
