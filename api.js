@@ -131,7 +131,12 @@ function heartbeat(){
   this.isAlive = true;
 }
 
-var privateKey = fs.readFileSync('/home/ubuntu/mtapi/pubkeys/evilorg/api_rsa.key.pub');
+var rsaKeys = {};
+
+rsaKeys.getKey = function(orgSID){
+  orgSID = orgSID.lower();
+  return fs.readFileSync('/home/ubuntu/mtapi/pubkeys/'+orgSID+'/api_rsa.key.pub');
+}
 
 
 wss.on('connection', function(ws){
@@ -175,10 +180,9 @@ wss.on('connection', function(ws){
         }
       });
     })
-    .on('rsa', function (data){
-      jwt.verify(data, privateKey, { algorithm: 'RS256' }, function(err, decoded){
+    .on('evil', function(){
+      jwt.verify(data, publicKey, { algorithm: 'RS256' }, function(err, decoded){
         if(err){
-          console.log(err);
           ws.terminate();
         }else{
           ws.user = decoded.username;
