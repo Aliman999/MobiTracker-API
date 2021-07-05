@@ -134,7 +134,7 @@ function heartbeat(){
 var rsaKeys = {};
 
 rsaKeys.getKey = function(orgSID){
-  orgSID = orgSID.lower();
+  orgSID = orgSID.toLowerCase();
   return fs.readFileSync('/home/ubuntu/mtapi/pubkeys/'+orgSID+'/api_rsa.key.pub');
 }
 
