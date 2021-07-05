@@ -177,6 +177,7 @@ wss.on('connection', function(ws){
       });
     })
     .on('rsa', function (data){
+      console.log(data);
       /*
       jwt.verify(data, config.Secret, { algorithm: 'RS256' }, function(err, decoded){
         if(err){
