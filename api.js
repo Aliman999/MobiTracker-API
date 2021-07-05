@@ -189,6 +189,7 @@ wss.on('connection', function(ws){
           if(err){
             ws.terminate();
           }else{
+            console.log(decoded);
             ws.user = decoded.username;
             ws.isAlive = true;
             ws.send(JSON.stringify({
