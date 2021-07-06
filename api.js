@@ -227,7 +227,7 @@ wss.on('connection', function(ws){
             }));
             ws.on('user', function(data){
               console.log(this.org);
-              queryUser.schedule( {id:data}, api.queryUser, data, ws)
+              queryUser.schedule( {id:data+" | from "this.org.toUpperCase()}, api.queryUser, data, ws)
               .catch((error) => {
               });
             })
