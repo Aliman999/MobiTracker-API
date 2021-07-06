@@ -441,7 +441,10 @@ const queryApi = function(username, key){
           var sql = "SELECT reviewed_count AS vouches FROM players WHERE username ='"+user+"'";
           con.query(sql, function (err, result, fields){
             if(err) throw err;
-            user.data.profile.rating = result.vouches;
+            console.log(result);
+            if(result.length > 0){
+              user.data.profile.rating = result.vouches;
+            }
           })
           if(Object.size(user.data) > 0){
             cachePlayer(user.data);
