@@ -443,7 +443,7 @@ const queryApi = function(username, key){
             if(err) throw err;
             console.log(result);
             if(result.length > 0){
-              user.data.profile.rating = result.vouches;
+              user.data.profile.rating = result[0].vouches;
               console.log(user.data.profile.rating);
             }
           })
