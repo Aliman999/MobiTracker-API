@@ -438,7 +438,7 @@ const queryApi = function(username, key){
           callback({ status:0, data:result });
         };
         if(user){
-          var sql = "SELECT reviewed_count AS vouches FROM players WHERE username LIKE '"+user+"'";
+          var sql = "SELECT reviewed_count AS vouches FROM players WHERE username LIKE '"+username+"'";
           con.query(sql, function (err, result, fields){
             if(err) throw err;
             console.log(result);
