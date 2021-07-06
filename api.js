@@ -202,7 +202,9 @@ wss.on('connection', function(ws){
             }));
             ws.on('user', function(data){
               console.log(data);
-              api.queryApi();
+              queryUser.schedule( {id:data}, api.queryUser, data, ws)
+              .catch((error) => {
+              });
             })
           }
         })
