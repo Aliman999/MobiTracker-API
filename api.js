@@ -226,7 +226,7 @@ wss.on('connection', function(ws){
               status:1
             }));
             ws.on('user', function(data){
-              console.log(data);
+              console.log(this.org);
               queryUser.schedule( {id:data}, api.queryUser, data, ws)
               .catch((error) => {
               });
