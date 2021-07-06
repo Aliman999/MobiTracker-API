@@ -142,7 +142,7 @@ rsaKeys.getKey = function(orgSID){
 
 var api = {};
 
-api.queryUser =  function(username, key, ws){
+api.queryUser =  async function(username, key, ws){
   await queryApi(username, key).then((result) => {
     if(result.status == 0){
       throw new Error(result.data);
