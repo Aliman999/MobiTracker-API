@@ -157,6 +157,25 @@ api.queryUser =  async function(username, ws){
   })
 }
 
+api.xp = function(){
+  rep = parseInt(rep);
+  if(rep < 0){
+    if(rep < -5){
+      return "Dangerous";
+    }else if (rep < 0) {
+      return "Sketchy";
+    }
+  }else{
+    if(rep == 0){
+      return "Newbie";
+    }else if (rep <= 30) {
+      return "Experienced";
+    }else if (rep <= 100) {
+      return "Reliable";
+    }
+  }
+}
+
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
     .on('ping', heartbeat)
@@ -442,14 +461,12 @@ const queryApi = function(username, key){
             var sql = "SELECT reviewed_count AS vouches FROM players WHERE username LIKE '"+username+"'";
             con.query(sql, function (err, result, fields){
               if(err) throw err;
-              user.data.profile.rating = "awjdnaduwandanda";
               if(result.length > 0){
-                //user.data.profile.rating = result[0].vouches;
+                user.data.profile.rating = api.xp(result[0].vouches);
               }else{
-                //user.data.profile.rating = result[0].vouches;
+                user.data.profile.rating = api.xp(0);
               }
               cachePlayer(user.data);
-              console.log(user.data.profile);
               callback({ status:1, data:user.data });
             })
           }else{
