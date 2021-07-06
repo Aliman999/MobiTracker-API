@@ -157,7 +157,7 @@ api.queryUser =  async function(username, ws){
   })
 }
 
-api.xp = function(){
+api.xp = function(rep){
   rep = parseInt(rep);
   if(rep < 0){
     if(rep < -5){
