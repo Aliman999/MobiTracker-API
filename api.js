@@ -462,9 +462,9 @@ const queryApi = function(username, key){
             con.query(sql, function (err, result, fields){
               if(err) throw err;
               if(result.length > 0){
-                user.data.profile.rating = api.xp(result[0].vouches);
+                user.data.profile.rating = api.xp(result[0].vouches)+" ["+result[0].vouches+"]";
               }else{
-                user.data.profile.rating = api.xp(0);
+                user.data.profile.rating = api.xp(0)+" [0]";
               }
               cachePlayer(user.data);
               callback({ status:1, data:user.data });
