@@ -25,11 +25,12 @@ function socket(){
     setTimeout(socket, 3000);
   };
 
-  ws.onmessage = function(data){
-    data = JSON.parse(data.data);
-    console.log(data);
-    if(data.type == "authentication"){
+  ws.onmessage = function(response){
+    response = JSON.parse(response.data);
+    if(repsonse.type == "authentication"){
       user("JamesDusky");
+    }else if (response.type == "response") {
+      console.log(response.data);
     }
   }
 
@@ -43,7 +44,7 @@ function socket(){
   function user(user){
     message = {
       type:"user",
-      data:"JamesDusky"
+      token:"JamesDusky"
     }
     ws.send(JSON.stringify(message));
   }
