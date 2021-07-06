@@ -444,7 +444,6 @@ const queryApi = function(username, key){
             console.log(result);
             if(result.length > 0){
               user.data.profile.rating = result[0].vouches;
-              console.log(user.data.profile.rating);
             }
           })
           if(Object.size(user.data) > 0){
