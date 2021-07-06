@@ -25,6 +25,10 @@ function socket(){
     setTimeout(socket, 3000);
   };
 
+  webSocket.onmessage = function(data){
+    console.log(data);
+  }
+
   function heartbeat() {
     if (!webSocket) return;
     if (webSocket.readyState !== 1) return;

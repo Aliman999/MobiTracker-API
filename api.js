@@ -140,6 +140,22 @@ rsaKeys.getKey = function(orgSID){
   })
 }
 
+var api = {};
+
+api.queryUser =  function(username, key, ws){
+  await queryApi(username, key).then((result) => {
+    if(result.status == 0){
+      throw new Error(result.data);
+    }else{
+      ws.send(JSON.stringify({
+        type:"response",
+        data:result.data,
+        message:"Success",
+        status:1
+      }));
+    }
+  })
+}
 
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
@@ -159,22 +175,8 @@ wss.on('connection', function(ws){
           }));
 
           ws.on('job', function(data){
-            async function query(username, key, ws){
-              await queryApi(username, key).then((result) => {
-                if(result.status == 0){
-                  throw new Error(result.data);
-                }else{
-                  ws.send(JSON.stringify({
-                    type:"response",
-                    data:result.data,
-                    message:"Success",
-                    status:1
-                  }));
-                }
-              })
-            }
             console.log(ws.user+" started job for "+data);
-            queryUser.schedule( {id:data}, query, data, key, ws)
+            queryUser.schedule( {id:data}, api.queryUser, data, key, ws)
             .catch((error) => {
             });
 
@@ -190,16 +192,17 @@ wss.on('connection', function(ws){
             ws.terminate();
           }else{
             console.log(decoded);
-            /*
-            ws.user = decoded.username;
+            ws.org = data.org;
             ws.isAlive = true;
             ws.send(JSON.stringify({
               type:"authentication",
-              data:"Authenticated",
-              message:"Success",
+              data:null,
+              message:"Authenticated",
               status:1
             }));
-            */
+            ws.on('user', function(data){
+              console.log(data);
+            })
           }
         })
       })
