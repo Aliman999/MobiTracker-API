@@ -28,6 +28,9 @@ function socket(){
   ws.onmessage = function(data){
     data = JSON.parse(data.data);
     console.log(data);
+    if(data.type == "authentication"){
+      user("JamesDusky");
+    }
   }
 
   function heartbeat() {
