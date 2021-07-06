@@ -27,7 +27,7 @@ function socket(){
 
   ws.onmessage = function(response){
     response = JSON.parse(response.data);
-    if(repsonse.type == "authentication"){
+    if(response.type == "authentication"){
       user("JamesDusky");
     }else if (response.type == "response") {
       console.log(response.data);
