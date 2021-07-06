@@ -438,6 +438,11 @@ const queryApi = function(username, key){
           callback({ status:0, data:result });
         };
         if(user){
+          var sql = "SELECT reviewed_count AS vouches FROM players WHERE username ='"+user+"'";
+          con.query(sql, function (err, result, fields){
+            if(err) throw err;
+            user.data.profile.rating = result.vouches;
+          })
           if(Object.size(user.data) > 0){
             cachePlayer(user.data);
             callback({ status:1, data:user.data });
