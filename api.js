@@ -438,19 +438,20 @@ const queryApi = function(username, key){
           callback({ status:0, data:result });
         };
         if(user){
-          var sql = "SELECT reviewed_count AS vouches FROM players WHERE username LIKE '"+username+"'";
-          con.query(sql, function (err, result, fields){
-            if(err) throw err;
-            user.data.profile.rating = "awjdnaduwandanda";
-            if(result.length > 0){
-              //user.data.profile.rating = result[0].vouches;
-            }else{
-              //user.data.profile.rating = result[0].vouches;
-            }
-          })
           if(Object.size(user.data) > 0){
-            cachePlayer(user.data);
-            callback({ status:1, data:user.data });
+            var sql = "SELECT reviewed_count AS vouches FROM players WHERE username LIKE '"+username+"'";
+            con.query(sql, function (err, result, fields){
+              if(err) throw err;
+              user.data.profile.rating = "awjdnaduwandanda";
+              if(result.length > 0){
+                //user.data.profile.rating = result[0].vouches;
+              }else{
+                //user.data.profile.rating = result[0].vouches;
+              }
+              cachePlayer(user.data);
+              console.log(user.data.profile);
+              callback({ status:1, data:user.data });
+            })
           }else{
             callback({ status:0, data:username+" not found." });
           }
