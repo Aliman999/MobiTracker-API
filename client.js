@@ -30,7 +30,7 @@ function socket(){
     if(response.type == "authentication"){
       user("JamesDusky");
     }else if (response.type == "response") {
-      console.log(response.data.profile.data);
+      console.log(response.data.profile.rating);
     }
   }
 

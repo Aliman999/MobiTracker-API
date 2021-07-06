@@ -441,9 +441,11 @@ const queryApi = function(username, key){
           var sql = "SELECT reviewed_count AS vouches FROM players WHERE username LIKE '"+username+"'";
           con.query(sql, function (err, result, fields){
             if(err) throw err;
-            console.log(result);
+            user.data.profile.rating = "awjdnaduwandanda";
             if(result.length > 0){
-              user.data.profile.rating = result[0].vouches;
+              //user.data.profile.rating = result[0].vouches;
+            }else{
+              //user.data.profile.rating = result[0].vouches;
             }
           })
           if(Object.size(user.data) > 0){
