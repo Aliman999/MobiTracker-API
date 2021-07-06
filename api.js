@@ -208,6 +208,12 @@ wss.on('connection', function(ws){
       .then((publicKey) => {
         jwt.verify(data.jwt, publicKey, { algorithm: 'RS256' }, function(err, decoded){
           if(err){
+            ws.send(JSON.stringify({
+              type:"authentication",
+              data:null,
+              message:"Auth Failed "+err.message,
+              status:1
+            }));
             ws.terminate();
           }else{
             console.log(decoded);
