@@ -32,7 +32,7 @@ orgLimiter.on("failed", async (error, info) => {
   if (info.retryCount < 3) {
     return 2000;
   }else{
-    info.args[2].send(JSON.stringify({
+    info.args[1].send(JSON.stringify({
       type:"response",
       data:info.args[0]+" not found.",
       message:"Error",
@@ -58,7 +58,7 @@ queryUser.on("failed", async (error, info) => {
   if (info.retryCount < 2) {
     return 2000;
   }else{
-    info.args[2].send(JSON.stringify({
+    info.args[1].send(JSON.stringify({
       type:"response",
       data:info.args[0]+" not found.",
       message:"Error",
@@ -142,8 +142,8 @@ rsaKeys.getKey = function(orgSID){
 
 var api = {};
 
-api.queryUser =  async function(username, key, ws){
-  await queryApi(username, key).then((result) => {
+api.queryUser =  async function(username, ws){
+  await queryApi(username).then((result) => {
     if(result.status == 0){
       throw new Error(result.data);
     }else{
@@ -176,7 +176,7 @@ wss.on('connection', function(ws){
 
           ws.on('job', function(data){
             console.log(ws.user+" started job for "+data);
-            queryUser.schedule( {id:data}, api.queryUser, data, key, ws)
+            queryUser.schedule( {id:data}, api.queryUser, data, ws)
             .catch((error) => {
             });
 
@@ -202,6 +202,7 @@ wss.on('connection', function(ws){
             }));
             ws.on('user', function(data){
               console.log(data);
+              api.queryApi();
             })
           }
         })
