@@ -274,14 +274,14 @@ wss.on('connection', function(ws){
               status:1
             }));
             if(ws.premium){
-              ws.on('user', function(input){
-                console.log(input);
+              ws.on('user', function(data){
+                console.log(data);
                 premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws)
                 .catch((error) => {
                 })
               });
-              ws.on('history', function(input){
-                console.log(input);
+              ws.on('history', function(data){
+                console.log(data);
                 //premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws);
               })
             }else{
