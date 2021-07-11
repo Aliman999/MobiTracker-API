@@ -29,7 +29,7 @@ function socket(){
   ws.onmessage = function(response){
     response = JSON.parse(response.data);
     if(response.type == "authentication"){
-      send("user", "JamesDusky");
+      send("user", );
     }else if (response.type == "response") {
       console.log(response.data);
     }

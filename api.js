@@ -101,7 +101,9 @@ if(server.listen(2599)){
 
 function toEvent(message){
   var event = JSON.parse(message);
-  this.emit(event.type, event.token);
+  var args = Object.values(event);
+  console.log(args);
+  this.emit(event.type, );
 }
 
 function heartbeat(){
