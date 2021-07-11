@@ -101,8 +101,6 @@ if(server.listen(2599)){
 
 function toEvent(message){
   var event = JSON.parse(message);
-  var args = Object.values(event);
-  console.log(args);
   this.emit(event.type, event.token);
 }
 
