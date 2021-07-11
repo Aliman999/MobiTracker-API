@@ -276,7 +276,9 @@ wss.on('connection', function(ws){
             if(ws.premium){
               ws.on('user', function(data){
                 console.log(data);
-                premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws);
+                premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws)
+                .catch((error) => {
+                })
               });
               ws.on('history', function(){
                 console.log(data);
@@ -285,6 +287,12 @@ wss.on('connection', function(ws){
             }else{
               ws.on('user', function(data){
                 console.log(this.org);
+                queryUser.schedule( {id:data+" | from "+this.org.toUpperCase()}, api.queryUser, data, ws)
+                .catch((error) => {
+                });
+              })
+              ws.on('history', function(){
+                console.log(data);
                 queryUser.schedule( {id:data+" | from "+this.org.toUpperCase()}, api.queryUser, data, ws)
                 .catch((error) => {
                 });
