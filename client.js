@@ -30,7 +30,7 @@ function socket(){
     console.log(response);
     if(response.type == "authentication"){
       setTimeout(()=>{
-        send("history", { type:'cid', input:"153021" });
+        send("history", { type:'user', datatype:'cid', input:"153021" });
       }, 5000)
     }else if (response.type == "response") {
       console.log(response.data);

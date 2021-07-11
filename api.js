@@ -134,7 +134,7 @@ var api = {
     })
   },
   history:{
-    user:function(type = 'username', input = null){
+    user:function(type = 'username', input = null, ws){
       return new Promise(callback =>{
         const sql = "SELECT * FROM `CACHE players` WHERE "+type+" LIKE '"+input+"'";
         con.query(sql, function (err, result, fields){
@@ -147,7 +147,7 @@ var api = {
         });
       })
     },
-    org:function(type = 'sid', input = null){
+    org:function(type = 'sid', input = null, ws){
       return new Promise(callback =>{
         const sql = "SELECT * FROM `CACHE organizations` WHERE "+type+" LIKE '"+input+"'";
         con.query(sql, function (err, result, fields){
@@ -282,7 +282,10 @@ wss.on('connection', function(ws){
               });
               ws.on('history', function(data){
                 if(!data.priority) data.priority = 9;
-                premium.group.key(this.org.toUpperCase()).schedule({priority:data.priority}, api[data.type], data.input, ws);
+                premium.group.key(this.org.toUpperCase()).schedule({priority:data.priority}, api.history[data.type], data.datatype, data.input, ws)
+                .then(()=>{
+
+                })
               })
             }else{
               ws.on('user', function(data){
