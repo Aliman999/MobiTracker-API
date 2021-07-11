@@ -45,6 +45,7 @@ function socket(){
   function send(type, message){
     message = {
       type:type,
+      token:"dadw",
       data:message
     }
     ws.send(JSON.stringify(message));

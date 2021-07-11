@@ -251,6 +251,7 @@ wss.on('connection', function(ws){
       });
     })
     .on('auth', function(data){
+      console.log(data);
       apiKeys.getKey(data.org)
       .then((secret) => {
         jwt.verify(data.jwt, secret, { algorithm: 'HS256' }, function(err, decoded){
