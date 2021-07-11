@@ -4,17 +4,17 @@ const WebSocket = require('ws');
 const fs = require('fs');
 var SHA256 = require("crypto-js/sha256");
 
-var publicKey = fs.readFileSync('api.secret');
+var secret = fs.readFileSync('api.secret');
 
 function socket(){
-  var payload = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60)}, publicKey, { algorithm: 'HS256' });
+  var payload = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60)}, secret, { algorithm: 'HS256' });
   var message;
   ws = new WebSocket("wss://ws.mobitracker.co:2599");
   ws.onopen = function(){
     console.log("Connected to Internal API");
     message = {
       type:"auth",
-      token:{ org:"teamlegacy", jwt:'payload' }
+      token:{ org:"teamlegacy", jwt:payload }
     };
     ws.send(JSON.stringify(message));
     heartbeat();
@@ -29,7 +29,7 @@ function socket(){
   ws.onmessage = function(response){
     response = JSON.parse(response.data);
     if(response.type == "authentication"){
-      user("JamesDusky");
+      send("user", "JamesDusky");
     }else if (response.type == "response") {
       console.log(response.data);
     }
@@ -42,10 +42,10 @@ function socket(){
     setTimeout(heartbeat, 3000);
   }
 
-  function user(user){
+  function send(type, message){
     message = {
-      type:"user",
-      token:"JamesDusky"
+      type:type,
+      token:message
     }
     ws.send(JSON.stringify(message));
   }

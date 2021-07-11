@@ -197,7 +197,7 @@ wss.on('connection', function(ws){
   ws.on('message', toEvent)
     .on('ping', heartbeat)
     .on('internal', function (data){
-      jwt.verify(data, config.Secret, { algorithm: 'HS265' }, function(err, decoded){
+      jwt.verify(data, config.Secret, { algorithm: 'HS256' }, function(err, decoded){
         if(err){
           ws.terminate();
         }else{
