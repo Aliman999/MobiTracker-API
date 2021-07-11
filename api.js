@@ -166,7 +166,7 @@ premium.getID = function(orgSID){
   })
 }
 
-premium.ids = [];
+var premium.ids = [];
 
 premium.query = function(id, func, ...args){
   console.log(args);
