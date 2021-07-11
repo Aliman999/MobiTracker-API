@@ -281,7 +281,7 @@ wss.on('connection', function(ws){
                 })
               });
               ws.on('history', function(data){
-                premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws);
+                premium.group.key(this.org.toUpperCase()).schedule(api[data.type], data.input, ws);
               })
             }else{
               ws.on('user', function(data){
