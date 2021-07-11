@@ -133,14 +133,31 @@ var api = {
     })
   },
   history:{
-    user:function(){
-
+    user:function(type = 'username', input = null){
+      return new Promise(callback =>{
+        const sql = "SELECT * FROM `CACHE players` WHERE "+type+" LIKE '"+input+"'";
+        con.query(sql, function (err, result, fields){
+          if(err) throw err;
+          console.log(result);
+          result.forEach((item, i) => {
+            delete item.id;
+          });
+          callback(result);
+        });
+      })
     },
-    userCID:function(){
-
-    },
-    org:function(){
-
+    org:function(type = 'sid', input = null){
+      return new Promise(callback =>{
+        const sql = "SELECT * FROM `CACHE organizations` WHERE "+type+" LIKE '"+input+"'";
+        con.query(sql, function (err, result, fields){
+          if(err) throw err;
+          console.log(result);
+          result.forEach((item, i) => {
+            delete item.id;
+          });
+          callback(result);
+        });
+      })
     }
   },
   xp:function(rep){
@@ -200,7 +217,7 @@ premium.group.on('created', function(limiter, key){
 })
 
 var admin = {
-  addClient:function(){
+  addPremium:function(){
   }
 };
 
@@ -259,6 +276,10 @@ wss.on('connection', function(ws){
               ws.on('user', function(data){
                 premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws);
               });
+              ws.on('history', function(){
+                console.log(data);
+                //premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws);
+              })
             }else{
               ws.on('user', function(data){
                 console.log(this.org);
