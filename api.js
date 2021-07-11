@@ -189,8 +189,9 @@ var premium = {
 
 premium.group.on('created', function(limiter, key){
   console.log("A new limiter was created for: " + key)
+
   limiter.on("received", (info) => {
-    console.log(info);
+    //console.log(info);
   })
 
   limiter.on("error", (err) => {
@@ -256,7 +257,7 @@ wss.on('connection', function(ws){
             }));
             if(ws.premium){
               ws.on('user', function(data){
-                premium.group.key(this.org).schedule(api.queryUser, data, ws);
+                premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws);
               });
             }else{
               ws.on('user', function(data){
