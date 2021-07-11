@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
 const fs = require('fs');
 
-var publicKey = fs.readFileSync('api.key.pub');
+var publicKey = fs.readFileSync('api_rsa.key.pub');
 
 function socket(){
   var payload = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60)}, publicKey, { algorithm: 'RS256' });
@@ -13,7 +13,7 @@ function socket(){
     console.log("Connected to Internal API");
     message = {
       type:"rsa",
-      token:{ org:"evilorg", jwt:payload }
+      token:{ org:"teamlegacy", jwt:payload }
     };
     ws.send(JSON.stringify(message));
     heartbeat();
