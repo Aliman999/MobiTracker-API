@@ -108,83 +108,84 @@ function heartbeat(){
   this.isAlive = true;
 }
 
-var apiKeys = {};
+var apiKeys = {
+  getKey:function(orgSID){
+    return new Promise(callback =>{
+      orgSID = orgSID.toLowerCase();
+      callback(fs.readFileSync('/home/ubuntu/mtapi/keys/'+orgSID+'/api.secret'));
+    })
+  }
+};
 
-apiKeys.getKey = function(orgSID){
-  return new Promise(callback =>{
-    orgSID = orgSID.toLowerCase();
-    callback(fs.readFileSync('/home/ubuntu/mtapi/keys/'+orgSID+'/api.secret'));
-  })
-}
+var api = {
+  queryUser:async function(username, ws){
+    await queryApi(username).then((result) => {
+      if(result.status == 0){
+        throw new Error(result.data);
+      }else{
+        ws.send(JSON.stringify({
+          type:"response",
+          data:result.data,
+          message:"Success",
+          status:1
+        }));
+      }
+    })
+  },
+  history:{
+    user:function(){
 
-var api = {};
+    },
+    userCID:function(){
 
-api.queryUser =  async function(username, ws){
-  await queryApi(username).then((result) => {
-    if(result.status == 0){
-      throw new Error(result.data);
+    },
+    org:function(){
+
+    }
+  },
+  xp:function(rep){
+    rep = parseInt(rep);
+    if(rep < 0){
+      if(rep < -5){
+        return "Dangerous";
+      }else if (rep < 0) {
+        return "Sketchy";
+      }
     }else{
-      ws.send(JSON.stringify({
-        type:"response",
-        data:result.data,
-        message:"Success",
-        status:1
-      }));
-    }
-  })
-}
-
-api.history = {};
-
-api.history.user = function(user){
-
-}
-
-api.xp = function(rep){
-  rep = parseInt(rep);
-  if(rep < 0){
-    if(rep < -5){
-      return "Dangerous";
-    }else if (rep < 0) {
-      return "Sketchy";
-    }
-  }else{
-    if(rep == 0){
-      return "Newbie";
-    }else if (rep <= 30) {
-      return "Experienced";
-    }else if (rep <= 100) {
-      return "Reliable";
+      if(rep == 0){
+        return "Newbie";
+      }else if (rep <= 30) {
+        return "Experienced";
+      }else if (rep <= 100) {
+        return "Reliable";
+      }
     }
   }
-}
+};
 
-var premium = {};
-
-premium.ids = [];
-
-premium.getID = function(orgSID){
-  return new Promise(callback =>{
-    const sql = "SELECT * FROM premium";
-    con.query(sql, function (err, result, fields){
-      result.forEach((item, i) => {
-        premium.ids.push(item.username);
+var premium = {
+  ids:[],
+  getID:function(orgSID){
+    return new Promise(callback =>{
+      const sql = "SELECT * FROM premium";
+      con.query(sql, function (err, result, fields){
+        result.forEach((item, i) => {
+          premium.ids.push(item.username);
+        });
+        console.log("Loaded premium users "+premium.ids.join(", "));
+        callback();
       });
-      console.log("Loaded premium users "+premium.ids.join(", "));
-      callback();
-    });
-  })
-}
-
-premium.query = function(id, func, ...args){
-  console.log(args);
-  this.group.key(id).schedule(func, args)
-}
-
-premium.group = new Bottleneck.Group({
-  maxConcurrent: 2,
-  minTime: 2000
-});
+    })
+  },
+  query:function(id, func, ...args){
+    console.log(args);
+    this.group.key(id).schedule(func, args)
+  },
+  group:new Bottleneck.Group({
+    maxConcurrent: 2,
+    minTime: 2000
+  });
+};
 
 premium.group.on('created', function(limiter, key){
   console.log("A new limiter was created for: " + key)
@@ -194,9 +195,10 @@ premium.group.on('created', function(limiter, key){
   })
 })
 
-var admin = {};
-admin.addClient = function(){
-}
+var admin = {
+  addClient:function(){
+  }
+};
 
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
