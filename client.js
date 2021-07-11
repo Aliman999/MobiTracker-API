@@ -28,8 +28,9 @@ function socket(){
 
   ws.onmessage = function(response){
     response = JSON.parse(response.data);
+    console.log(response);
     if(response.type == "authentication"){
-      send("user", "Kindmiss");
+      send("history", { type:'cid', input:"153021" });
     }else if (response.type == "response") {
       console.log(response.data);
     }
@@ -45,7 +46,6 @@ function socket(){
   function send(type, message){
     message = {
       type:type,
-      token:"dadw",
       data:message
     }
     ws.send(JSON.stringify(message));
