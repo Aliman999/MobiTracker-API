@@ -276,12 +276,13 @@ wss.on('connection', function(ws){
             if(ws.premium){
               ws.on('user', function(data){
                 console.log(data);
-                premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws)
+                premium.group.key(this.org.toUpperCase()).schedule({priority:data.priority}, api.queryUser, data, ws)
                 .catch((error) => {
                 })
               });
               ws.on('history', function(data){
-                premium.group.key(this.org.toUpperCase()).schedule(api[data.type], data.input, ws);
+                if(!data.priority) data.priority = 9;
+                premium.group.key(this.org.toUpperCase()).schedule({priority:data.priority}, api[data.type], data.input, ws);
               })
             }else{
               ws.on('user', function(data){
