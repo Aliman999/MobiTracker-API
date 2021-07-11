@@ -103,7 +103,7 @@ function toEvent(message){
   var event = JSON.parse(message);
   var args = Object.values(event);
   console.log(args);
-  this.emit(event.type, );
+  this.emit(event.type, event.token);
 }
 
 function heartbeat(){
