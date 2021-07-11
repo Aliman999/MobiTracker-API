@@ -152,7 +152,7 @@ api.xp = function(rep){
   }
 }
 
-premium = {};
+var premium = {};
 
 premium.getID = function(orgSID){
   return new Promise(callback =>{
@@ -166,7 +166,7 @@ premium.getID = function(orgSID){
   })
 }
 
-var premium.ids = [];
+premium.ids = [];
 
 premium.query = function(id, func, ...args){
   console.log(args);
