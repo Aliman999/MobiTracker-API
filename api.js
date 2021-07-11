@@ -102,7 +102,6 @@ if(server.listen(2599)){
 function toEvent(message){
   var event = JSON.parse(message);
   event = Object.values(event);
-  console.log(event);
   this.emit(...event);
 }
 
@@ -278,6 +277,7 @@ wss.on('connection', function(ws){
             }));
             if(ws.premium){
               ws.on('user', function(data){
+                console.log(data);
                 premium.group.key(this.org.toUpperCase()).schedule(api.queryUser, data, ws);
               });
               ws.on('history', function(){
