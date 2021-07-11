@@ -237,6 +237,7 @@ wss.on('connection', function(ws){
             ws.org = data.org;
             ws.isAlive = true;
             ws.premium = premium.ids.includes(ws.org);
+            console.log(ws.premium);
             ws.send(JSON.stringify({
               type:"authentication",
               data:null,
