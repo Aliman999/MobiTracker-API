@@ -48,6 +48,7 @@ function socket(){
       type:type,
       data:message
     }
+    console.log(message);
     ws.send(JSON.stringify(message));
   }
 }
