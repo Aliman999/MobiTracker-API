@@ -229,6 +229,7 @@ wss.on('connection', function(ws){
     .on('internal', function (data){
       jwt.verify(data, config.Secret, { algorithm: 'HS265' }, function(err, decoded){
         if(err){
+          console.log(err);
           ws.terminate();
         }else{
           ws.user = decoded.username;
