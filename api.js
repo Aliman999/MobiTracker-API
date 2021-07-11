@@ -293,8 +293,8 @@ wss.on('connection', function(ws){
                 .then((result)=>{
                   ws.send(JSON.stringify({
                     type:"response",
-                    data:null,
-                    message:result,
+                    data:result,
+                    message:"Success",
                     status:1
                   }));
                 })
@@ -308,8 +308,8 @@ wss.on('connection', function(ws){
                 .then((result)=>{
                   ws.send(JSON.stringify({
                     type:"response",
-                    data:null,
-                    message:result,
+                    data:result,
+                    message:"Success",
                     status:1
                   }));
                 })

@@ -27,13 +27,12 @@ function socket(){
 
   ws.onmessage = function(response){
     response = JSON.parse(response.data);
-    console.log(response);
     if(response.type == "authentication"){
       setTimeout(()=>{
         send("history", { type:'user', datatype:'cid', input:"153021" });
       }, 5000)
     }else if (response.type == "response") {
-      console.log(response.data);
+      console.log(response);
     }
   }
 
