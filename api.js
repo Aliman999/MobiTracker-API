@@ -189,6 +189,9 @@ var premium = {
 
 premium.group.on('created', function(limiter, key){
   console.log("A new limiter was created for: " + key)
+  limiter.on("received", (info) => {
+    console.log(info);
+  })
 
   limiter.on("error", (err) => {
     // Handle errors here
