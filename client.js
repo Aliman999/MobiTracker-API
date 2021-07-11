@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
 const fs = require('fs');
 
-var publicKey = fs.readFileSync('api_rsa.key.pub');
+var publicKey = fs.readFileSync('api_rsa.key');
 
 function socket(){
   var payload = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60)}, publicKey, { algorithm: 'RS256' });
