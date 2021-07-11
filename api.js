@@ -290,10 +290,21 @@ wss.on('connection', function(ws){
                 premium.group.key(this.org.toUpperCase()).schedule({priority:data.priority}, api.queryUser, data, ws)
                 .catch((error) => {
                 })
+                .then((result)=>{
+                  ws.send(JSON.stringify({
+                    type:"response",
+                    data:null,
+                    message:result,
+                    status:1
+                  }));
+                })
               });
               ws.on('history', function(data){
                 if(!data.priority) data.priority = 9;
                 premium.group.key(this.org.toUpperCase()).schedule({priority:data.priority}, api.history[data.type], data.datatype, data.input, ws)
+                .catch((error)=>{
+
+                })
                 .then((result)=>{
                   ws.send(JSON.stringify({
                     type:"response",
