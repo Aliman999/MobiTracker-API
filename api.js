@@ -263,7 +263,6 @@ wss.on('connection', function(ws){
             }));
             ws.terminate();
           }else{
-            console.log(decoded);
             ws.org = data.org;
             ws.isAlive = true;
             ws.premium = premium.ids.includes(ws.org);

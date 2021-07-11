@@ -30,7 +30,9 @@ function socket(){
     response = JSON.parse(response.data);
     console.log(response);
     if(response.type == "authentication"){
-      send("history", { type:'cid', input:"153021" });
+      setTimeout(()=>{
+        send("history", { type:'cid', input:"153021" });
+      }, 5000)
     }else if (response.type == "response") {
       console.log(response.data);
     }
