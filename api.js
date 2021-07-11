@@ -154,6 +154,8 @@ api.xp = function(rep){
 
 var premium = {};
 
+premium.ids = [];
+
 premium.getID = function(orgSID){
   return new Promise(callback =>{
     const sql = "SELECT * FROM premium";
@@ -166,7 +168,6 @@ premium.getID = function(orgSID){
   })
 }
 
-premium.ids = [];
 
 premium.query = function(id, func, ...args){
   console.log(args);
