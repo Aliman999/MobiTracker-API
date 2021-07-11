@@ -108,9 +108,9 @@ function heartbeat(){
   this.isAlive = true;
 }
 
-var rsaKeys = {};
+var apiKeys = {};
 
-rsaKeys.getKey = function(orgSID){
+apiKeys.getKey = function(orgSID){
   return new Promise(callback =>{
     orgSID = orgSID.toLowerCase();
     callback(fs.readFileSync('/home/ubuntu/mtapi/keys/'+orgSID+'/api.secret'));
@@ -221,7 +221,7 @@ wss.on('connection', function(ws){
       });
     })
     .on('auth', function(data){
-      rsaKeys.getKey(data.org)
+      apiKeys.getKey(data.org)
       .then((secret) => {
         jwt.verify(data.jwt, secret, { algorithm: 'HS256' }, function(err, decoded){
           if(err){
