@@ -90,37 +90,12 @@ const con = mysql.createPool({
 
 con.getConnection(function(err, connection) {
   if (err) throw err;
-
+  premium.getID();
 });
 
 if(server.listen(2599)){
   console.log("Internal API is Online");
   init();
-}
-
-var trueLog = console.log;
-console.log = function(msg){
-  const date = new Date();
-  const day = ("0" + date.getDate()).slice(-2);
-  const month = ("0" + (date.getMonth() + 1)).slice(-2);
-  const year = date.getFullYear();
-  fs.appendFile('/home/ubuntu/logs/keymain.log', "["+month+"/"+day+"/"+year+" "+date.toLocaleTimeString('en-US')+"]"+" - "+msg+'\n', function(err) { if(err) {
-      return trueLog(err);
-    }
-  });
-  trueLog(msg);
-}
-
-var logSave = console.save;
-console.save = function(msg){
-  const date = new Date();
-  const day = ("0" + date.getDate()).slice(-2);
-  const month = ("0" + (date.getMonth() + 1)).slice(-2);
-  const year = date.getFullYear();
-  fs.appendFile('/home/ubuntu/logs/keymain.log', "["+month+"/"+day+"/"+year+" "+date.toLocaleTimeString('en-US')+"]"+" - "+msg+'\n', function(err) { if(err) {
-      return trueLog(err);
-    }
-  });
 }
 
 function toEvent(message){
@@ -181,12 +156,27 @@ premium = {};
 
 premium.getID = function(orgSID){
   return new Promise(callback =>{
-    const sql = "SELECT * FROM premium WHERE sid LIKE '"+orgSID+"'";
+    const sql = "SELECT * FROM premium";
     con.query(sql, function (err, result, fields){
-
+      result.forEach((item, i) => {
+        this.ids.push(item.username);
+      });
+      callback();
     });
   })
 }
+
+premium.ids = [];
+
+premium.query = function(id, func, ...args){
+  console.log(args);
+  this.group.key(id).schedule(func, args)
+}
+
+premium.group = new Bottleneck.Group({
+  maxConcurrent: 2,
+  minTime: 2000
+});
 
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
@@ -711,6 +701,31 @@ function orgPlayers(sid, page){
       callback({ status:0, data:err});
     })
     req.end();
+  });
+}
+
+var trueLog = console.log;
+console.log = function(msg){
+  const date = new Date();
+  const day = ("0" + date.getDate()).slice(-2);
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const year = date.getFullYear();
+  fs.appendFile('/home/ubuntu/logs/keymain.log', "["+month+"/"+day+"/"+year+" "+date.toLocaleTimeString('en-US')+"]"+" - "+msg+'\n', function(err) { if(err) {
+      return trueLog(err);
+    }
+  });
+  trueLog(msg);
+}
+
+var logSave = console.save;
+console.save = function(msg){
+  const date = new Date();
+  const day = ("0" + date.getDate()).slice(-2);
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const year = date.getFullYear();
+  fs.appendFile('/home/ubuntu/logs/keymain.log', "["+month+"/"+day+"/"+year+" "+date.toLocaleTimeString('en-US')+"]"+" - "+msg+'\n', function(err) { if(err) {
+      return trueLog(err);
+    }
   });
 }
 
