@@ -243,12 +243,18 @@ wss.on('connection', function(ws){
               message:"Authenticated",
               status:1
             }));
-            ws.on('user', function(data){
-              console.log(this.org);
-              queryUser.schedule( {id:data+" | from "+this.org.toUpperCase()}, api.queryUser, data, ws)
-              .catch((error) => {
+            if(ws.premium){
+              ws.on('user', function(data){
+                premium.group.key(this.org).schedule(api.queryUser, data, ws);
               });
-            })
+            }else{
+              ws.on('user', function(data){
+                console.log(this.org);
+                queryUser.schedule( {id:data+" | from "+this.org.toUpperCase()}, api.queryUser, data, ws)
+                .catch((error) => {
+                });
+              })
+            }
           }
         })
       })

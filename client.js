@@ -7,7 +7,7 @@ var SHA256 = require("crypto-js/sha256");
 var secret = fs.readFileSync('api.secret');
 
 function socket(){
-  var payload = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60)}, secret, { algorithm: 'HS256' });
+  var payload = jwt.sign({iat:Math.floor(Date.now() / 1000) + (60 * 5)}, secret, { algorithm: 'HS256' });
   var message;
   ws = new WebSocket("wss://ws.mobitracker.co:2599");
   ws.onopen = function(){
