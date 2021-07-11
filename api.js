@@ -184,7 +184,7 @@ var premium = {
   group:new Bottleneck.Group({
     maxConcurrent: 2,
     minTime: 2000
-  });
+  })
 };
 
 premium.group.on('created', function(limiter, key){
