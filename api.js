@@ -145,7 +145,6 @@ var api = {
         const sql = "SELECT * FROM `CACHE players` WHERE "+type+" LIKE '"+input+"'";
         con.query(sql, function (err, result, fields){
           if(err) throw err;
-          console.log(result);
           result.forEach((item, i) => {
             delete item.id;
           });
@@ -154,6 +153,12 @@ var api = {
       })
     },
     org:function(type = 'sid', input = null, ws){
+      ws.send(JSON.stringify({
+        type:"progress",
+        data:null,
+        message:"Processing your Request",
+        status:1
+      }));
       return new Promise(callback =>{
         const sql = "SELECT * FROM `CACHE organizations` WHERE "+type+" LIKE '"+input+"'";
         con.query(sql, function (err, result, fields){
