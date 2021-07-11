@@ -179,6 +179,15 @@ premium.group = new Bottleneck.Group({
   minTime: 2000
 });
 
+premium.group.on('created', function(limiter, key){
+  console.log("A new limiter was created for key: " + key)
+
+  // Prepare the limiter, for example we'll want to listen to its "error" events!
+  limiter.on("error", (err) => {
+    // Handle errors here
+  })
+})
+
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
     .on('ping', heartbeat)
