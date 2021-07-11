@@ -135,6 +135,12 @@ var api = {
   },
   history:{
     user:function(type = 'username', input = null, ws){
+      ws.send(JSON.stringify({
+        type:"progress",
+        data:null,
+        message:"Processing your Request",
+        status:1
+      }));
       return new Promise(callback =>{
         const sql = "SELECT * FROM `CACHE players` WHERE "+type+" LIKE '"+input+"'";
         con.query(sql, function (err, result, fields){
@@ -283,8 +289,13 @@ wss.on('connection', function(ws){
               ws.on('history', function(data){
                 if(!data.priority) data.priority = 9;
                 premium.group.key(this.org.toUpperCase()).schedule({priority:data.priority}, api.history[data.type], data.datatype, data.input, ws)
-                .then(()=>{
-
+                .then((result)=>{
+                  ws.send(JSON.stringify({
+                    type:"response",
+                    data:null,
+                    message:result,
+                    status:1
+                  }));
                 })
               })
             }else{
