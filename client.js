@@ -2,18 +2,19 @@ const config  = require('./config');
 var jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
 const fs = require('fs');
+var SHA256 = require("crypto-js/sha256");
 
-var publicKey = fs.readFileSync('api_rsa.key');
+var publicKey = fs.readFileSync('api.secret');
 
 function socket(){
-  var payload = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60)}, publicKey, { algorithm: 'RS256' });
+  var payload = jwt.sign({exp:Math.floor(Date.now() / 1000) + (60 * 60)}, publicKey, { algorithm: 'HS256' });
   var message;
   ws = new WebSocket("wss://ws.mobitracker.co:2599");
   ws.onopen = function(){
     console.log("Connected to Internal API");
     message = {
-      type:"rsa",
-      token:{ org:"teamlegacy", jwt:payload }
+      type:"auth",
+      token:{ org:"teamlegacy", jwt:'payload' }
     };
     ws.send(JSON.stringify(message));
     heartbeat();

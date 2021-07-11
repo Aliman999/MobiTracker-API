@@ -18,6 +18,7 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server, clientTracking:true });
 var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
 var key;
+var SHA256 = require("crypto-js/sha256");
 
 
 const orgLimiter = new Bottleneck({
@@ -112,7 +113,7 @@ var rsaKeys = {};
 rsaKeys.getKey = function(orgSID){
   return new Promise(callback =>{
     orgSID = orgSID.toLowerCase();
-    callback(fs.readFileSync('/home/ubuntu/mtapi/keys/'+orgSID+'/api_rsa.key.pub'));
+    callback(fs.readFileSync('/home/ubuntu/mtapi/keys/'+orgSID+'/api.secret'));
   })
 }
 
@@ -188,10 +189,13 @@ premium.group.on('created', function(limiter, key){
   })
 })
 
+admin.addClient = function(){
+}
+
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
     .on('ping', heartbeat)
-    .on('auth', function (data){
+    .on('internal', function (data){
       jwt.verify(data, config.Secret, { algorithm: 'HS265' }, function(err, decoded){
         if(err){
           ws.terminate();
@@ -215,10 +219,10 @@ wss.on('connection', function(ws){
         }
       });
     })
-    .on('rsa', function(data){
+    .on('auth', function(data){
       rsaKeys.getKey(data.org)
-      .then((publicKey) => {
-        jwt.verify(data.jwt, publicKey, { algorithm: 'RS256' }, function(err, decoded){
+      .then((secret) => {
+        jwt.verify(data.jwt, secret, { algorithm: 'HS256' }, function(err, decoded){
           if(err){
             ws.send(JSON.stringify({
               type:"authentication",
