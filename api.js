@@ -163,7 +163,6 @@ premium.getID = function(orgSID){
       result.forEach((item, i) => {
         premium.ids.push(item.username);
       });
-      console.log(premium.ids);
       callback();
     });
   })
