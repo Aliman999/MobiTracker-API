@@ -181,9 +181,8 @@ premium.group = new Bottleneck.Group({
 });
 
 premium.group.on('created', function(limiter, key){
-  console.log("A new limiter was created for key: " + key)
+  console.log("A new limiter was created for: " + key)
 
-  // Prepare the limiter, for example we'll want to listen to its "error" events!
   limiter.on("error", (err) => {
     // Handle errors here
   })
