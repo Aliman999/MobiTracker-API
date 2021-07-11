@@ -161,7 +161,7 @@ premium.getID = function(orgSID){
     const sql = "SELECT * FROM premium";
     con.query(sql, function (err, result, fields){
       result.forEach((item, i) => {
-        this.ids.push(item.username);
+        premium.ids.push(item.username);
       });
       callback();
     });
