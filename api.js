@@ -431,7 +431,6 @@ async function init(){
   key = await getKey();
 }
 
-
 function getKey(){
   return new Promise(callback =>{
     var apiKey;
