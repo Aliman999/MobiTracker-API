@@ -189,6 +189,7 @@ premium.group.on('created', function(limiter, key){
   })
 })
 
+var admin = {};
 admin.addClient = function(){
 }
 
