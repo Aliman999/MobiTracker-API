@@ -134,6 +134,8 @@ api.queryUser =  async function(username, ws){
   })
 }
 
+api.history = {};
+
 api.history.user = function(user){
 
 }
