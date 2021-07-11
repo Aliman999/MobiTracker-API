@@ -2,7 +2,6 @@ const config  = require('./config');
 var jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
 const fs = require('fs');
-var SHA256 = require("crypto-js/sha256");
 
 var secret = fs.readFileSync('api.secret');
 
