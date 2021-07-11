@@ -90,6 +90,7 @@ const con = mysql.createPool({
 
 con.getConnection(function(err, connection) {
   if (err) throw err;
+
 });
 
 if(server.listen(2599)){
@@ -174,6 +175,17 @@ api.xp = function(rep){
       return "Reliable";
     }
   }
+}
+
+premium = {};
+
+premium.getID = function(orgSID){
+  return new Promise(callback =>{
+    const sql = "SELECT * FROM premium WHERE sid LIKE '"+orgSID+"'";
+    con.query(sql, function (err, result, fields){
+
+    });
+  })
 }
 
 wss.on('connection', function(ws){
@@ -419,19 +431,15 @@ async function init(){
   key = await getKey();
 }
 
-function getKey(i){
+
+function getKey(){
   return new Promise(callback =>{
     var apiKey;
-    const sql = "SELECT id, apiKey, count FROM apiKeys WHERE note like '%"+keyType+"%' GROUP BY id, apiKey, count ORDER BY count desc LIMIT 1";
+    const sql = "SELECT id, apiKey, count FROM apiKeys WHERE note like '%main%' GROUP BY id, apiKey, count ORDER BY count desc LIMIT 1";
     con.query(sql, function (err, result, fields){
       if(err) throw err;
       apiKey = result[0].apiKey;
-      var id = result[0].id;
-      const sql = "UPDATE apiKeys SET count = count-1 WHERE id = "+id;
-      con.query(sql, function (err, result, fields){
-        if(err) throw err;
-        callback(apiKey, i);
-      })
+      callback(apiKey);
     });
   })
 }
