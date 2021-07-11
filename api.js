@@ -134,6 +134,10 @@ api.queryUser =  async function(username, ws){
   })
 }
 
+api.history.user = function(user){
+
+}
+
 api.xp = function(rep){
   rep = parseInt(rep);
   if(rep < 0){
