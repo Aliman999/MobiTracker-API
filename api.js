@@ -371,7 +371,7 @@ wss.on('connection', function(ws){
           status: 1
         }));
         setInterval(() => {
-          if (scanner.isAlive) {
+          if (scanner) {
             ws.send(JSON.stringify({
               type: "update",
               data: adminPanel.get("panelStatus"),
