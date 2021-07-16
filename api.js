@@ -241,6 +241,7 @@ var admin = {
   }
 };
 
+var scanner;
 
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
@@ -346,6 +347,7 @@ wss.on('connection', function(ws){
         console.log(decoded);
         ws.user = decoded.user;
         ws.isAlive = true;
+        scanner = ws;
         ws.send(JSON.stringify({
           type: "authentication",
           data: null,
@@ -353,15 +355,7 @@ wss.on('connection', function(ws){
           status: 1
         }));
         ws.on('update', function(data){
-          console.log(data);
-          /*
-          adminPanel.push("panelStatus", [{
-            system: null,
-            pScanner: null,
-            crawler: null,
-            oScanner: null
-          }]);
-          */
+          adminPanel.set("panelStatus", [data]);
         })
       })
     })
@@ -376,10 +370,21 @@ wss.on('connection', function(ws){
           message: "Authenticated",
           status: 1
         }));
-        ws.on('update', function (data) {
-          console.log(data);
-
-        })
+        if(scanner.isAlive){
+          ws.send(JSON.stringify({
+            type: "update",
+            data: adminPanel.get("panelStatus"),
+            message: "Success",
+            status: 1
+          }));
+        }else{
+          ws.send(JSON.stringify({
+            type: "update",
+            data: JSON.stringify({ player: { current: 0, max: 0 }, crawler: { current: 0, max: 0 }, scanner: { current: 0, max: 0 } }),
+            message: "Success",
+            status: 1
+          }));
+        }
       })
     })
     .on('orgs', function(data){
