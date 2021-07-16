@@ -23,16 +23,11 @@ var SHA256 = require("crypto-js/sha256");
 const Enmap = require("enmap");
 
 // non-cached, auto-fetch enmap: 
-const otherEnmap = new Enmap({
-  name: "settings",
+const adminPanel = new Enmap({
+  name: "adminPanel",
   autoFetch: true,
-  fetchAll: false
+  fetchAll: true
 });
-
-console.log(otherEnmap);
-
-console.log(otherEnmap.get('test'));
-otherEnmap.set('test', true);
 
 const orgLimiter = new Bottleneck({
   maxConcurrent: 1,
@@ -246,12 +241,6 @@ var admin = {
   }
 };
 
-var panelStatus = {
-  system:"",
-  pScanner:"",
-  crawler:"",
-  oScanner:""
-};
 
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
@@ -365,7 +354,14 @@ wss.on('connection', function(ws){
         }));
         ws.on('update', function(data){
           console.log(data);
-
+          /*
+          adminPanel.push("panelStatus", [{
+            system: null,
+            pScanner: null,
+            crawler: null,
+            oScanner: null
+          }]);
+          */
         })
       })
     })
