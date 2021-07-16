@@ -233,6 +233,13 @@ var admin = {
   }
 };
 
+var panelStatus = {
+  system:"",
+  pScanner:"",
+  crawler:"",
+  oScanner:""
+};
+
 wss.on('connection', function(ws){
   ws.on('message', toEvent)
     .on('ping', heartbeat)
@@ -246,8 +253,8 @@ wss.on('connection', function(ws){
           ws.isAlive = true;
           ws.send(JSON.stringify({
             type:"authentication",
-            data:"Authenticated",
-            message:"Success",
+            data:null,
+            message:"Authenticated",
             status:1
           }));
 
@@ -345,6 +352,24 @@ wss.on('connection', function(ws){
         }));
         ws.on('update', function(data){
           console.log(data);
+          
+        })
+      })
+    })
+    .on("panel", function (data) {
+      jwt.verify(data, config.Secret, { algorithm: 'HS256' }, function (err, decoded) {
+        console.log(decoded);
+        ws.user = decoded.user;
+        ws.isAlive = true;
+        ws.send(JSON.stringify({
+          type: "authentication",
+          data: null,
+          message: "Authenticated",
+          status: 1
+        }));
+        ws.on('update', function (data) {
+          console.log(data);
+
         })
       })
     })
