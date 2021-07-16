@@ -355,7 +355,7 @@ wss.on('connection', function(ws){
           status: 1
         }));
         ws.on('update', function(data){
-          adminPanel.set("panelStatus", [data]);
+          adminPanel.set("panelStatus", data);
         })
       })
     })
