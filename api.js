@@ -31,7 +31,7 @@ const otherEnmap = new Enmap({
 
 console.log(otherEnmap);
 
-console.log(otherEnmap.get('Test2'));
+console.log(otherEnmap.get('test'));
 otherEnmap.set('test', true);
 
 const orgLimiter = new Bottleneck({
