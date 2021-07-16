@@ -362,39 +362,49 @@ wss.on('connection', function(ws){
     .on("panel", function (data) {
       jwt.verify(data, config.Secret, { algorithm: 'HS256' }, function (err, decoded) {
         console.log(decoded);
-        ws.user = decoded.username;
-        ws.isAlive = true;
-        ws.send(JSON.stringify({
-          type: "authentication",
-          data: null,
-          message: "Authenticated",
-          status: 1
-        }));
-        setTimeout(() => {
+        if (err) {
           ws.send(JSON.stringify({
-            type: "update",
-            data: adminPanel.get("panelStatus"),
-            message: "Success",
+            type: "authentication",
+            data: null,
+            message: "Auth Failed " + err.message,
             status: 1
           }));
-        }, 1000);
-        setInterval(() => {
-          if (scanner) {
+          ws.terminate();
+        }else{
+          ws.user = decoded.username;
+          ws.isAlive = true;
+          ws.send(JSON.stringify({
+            type: "authentication",
+            data: null,
+            message: "Authenticated",
+            status: 1
+          }));
+          setTimeout(() => {
             ws.send(JSON.stringify({
               type: "update",
               data: adminPanel.get("panelStatus"),
               message: "Success",
               status: 1
             }));
-          } else {
-            ws.send(JSON.stringify({
-              type: "update",
-              data: { player: { current: 0, max: 0 }, crawler: { current: 0, max: 0 }, scanner: { current: 0, max: 0 } },
-              message: "Success",
-              status: 1
-            }));
-          }
-        }, 10000);
+          }, 1000);
+          setInterval(() => {
+            if (scanner) {
+              ws.send(JSON.stringify({
+                type: "update",
+                data: adminPanel.get("panelStatus"),
+                message: "Success",
+                status: 1
+              }));
+            } else {
+              ws.send(JSON.stringify({
+                type: "update",
+                data: { player: { current: 0, max: 0 }, crawler: { current: 0, max: 0 }, scanner: { current: 0, max: 0 } },
+                message: "Success",
+                status: 1
+              }));
+            }
+          }, 10000);
+        }
       })
     })
     .on('orgs', function(data){
