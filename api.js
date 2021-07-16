@@ -590,7 +590,7 @@ wss.on('close', function close(e) {
 async function init(){
   key = await getKey();
   setInterval(() => {
-    wss.clients.forEach(()=>{
+    wss.clients.forEach((item, i)=>{
       if(!item.user){
         item.terminate();
       }
