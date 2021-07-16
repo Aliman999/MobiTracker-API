@@ -335,6 +335,11 @@ wss.on('connection', function(ws){
     .on('progress', function(data){
       jwt.verify(data, config.Secret, { algorithm: 'HS256' }, function (err, decoded) {
         console.log(decoded);
+        ws.user = decoded.user;
+        ws.isAlive = true;
+        ws.on('update', function(data){
+          console.log(data);
+        })
       })
     })
     .on('orgs', function(data){
