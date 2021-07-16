@@ -370,12 +370,14 @@ wss.on('connection', function(ws){
           message: "Authenticated",
           status: 1
         }));
-        ws.send(JSON.stringify({
-          type: "update",
-          data: adminPanel.get("panelStatus"),
-          message: "Success",
-          status: 1
-        }));
+        setTimeout(() => {
+          ws.send(JSON.stringify({
+            type: "update",
+            data: adminPanel.get("panelStatus"),
+            message: "Success",
+            status: 1
+          }));
+        }, 1000);
         setInterval(() => {
           if (scanner) {
             ws.send(JSON.stringify({
