@@ -337,6 +337,12 @@ wss.on('connection', function(ws){
         console.log(decoded);
         ws.user = decoded.user;
         ws.isAlive = true;
+        ws.send(JSON.stringify({
+          type: "authentication",
+          data: null,
+          message: "Authenticated",
+          status: 1
+        }));
         ws.on('update', function(data){
           console.log(data);
         })
