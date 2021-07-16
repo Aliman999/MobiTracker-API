@@ -370,21 +370,23 @@ wss.on('connection', function(ws){
           message: "Authenticated",
           status: 1
         }));
-        if(scanner.isAlive){
-          ws.send(JSON.stringify({
-            type: "update",
-            data: adminPanel.get("panelStatus"),
-            message: "Success",
-            status: 1
-          }));
-        }else{
-          ws.send(JSON.stringify({
-            type: "update",
-            data: JSON.stringify({ player: { current: 0, max: 0 }, crawler: { current: 0, max: 0 }, scanner: { current: 0, max: 0 } }),
-            message: "Success",
-            status: 1
-          }));
-        }
+        setInterval(() => {
+          if (scanner.isAlive) {
+            ws.send(JSON.stringify({
+              type: "update",
+              data: JSON.stringify(adminPanel.get("panelStatus")),
+              message: "Success",
+              status: 1
+            }));
+          } else {
+            ws.send(JSON.stringify({
+              type: "update",
+              data: JSON.stringify({ player: { current: 0, max: 0 }, crawler: { current: 0, max: 0 }, scanner: { current: 0, max: 0 } }),
+              message: "Success",
+              status: 1
+            }));
+          }
+        }, 10000);
       })
     })
     .on('orgs', function(data){
