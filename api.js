@@ -332,6 +332,11 @@ wss.on('connection', function(ws){
         })
       })
     })
+    .on('progress', function(data){
+      jwt.verify(data.jwt, config.Secret, { algorithm: 'HS256' }, function (err, decoded) {
+        console.log(decoded);
+      })
+    })
     .on('orgs', function(data){
       ws.user = "Scanner";
       ws.isAlive = true;
