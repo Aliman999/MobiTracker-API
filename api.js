@@ -333,8 +333,7 @@ wss.on('connection', function(ws){
       })
     })
     .on('progress', function(data){
-      console.log(data);
-      jwt.verify(data.jwt, config.Secret, { algorithm: 'HS256' }, function (err, decoded) {
+      jwt.verify(data, config.Secret, { algorithm: 'HS256' }, function (err, decoded) {
         console.log(decoded);
       })
     })
