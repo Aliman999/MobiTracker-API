@@ -20,6 +20,14 @@ var webSocket = null, clients=[], hourly, sql, keyType = "Main";;
 var key;
 var SHA256 = require("crypto-js/sha256");
 
+const Enmap = require("enmap");
+
+// non-cached, auto-fetch enmap: 
+const otherEnmap = new Enmap({
+  name: "settings",
+  autoFetch: true,
+  fetchAll: false
+});
 
 const orgLimiter = new Bottleneck({
   maxConcurrent: 1,
@@ -352,7 +360,7 @@ wss.on('connection', function(ws){
         }));
         ws.on('update', function(data){
           console.log(data);
-          
+
         })
       })
     })
