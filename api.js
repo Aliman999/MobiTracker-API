@@ -345,7 +345,7 @@ wss.on('connection', function(ws){
     .on('progress', function(data){
       jwt.verify(data, config.Secret, { algorithm: 'HS256' }, function (err, decoded) {
         console.log(decoded);
-        ws.user = decoded.user;
+        ws.user = decoded.username;
         ws.isAlive = true;
         scanner = ws;
         ws.send(JSON.stringify({
@@ -362,7 +362,7 @@ wss.on('connection', function(ws){
     .on("panel", function (data) {
       jwt.verify(data, config.Secret, { algorithm: 'HS256' }, function (err, decoded) {
         console.log(decoded);
-        ws.user = decoded.user;
+        ws.user = decoded.username;
         ws.isAlive = true;
         ws.send(JSON.stringify({
           type: "authentication",
