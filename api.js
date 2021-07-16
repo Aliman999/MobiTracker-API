@@ -362,9 +362,6 @@ wss.on('connection', function(ws){
     .on("panel", function (data) {
       jwt.verify(data, config.Secret, { algorithm: 'HS256' }, function (err, decoded) {
         console.log(decoded);
-        wss.clients.forEach((item, i)=>{
-          console.log(item.user);
-        })
         if (err) {
           ws.send(JSON.stringify({
             type: "authentication",
@@ -592,6 +589,13 @@ wss.on('close', function close(e) {
 
 async function init(){
   key = await getKey();
+  setInterval(() => {
+    wss.clients.forEach(()=>{
+      if(!item.user){
+        item.terminate();
+      }
+    })
+  }, 10000);
 }
 
 function getKey(){
