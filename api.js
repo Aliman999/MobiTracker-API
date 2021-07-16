@@ -29,6 +29,10 @@ const otherEnmap = new Enmap({
   fetchAll: false
 });
 
+console.log(otherEnmap);
+
+otherEnmap.set('test', true);
+
 const orgLimiter = new Bottleneck({
   maxConcurrent: 1,
   minTime: 2000
