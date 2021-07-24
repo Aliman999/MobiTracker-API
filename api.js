@@ -141,6 +141,19 @@ var api = {
       }
     })
   },
+  priority: async function(user){
+    return new Promise(callback => {
+      const sql = "SELECT value FROM priority WHERE userID = '"+user+"';";
+      con.query(sql, function (err, result, fields) {
+        if (err) throw err;
+        if(result[0]){
+          callback(result[0].value);
+        }else{
+          callback(9);
+        }
+      });
+    })
+  },
   history:{
     user:function(type = 'username', input = null, ws){
       ws.send(JSON.stringify({
@@ -150,7 +163,7 @@ var api = {
         status:1
       }));
       return new Promise(callback =>{
-        const sql = "SELECT * FROM `CACHE players` WHERE "+type+" LIKE '"+input+"'";
+        const sql = "SELECT * FROM `CACHE players` WHERE "+type+" = '"+input+"'";
         con.query(sql, function (err, result, fields){
           if(err) throw err;
           result.forEach((item, i) => {
@@ -168,7 +181,7 @@ var api = {
         status:1
       }));
       return new Promise(callback =>{
-        const sql = "SELECT * FROM `CACHE organizations` WHERE "+type+" LIKE '"+input+"'";
+        const sql = "SELECT * FROM `CACHE organizations` WHERE "+type+" = '"+input+"'";
         con.query(sql, function (err, result, fields){
           if(err) throw err;
           console.log(result);
@@ -254,6 +267,7 @@ wss.on('connection', function(ws){
         }else{
           ws.user = decoded.username;
           ws.isAlive = true;
+          ws.premium = 
           ws.send(JSON.stringify({
             type:"authentication",
             data:null,
@@ -266,7 +280,13 @@ wss.on('connection', function(ws){
             queryUser.schedule( {id:data}, api.queryUser, data, ws)
             .catch((error) => {
             });
+          })
 
+          ws.on('history', function(){
+            console.log(ws.user + " started job for " + data);
+            queryUser.schedule({ id: data }, api.queryUser, data, ws)
+              .catch((error) => {
+              });
           })
         }
       });
