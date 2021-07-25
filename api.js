@@ -143,7 +143,7 @@ var api = {
   },
   priority: async function(user){
     return new Promise(callback => {
-      const sql = "SELECT value FROM priority WHERE userID = '"+user+"';";
+      const sql = "SELECT value FROM priority WHERE cID = '"+user+"';";
       con.query(sql, function (err, result, fields) {
         if (err) throw err;
         if(result[0]){
