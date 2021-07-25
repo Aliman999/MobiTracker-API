@@ -285,7 +285,7 @@ wss.on('connection', function(ws){
           ws.on('history', function (data) {
             console.log(data);
             console.log(ws.user + " started job for " + data.input);
-            queryUser.schedule({ id: data }, api.history[data.type], data.datatype, data.input, ws)
+            queryUser.schedule({ id: data.input }, api.history[data.type], data.datatype, data.input, ws)
             .then((result) => {
               ws.send(JSON.stringify({
                 type: "response",
