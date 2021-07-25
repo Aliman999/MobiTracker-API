@@ -755,6 +755,11 @@ function cachePlayer(user){
         data.organization = JSON.parse(data.organization);
         data.organization = Object.values(data.organization);
         data.badge = JSON.parse(data.badge);
+        try{
+          data.bio = JSON.parse(data.bio);
+        }catch{
+
+        }
         for(var i = 0; i < Object.size(data); i++){
           if(i == 3){
             for(var x = 0; x < Object.size(data.organization) && x < Object.size(check.organization); x++){
@@ -786,6 +791,7 @@ function cachePlayer(user){
         }
         if(data.bio !== check.bio){
           update = true;
+          console.log({old: data.bio, new: check.bio});
           eventUpdate.push("Bio Changed");
         }
         function removeDupe(data){
