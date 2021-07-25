@@ -283,8 +283,17 @@ wss.on('connection', function(ws){
           })
 
           ws.on('history', function(data){
-            console.log(ws.user + " started job for " + data);
+            console.log(ws.user + " started job for " + data.input);
             queryUser.schedule({ id: data }, api.history[data.type], data.datatype, data.input, ws)
+            .then((result) => {
+              console.log(result);
+              ws.send(JSON.stringify({
+                type: "response",
+                data: result,
+                message: "Success",
+                status: 1
+              }));
+            })
             .catch((error) => {
             });
           })
