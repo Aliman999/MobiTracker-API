@@ -276,7 +276,7 @@ wss.on('connection', function(ws){
           }));
 
           ws.on('job', function (data) {
-            console.log(ws.user+" started job for "+data);
+            console.log(ws.user+" searched for "+data);
             queryUser.schedule( {id:data}, api.queryUser, data, ws)
             .catch((error) => {
             });
@@ -284,7 +284,7 @@ wss.on('connection', function(ws){
 
           ws.on('history', function (data) {
             console.log(data);
-            console.log(ws.user + " started job for " + data.input);
+            console.log(ws.user + " requested history on " + data.input);
             queryUser.schedule({ priority:ws.priority, id: data.input }, api.history[data.type], data.datatype, data.input, ws)
             .then((result) => {
               ws.send(JSON.stringify({
