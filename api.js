@@ -284,7 +284,7 @@ wss.on('connection', function(ws){
 
           ws.on('history', function(data){
             console.log(ws.user + " started job for " + data);
-            queryUser.schedule({ id: data }, api.queryUser, data, ws)
+            queryUser.schedule({ id: data }, api.history[data.type], data.datatype, data.input, ws)
             .catch((error) => {
             });
           })
