@@ -267,7 +267,7 @@ wss.on('connection', function(ws){
         }else{
           ws.user = decoded.username;
           ws.isAlive = true;
-          ws.premium = 
+          ws.priority = api.priority(ws.user);
           ws.send(JSON.stringify({
             type:"authentication",
             data:null,
@@ -285,8 +285,9 @@ wss.on('connection', function(ws){
           ws.on('history', function (data) {
             console.log(data);
             console.log(ws.user + " started job for " + data.input);
-            queryUser.schedule({ id: data.input }, api.history[data.type], data.datatype, data.input, ws)
+            queryUser.schedule({  id: data.input }, api.history[data.type], data.datatype, data.input, ws)
             .then((result) => {
+              console.log(result);
               ws.send(JSON.stringify({
                 type: "response",
                 data: result,
