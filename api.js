@@ -282,11 +282,11 @@ wss.on('connection', function(ws){
             });
           })
 
-          ws.on('history', function(){
+          ws.on('history', function(data){
             console.log(ws.user + " started job for " + data);
             queryUser.schedule({ id: data }, api.queryUser, data, ws)
-              .catch((error) => {
-              });
+            .catch((error) => {
+            });
           })
         }
       });
