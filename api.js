@@ -276,15 +276,15 @@ wss.on('connection', function(ws){
           }));
 
           ws.on('job', function (data) {
-            console.log(data);
+            console.log(0);
             console.log(ws.user+" started job for "+data);
             queryUser.schedule( {id:data}, api.queryUser, data, ws)
             .catch((error) => {
             });
           })
 
-          ws.on('history', function(data){
-            console.log(data);
+          ws.on('history', function (data) {
+            console.log(1);
             console.log(ws.user + " started job for " + data.input);
             queryUser.schedule({ id: data }, api.history[data.type], data.datatype, data.input, ws)
             .then((result) => {
