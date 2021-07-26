@@ -229,7 +229,7 @@ var api = {
 
               item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
               if(direction == 0){
-                direciton = 1;
+                direction = 1;
               }else{
                 direction = 0;
               }
