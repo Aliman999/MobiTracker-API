@@ -218,8 +218,9 @@ var api = {
                 events = " joined ";
                 events += joined.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
+              console.log(item);
 
-              item = {event: item.event, data: item.username+events};
+              item = {title: item.event, description: item.username+events, };
               console.log(item);
             }
           });
