@@ -220,7 +220,7 @@ var api = {
               }
               var d = new Date(item.timestamp);
               
-              console.log(d.getDay());
+              console.log(d);
 
               item = {title: item.event, description: item.username+events, };
               console.log(item);
