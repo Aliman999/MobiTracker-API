@@ -223,7 +223,8 @@ var api = {
               var dayStamp = d.toLocaleString("en-US", { day: "2-digit" });
               var monthStamp = d.toLocaleString("en-US", { month: "short" });
               var dateStamp = d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" });
-              //console.log(monthStamp);
+              var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
+              console.log(timeStamp);
 
               item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp, date: dateStamp};
               console.log(item);
