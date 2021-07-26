@@ -262,8 +262,20 @@ var api = {
               events = item.username+" changed their badge from "+saved[i].badge.title+" to "+item.badge.title+".";
               result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
             }else if(item.event === "Avatar Changed"){
-              events = item.username+" Changed their avatar ";
-              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra:{ src:item.avatar }};
+              events = item.username+" changed their avatar ";
+              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].avatar, new: item.avatar }};
+            }else if(item.event === "Bio Changed"){
+              function findDiff(str1, str2) {
+                let diff = "";
+                str2.split('').forEach(function (val, i) {
+                  if (val != str1.charAt(i))
+                    diff += val;
+                });
+                return diff;
+              }
+              console.log(findDiff(saved[i-1].bio, item.bio));
+              events = "";
+              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
             }
           });
           callback(result);
