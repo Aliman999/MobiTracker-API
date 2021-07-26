@@ -250,7 +250,7 @@ var api = {
               }
               if (demotion.length && promotion.length) {
                 events += " to ";
-                events += promotion.map(e => e.sid + " [" + e.rank + "]").join(",");
+                events += promotion.map(e => " [" + e.rank + "]").join(",");
               }
 
               result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
