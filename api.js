@@ -218,7 +218,7 @@ var api = {
                 events = " joined ";
                 events += joined.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
-              var d = new Date(jsonObj.data.profile.enlisted);
+              var d = new Date(item.timestamp);
               
               console.log(d.getDay());
 
