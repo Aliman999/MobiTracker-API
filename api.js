@@ -156,18 +156,48 @@ var api = {
   },
   history:{
     user:function(type = 'username', input = null, ws){
-      ws.send(JSON.stringify({
-        type:"progress",
-        data:null,
-        message:"Processing your Request",
-        status:1
-      }));
+      if(input === 0 || input === null || type === null || type === 0){
+        ws.send(JSON.stringify({
+          type: "response",
+          data: null,
+          message: "Input rejected",
+          status: 0
+        }));
+      }else{
+        ws.send(JSON.stringify({
+          type: "progress",
+          data: null,
+          message: "Processing your Request",
+          status: 1
+        }));
+      }
+      if(type != "username" && type != "cID"){
+        ws.send(JSON.stringify({
+          type: "response",
+          data: null,
+          message: "Type rejected",
+          status: 0
+        }));
+      }
       return new Promise(callback =>{
         const sql = "SELECT * FROM `CACHE players` WHERE "+type+" = '"+input+"'";
         con.query(sql, function (err, result, fields){
           if(err) throw err;
+          var saved = result;
           result.forEach((item, i) => {
             delete item.id;
+            if(item.event === "First Entry"){
+              item = {event: item.event, data: "MobiTracker - "+item.username+" Citizen ID:"+item.cID};
+            }else if(item.event === "Changed Name"){
+              if(type == "cID"){
+                item = { event: item.event, data: saved[i - 1].username + " changed their name to " + item.username + "." };
+              }else{
+                item = { event: item.event, data: item.username+" changed their username." };
+              }
+            }else if(item.event === "Org Change"){
+              console.log();
+              item = {event: item.event, data: item.username}
+            }
           });
           callback(result);
         });
@@ -778,9 +808,11 @@ function cachePlayer(user){
           update = true;
           eventUpdate.push("Obtained ID");
         }
-        if(data.username !== check.username){
-          update = true;
-          eventUpdate.push("Changed Name");
+        if(check.cID){
+          if (data.username !== check.username) {
+            update = true;
+            eventUpdate.push("Changed Name");
+          }
         }
         if(data.badge.title !== check.badge.title){
           update = true;
