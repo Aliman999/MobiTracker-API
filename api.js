@@ -194,16 +194,7 @@ var api = {
                 item = { event: item.event, data: item.username+" changed their username." };
               }
             }else if(item.event === "Org Change"){
-              var allOrgs = [];
-
-              for (const [key, value] of Object.entries(JSON.parse(item.organization))) {
-                allOrgs.push({sid: value.sid, rank:value.rank});
-              }
-              for (const [key, value] of Object.entries(JSON.parse(result[i - 1].organization))) {
-                allOrgs.push({ sid: value.sid, rank: value.rank });
-              }
-
-              var orgs = deepDiffMapper.map(allOrgs);
+              var orgs = diff(JSON.parse(result[i - 1].organization), JSON.parse(item.organization));
               console.log(orgs);
               
               item = {event: item.event, data: item.username}
@@ -965,79 +956,126 @@ console.save = function(msg){
   });
 }
 
-var deepDiffMapper = function () {
-  return {
-    VALUE_CREATED: 'created',
-    VALUE_UPDATED: 'updated',
-    VALUE_DELETED: 'deleted',
-    VALUE_UNCHANGED: 'unchanged',
-    map: function (obj1, obj2) {
-      if (this.isFunction(obj1) || this.isFunction(obj2)) {
-        throw 'Invalid argument. Function given, object expected.';
-      }
-      if (this.isValue(obj1) || this.isValue(obj2)) {
-        return {
-          type: this.compareValues(obj1, obj2),
-          data: obj1 === undefined ? obj2 : obj1
-        };
-      }
+var diff = function (obj1, obj2) {
 
-      var diff = {};
-      for (var key in obj1) {
-        if (this.isFunction(obj1[key])) {
-          continue;
-        }
+  // Make sure an object to compare is provided
+  if (!obj2 || Object.prototype.toString.call(obj2) !== '[object Object]') {
+    return obj1;
+  }
 
-        var value2 = undefined;
-        if (obj2[key] !== undefined) {
-          value2 = obj2[key];
-        }
+  //
+  // Variables
+  //
 
-        diff[key] = this.map(obj1[key], value2);
-      }
-      for (var key in obj2) {
-        if (this.isFunction(obj2[key]) || diff[key] !== undefined) {
-          continue;
-        }
+  var diffs = {};
+  var key;
 
-        diff[key] = this.map(undefined, obj2[key]);
-      }
 
-      return diff;
+  //
+  // Methods
+  //
 
-    },
-    compareValues: function (value1, value2) {
-      if (value1 === value2) {
-        return this.VALUE_UNCHANGED;
+  /**
+   * Check if two arrays are equal
+   * @param  {Array}   arr1 The first array
+   * @param  {Array}   arr2 The second array
+   * @return {Boolean}      If true, both arrays are equal
+   */
+  var arraysMatch = function (arr1, arr2) {
+
+    // Check if the arrays are the same length
+    if (arr1.length !== arr2.length) return false;
+
+    // Check if all items exist and are in the same order
+    for (var i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) return false;
+    }
+
+    // Otherwise, return true
+    return true;
+
+  };
+
+  /**
+   * Compare two items and push non-matches to object
+   * @param  {*}      item1 The first item
+   * @param  {*}      item2 The second item
+   * @param  {String} key   The key in our object
+   */
+  var compare = function (item1, item2, key) {
+
+    // Get the object type
+    var type1 = Object.prototype.toString.call(item1);
+    var type2 = Object.prototype.toString.call(item2);
+
+    // If type2 is undefined it has been removed
+    if (type2 === '[object Undefined]') {
+      diffs[key] = null;
+      return;
+    }
+
+    // If items are different types
+    if (type1 !== type2) {
+      diffs[key] = item2;
+      return;
+    }
+
+    // If an object, compare recursively
+    if (type1 === '[object Object]') {
+      var objDiff = diff(item1, item2);
+      if (Object.keys(objDiff).length > 0) {
+        diffs[key] = objDiff;
       }
-      if (this.isDate(value1) && this.isDate(value2) && value1.getTime() === value2.getTime()) {
-        return this.VALUE_UNCHANGED;
+      return;
+    }
+
+    // If an array, compare
+    if (type1 === '[object Array]') {
+      if (!arraysMatch(item1, item2)) {
+        diffs[key] = item2;
       }
-      if (value1 === undefined) {
-        return this.VALUE_CREATED;
+      return;
+    }
+
+    // Else if it's a function, convert to a string and compare
+    // Otherwise, just compare
+    if (type1 === '[object Function]') {
+      if (item1.toString() !== item2.toString()) {
+        diffs[key] = item2;
       }
-      if (value2 === undefined) {
-        return this.VALUE_DELETED;
+    } else {
+      if (item1 !== item2) {
+        diffs[key] = item2;
       }
-      return this.VALUE_UPDATED;
-    },
-    isFunction: function (x) {
-      return Object.prototype.toString.call(x) === '[object Function]';
-    },
-    isArray: function (x) {
-      return Object.prototype.toString.call(x) === '[object Array]';
-    },
-    isDate: function (x) {
-      return Object.prototype.toString.call(x) === '[object Date]';
-    },
-    isObject: function (x) {
-      return Object.prototype.toString.call(x) === '[object Object]';
-    },
-    isValue: function (x) {
-      return !this.isObject(x) && !this.isArray(x);
+    }
+
+  };
+
+
+  //
+  // Compare our objects
+  //
+
+  // Loop through the first object
+  for (key in obj1) {
+    if (obj1.hasOwnProperty(key)) {
+      compare(obj1[key], obj2[key], key);
     }
   }
-}();
+
+  // Loop through the second object and find missing items
+  for (key in obj2) {
+    if (obj2.hasOwnProperty(key)) {
+      if (!obj1[key] && obj1[key] !== obj2[key]) {
+        diffs[key] = obj2[key];
+      }
+    }
+  }
+
+  // Return the object of differences
+  return diffs;
+
+};
 
 const program = async () => {
   const instance = new MySQLEvents(con, {
