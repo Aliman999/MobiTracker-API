@@ -208,7 +208,7 @@ var api = {
               var org1 = [];
               var org2 = [];
 
-              console.log(saved);
+              console.log(saved[i - 1].organization);
 
               for (const [key, value] of Object.entries(JSON.parse(item.organization))) {
                 org1.push({sid: value.sid, rank:value.rank});
