@@ -184,6 +184,7 @@ var api = {
           if(err) throw err;
           console.log("saved start");
           var saved = result;
+          console.log(saved);
           console.log("saved end");
           result.forEach((item, i) => {
             delete item.id;
