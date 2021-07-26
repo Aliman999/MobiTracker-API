@@ -224,7 +224,7 @@ var api = {
               var monthStamp = d.toLocaleString("en-US", { month: "short" });
               var dateStamp = d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" });
               var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
-              console.log(i % 0);
+              console.log(i % 1);
 
               item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp};
               console.log(item);
