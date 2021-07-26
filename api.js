@@ -209,20 +209,14 @@ var api = {
               var events = "";
               if(left.length){
                 events = " left ";
-                events += left.map(function (elem) {
-                  return elem.sid+" ["+elem.rank+"]";
-                }).join(", ");
+                events += left.map(e => elem.sid + " [" + elem.rank + "]").join(",");
               }
               if(left.length && joined.length){
                 events += " and joined ";
-                events += joined.map(function (elem) {
-                  return elem.sid + " [" + elem.rank + "]";
-                }).join(", ");
+                events += joined.map(e => elem.sid + " [" + elem.rank + "]").join(",");
               }else{
                 events = " joined ";
-                events += joined.map(function (elem) {
-                  return elem.sid + " [" + elem.rank + "]";
-                }).join(", ");
+                events += joined.map(e => elem.sid + " [" + elem.rank + "]").join(",");
               }
 
               item = {event: item.event, data: item.username+events};
