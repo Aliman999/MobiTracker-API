@@ -194,7 +194,7 @@ var api = {
                 item = { event: item.event, data: item.username+" changed their username." };
               }
             }else if(item.event === "Org Change"){
-              console.log();
+              console.log(item.organization);
               item = {event: item.event, data: item.username}
             }
           });
