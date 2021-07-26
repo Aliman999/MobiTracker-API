@@ -216,7 +216,7 @@ var api = {
                 })
               }
               if(left.length && joined.length){
-                events += " and ";
+                events += "and joined ";
                 joined.forEach((item, i) => {
                   events += item.sid+" ["+item.rank+"], ";
                 })
