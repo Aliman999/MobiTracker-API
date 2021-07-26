@@ -195,14 +195,14 @@ var api = {
             var events = "";
             if(item.event === "First Entry"){
               events = item.username+" discovered. Citizen ID:"+item.cID;
-              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
+              result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
             }else if(item.event === "Changed Name"){
               if(type == "cID"){
                 events = saved[i - 1].username + " changed their name to " + item.username + ".";
-                result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
+                result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
               }else{
                 events = item.username+" changed their username.";
-                result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
+                result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
               }
             }else if(item.event === "Org Change"){
               var org1 = [];
