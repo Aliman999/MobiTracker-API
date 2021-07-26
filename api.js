@@ -209,14 +209,14 @@ var api = {
               var events = "";
               if(left.length){
                 events = " left ";
-                events += left.map(e => elem.sid + " [" + elem.rank + "]").join(",");
+                events += left.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
               if(left.length && joined.length){
                 events += " and joined ";
-                events += joined.map(e => elem.sid + " [" + elem.rank + "]").join(",");
+                events += joined.map(e => e.sid + " [" + e.rank + "]").join(",");
               }else{
                 events = " joined ";
-                events += joined.map(e => elem.sid + " [" + elem.rank + "]").join(",");
+                events += joined.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
 
               item = {event: item.event, data: item.username+events};
