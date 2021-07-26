@@ -192,14 +192,17 @@ var api = {
             var dateStamp = d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" });
             var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
             var direction = i % 2;
+            var events = "";
             if(item.event === "First Entry"){
-              var events = item.username+" discovered. Citizen ID:"+item.cID;
-              item = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
+              events = item.username+" discovered. Citizen ID:"+item.cID;
+              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
             }else if(item.event === "Changed Name"){
               if(type == "cID"){
-                item = { event: item.event, data: saved[i - 1].username + " changed their name to " + item.username + "." };
+                events = saved[i - 1].username + " changed their name to " + item.username + ".";
+                result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
               }else{
-                item = { event: item.event, data: item.username+" changed their username." };
+                events = item.username+" changed their username.";
+                result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
               }
             }else if(item.event === "Org Change"){
               var org1 = [];
@@ -214,7 +217,6 @@ var api = {
               var left = org2.filter(comparer(org1));
 
               var joined = org1.filter(comparer(org2));
-              var events = "";
               if(left.length){
                 events = " left ";
                 events += left.map(e => e.sid + " [" + e.rank + "]").join(",");
@@ -227,9 +229,33 @@ var api = {
                 events += joined.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
 
+              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
+            }else if(item.event === "Org Promotion/Demotion"){
+              var org1 = [];
+              var org2 = [];
 
-              item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
-              console.log(item);
+              for (const [key, value] of Object.entries(JSON.parse(item.organization))) {
+                org1.push({ sid: value.sid, rank: value.rank });
+              }
+              for (const [key, value] of Object.entries(JSON.parse(result[i - 1].organization))) {
+                org2.push({ sid: value.sid, rank: value.rank });
+              }
+              var demotion = org2.filter(comparer(org1));
+
+              var promotion = org1.filter(comparer(org2));
+              if (demotion.length) {
+                events = " left ";
+                events += demotion.map(e => e.sid + " [" + e.rank + "]").join(",");
+              }
+              if (demotion.length && promotion.length) {
+                events += " and joined ";
+                events += promotion.map(e => e.sid + " [" + e.rank + "]").join(",");
+              } else {
+                events = " joined ";
+                events += promotion.map(e => e.sid + " [" + e.rank + "]").join(",");
+              }
+
+              console.log(demotion);
             }
           });
           callback(result);
