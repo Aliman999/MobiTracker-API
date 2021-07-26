@@ -185,6 +185,12 @@ var api = {
           var saved = result;
           result.forEach((item, i) => {
             delete item.id;
+            //d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" })
+            var d = new Date(item.timestamp);
+            var dayStamp = d.toLocaleString("en-US", { day: "2-digit" });
+            var monthStamp = d.toLocaleString("en-US", { month: "short" });
+            var dateStamp = d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" });
+            var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
             var direction = i % 2;
             if(item.event === "First Entry"){
               item = {event: item.event, data: "MobiTracker - "+item.username+" Citizen ID:"+item.cID};
@@ -219,12 +225,6 @@ var api = {
                 events = " joined ";
                 events += joined.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
-              var d = new Date(item.timestamp);
-              //d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" })
-              var dayStamp = d.toLocaleString("en-US", { day: "2-digit" });
-              var monthStamp = d.toLocaleString("en-US", { month: "short" });
-              var dateStamp = d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" });
-              var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
 
 
               item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
