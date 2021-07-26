@@ -864,10 +864,12 @@ function cachePlayer(user) {
           }
         }
       }
-      if (check.cID > data.cID) {
+      /*
+      if (check.cID > data.cID){
         update = true;
         eventUpdate.push("Obtained ID");
       }
+      */
       if (data.username !== check.username) {
         update = true;
         eventUpdate.push("Changed Name");
