@@ -255,7 +255,7 @@ var api = {
                 events += promotion.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
 
-              console.log(demotion);
+              console.log(events);
             }
           });
           callback(result);
