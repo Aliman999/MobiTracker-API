@@ -212,7 +212,7 @@ var api = {
               if(left.length){
                 events = " left ";
                 left.forEach((item, i) => {
-                  events += item.sid + "[" + item.rank + "], ";
+                  events += item.sid+"["+item.rank+"], ";
                 })
               }
               if(left.length && joined.length){
