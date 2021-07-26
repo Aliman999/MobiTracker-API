@@ -237,9 +237,11 @@ var api = {
               for (const [key, value] of Object.entries(JSON.parse(item.organization))) {
                 org1.push({ sid: value.sid, rank: value.rank });
               }
+
               for (const [key, value] of Object.entries(JSON.parse(saved[i - 1].organization))) {
                 org2.push({ sid: value.sid, rank: value.rank });
               }
+
               var demotion = org2.filter(comparer(org1));
 
               var promotion = org1.filter(comparer(org2));
@@ -255,7 +257,9 @@ var api = {
                 events += promotion.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
 
-              console.log(events);
+              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
+            }else if(item.event === "Obtained ID"){
+
             }
           });
           callback(result);
@@ -848,7 +852,7 @@ function cachePlayer(user){
           }
         }
       }
-      if(data.cID !== check.cID){
+      if(check.cID >= data.cID){
         update = true;
         eventUpdate.push("Obtained ID");
       }
