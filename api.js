@@ -220,6 +220,11 @@ var api = {
                 joined.forEach((item, i) => {
                   events += item.sid+"["+item.rank+"], ";
                 })
+              }else{
+                events = " joined ";
+                joined.forEach((item, i) => {
+                  events += item.sid + "[" + item.rank + "], ";
+                })
               }
 
               item = {event: item.event, data: item.username+events};
