@@ -243,17 +243,13 @@ var api = {
               }
 
               var demotion = org2.filter(comparer(org1));
-
               var promotion = org1.filter(comparer(org2));
               if (demotion.length) {
-                events = " left ";
+                events = " promoted in ";
                 events += demotion.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
               if (demotion.length && promotion.length) {
-                events += " and joined ";
-                events += promotion.map(e => e.sid + " [" + e.rank + "]").join(",");
-              } else {
-                events = " joined ";
+                events += " to ";
                 events += promotion.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
 
