@@ -182,10 +182,7 @@ var api = {
         const sql = "SELECT * FROM `CACHE players` WHERE "+type+" = '"+input+"'";
         con.query(sql, function (err, result, fields){
           if(err) throw err;
-          console.log("saved start");
-          var saved = result;
-          console.log(saved);
-          console.log("saved end");
+          var saved = Array.from(result);
           result.forEach((item, i) => {
             delete item.id;
             //d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" })
