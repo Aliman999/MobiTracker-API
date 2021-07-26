@@ -194,6 +194,7 @@ var api = {
                 item = { event: item.event, data: item.username+" changed their username." };
               }
             }else if(item.event === "Org Change"){
+              console.log({ old: JSON.parse(result[i - 1].organization), new: JSON.parse(item.organization)});
               var orgs = diff(JSON.parse(result[i - 1].organization), JSON.parse(item.organization));
               console.log(orgs);
               
