@@ -203,8 +203,6 @@ var api = {
               for (const [key, value] of Object.entries(JSON.parse(result[i - 1].organization))) {
                 org2.push({ sid: value.sid, rank: value.rank });
               }
-
-              console.log({ old: org2, new: org1 });
               var left = org2.filter(comparer(org1));
 
               var joined = org1.filter(comparer(org2));
