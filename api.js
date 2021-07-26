@@ -204,7 +204,7 @@ var api = {
               }
 
               var orgs = deepDiffMapper.map(allOrgs);
-              console.log(orgs.data);
+              console.log(orgs);
               
               item = {event: item.event, data: item.username}
             }
