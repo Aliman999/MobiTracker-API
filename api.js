@@ -216,7 +216,7 @@ var api = {
                 }).join(", ");
               }
               if(left.length && joined.length){
-                events += "and joined ";
+                events += " and joined ";
                 events += joined.map(function (elem) {
                   return elem.sid + " [" + elem.rank + "]";
                 }).join(", ");
