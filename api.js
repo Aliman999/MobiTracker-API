@@ -194,11 +194,17 @@ var api = {
                 item = { event: item.event, data: item.username+" changed their username." };
               }
             }else if(item.event === "Org Change"){
-              var newOrgs = JSON.parse(item.organization);
-              var oldOrgs = JSON.parse(result[i-1].organization);
+              var allOrgs = [];
 
-              var orgs = deepDiffMapper.map([newOrgs, oldOrgs]);
-              console.log(orgs);
+              for (const [key, value] of Object.entries(JSON.parse(item.organization))) {
+                allOrgs.push({sid: value.sid, rank:value.rank});
+              }
+              for (const [key, value] of Object.entries(JSON.parse(result[i - 1].organization))) {
+                allOrgs.push({ sid: value.sid, rank: value.rank });
+              }
+
+              var orgs = deepDiffMapper.map(allOrgs);
+              console.log(orgs.data);
               
               item = {event: item.event, data: item.username}
             }
