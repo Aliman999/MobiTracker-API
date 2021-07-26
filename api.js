@@ -205,7 +205,7 @@ var api = {
               }
 
               console.log({old: org2, new: org1});
-              var orgs = org2.filter(comparer(org1));
+              var orgs = org1.filter(comparer(org2));
               console.log(orgs);
               
               item = {event: item.event, data: item.username}
