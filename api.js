@@ -193,7 +193,8 @@ var api = {
             var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
             var direction = i % 2;
             if(item.event === "First Entry"){
-              item = {event: item.event, data: "MobiTracker - "+item.username+" Citizen ID:"+item.cID};
+              var events = item.username+" discovered. Citizen ID:"+item.cID;
+              item = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
             }else if(item.event === "Changed Name"){
               if(type == "cID"){
                 item = { event: item.event, data: saved[i - 1].username + " changed their name to " + item.username + "." };
