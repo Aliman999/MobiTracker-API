@@ -222,7 +222,8 @@ var api = {
                 })
               }
 
-              item = {event: item.event, data: item.username+events}
+              item = {event: item.event, data: item.username+events};
+              console.log(item);
             }
           });
           callback(result);
