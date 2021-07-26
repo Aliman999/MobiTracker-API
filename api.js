@@ -211,20 +211,20 @@ var api = {
               var events = "";
               if(left.length){
                 events = " left ";
-                left.forEach((item, i) => {
-                  events += item.sid+" ["+item.rank+"] ";
-                })
+                events += left.map(function (elem) {
+                  return elem.sid+" ["+elem.rank+"]";
+                }).join(", ");
               }
               if(left.length && joined.length){
                 events += "and joined ";
-                joined.forEach((item, i) => {
-                  events += item.sid+" ["+item.rank+"] ";
-                })
+                events += joined.map(function (elem) {
+                  return elem.sid + " [" + elem.rank + "]";
+                }).join(", ");
               }else{
                 events = " joined ";
-                joined.forEach((item, i) => {
-                  events += item.sid + " [" + item.rank + "] ";
-                })
+                events += joined.map(function (elem) {
+                  return elem.sid + " [" + elem.rank + "]";
+                }).join(", ");
               }
 
               item = {event: item.event, data: item.username+events};
