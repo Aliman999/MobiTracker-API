@@ -220,7 +220,7 @@ var api = {
               }
               var d = new Date(item.timestamp);
               //d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" })
-              console.log(d.day());
+              console.log(d.getDay());
 
               item = {title: item.event, description: item.username+events, };
               console.log(item);
