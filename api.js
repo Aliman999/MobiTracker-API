@@ -258,8 +258,12 @@ var api = {
               }
 
               result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
-            }else if(item.event === "Obtained ID"){
-
+            }else if(item.event === "Badge Changed"){
+              events = item.username+" changed their badge from "+saved[i].badge.title+" to "+item.badge.title+".";
+              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
+            }else if(item.event === "Avatar Changed"){
+              events = item.username+" Changed their avatar ";
+              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra:{ src:item.avatar }};
             }
           });
           callback(result);
@@ -787,7 +791,15 @@ const queryApi = function(username, key){
   });
 }
 
-function cachePlayer(user){
+function cachePlayer(user) {
+  var download = function (uri, filename, callback) {
+    request.head(uri, function (err, res, body) {
+      console.log('content-type:', res.headers['content-type']);
+      console.log('content-length:', res.headers['content-length']);
+
+      request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+    });
+  };
   var update = false;
   var eventUpdate = new Array();
   var check = { cID:0,
@@ -852,7 +864,7 @@ function cachePlayer(user){
           }
         }
       }
-      if(check.cID >= data.cID){
+      if (check.cID >= data.cID) {
         update = true;
         eventUpdate.push("Obtained ID");
       }
@@ -866,6 +878,10 @@ function cachePlayer(user){
       }
       if(data.avatar !== check.avatar){
         update = true;
+        var stamp = Date.now();
+        download(check.avatar, "/var/www/html/src/"+check.username+"-"+stamp+".png", function () {
+          check.avatar = "https://mobitracker.co/src/"+check.username+"-"+stamp+".png";
+        });
         eventUpdate.push("Avatar Changed");
       }
       if(data.bio !== check.bio){
