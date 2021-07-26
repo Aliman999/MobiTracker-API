@@ -183,9 +183,9 @@ var api = {
         con.query(sql, function (err, result, fields){
           if(err) throw err;
           var saved = result;
-          var direction = 0;
           result.forEach((item, i) => {
             delete item.id;
+            var direction = i % 2;
             if(item.event === "First Entry"){
               item = {event: item.event, data: "MobiTracker - "+item.username+" Citizen ID:"+item.cID};
             }else if(item.event === "Changed Name"){
@@ -228,11 +228,6 @@ var api = {
 
 
               item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
-              if(direction == 0){
-                direction = 1;
-              }else{
-                direction = 0;
-              }
               console.log(item);
             }
           });
