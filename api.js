@@ -194,7 +194,11 @@ var api = {
                 item = { event: item.event, data: item.username+" changed their username." };
               }
             }else if(item.event === "Org Change"){
-              console.log(JSON.parse(item.organization));
+              item.organization = JSON.parse(item.organization);
+              console.log(item.organization);
+              for (const [key, value] of Object.entries(item.organization)) {
+                console.log(`${key}: ${value}`);
+              }
               item = {event: item.event, data: item.username}
             }
           });
