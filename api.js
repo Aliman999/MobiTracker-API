@@ -219,8 +219,8 @@ var api = {
                 events += joined.map(e => e.sid + " [" + e.rank + "]").join(",");
               }
               var d = new Date(item.timestamp);
-              
-              console.log(d.toLocaleString("en-US", {month: "long", day: "2-digit", year: "numeric"}));
+              //d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" })
+              console.log(d.day());
 
               item = {title: item.event, description: item.username+events, };
               console.log(item);
