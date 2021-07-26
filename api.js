@@ -197,7 +197,7 @@ var api = {
               item.organization = JSON.parse(item.organization);
               console.log(item.organization);
               for (const [key, value] of Object.entries(item.organization)) {
-                console.log(`${key}: ${value}`);
+                console.log(`${key}: ${value.sid}`);
               }
               item = {event: item.event, data: item.username}
             }
