@@ -204,13 +204,25 @@ var api = {
                 org2.push({ sid: value.sid, rank: value.rank });
               }
 
-              console.log({old: org2, new: org1});
-              var onlyInA = org1.filter(comparer(org2));
-              var onlyInB = org2.filter(comparer(org1));
-              var orgs = onlyInA.concat(onlyInB);
-              console.log(orgs);
-              
-              item = {event: item.event, data: item.username}
+              console.log({ old: org2, new: org1 });
+              var left = org2.filter(comparer(org1));
+
+              var joined = org1.filter(comparer(org2));
+              var events;
+              if(left.length){
+                events = " left ";
+                left.forEach((item, i) => {
+                  events += item.sid + "[" + item.rank + "], ";
+                })
+              }
+              if(left.length && joined.length){
+                events += " and ";
+                joined.forEach((item, i) => {
+                  events += item.sid+"["+item.rank+"], ";
+                })
+              }
+
+              item = {event: item.event, data: item.username+events}
             }
           });
           callback(result);
