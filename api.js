@@ -222,9 +222,10 @@ var api = {
               //d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" })
               var dayStamp = d.toLocaleString("en-US", { day: "2-digit" });
               var monthStamp = d.toLocaleString("en-US", { month: "short" });
+              var dateStamp = d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" });
               console.log(monthStamp);
 
-              item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp};
+              item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp, date: dateStamp};
               console.log(item);
             }
           });
