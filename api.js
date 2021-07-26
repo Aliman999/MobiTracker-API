@@ -194,8 +194,17 @@ var api = {
                 item = { event: item.event, data: item.username+" changed their username." };
               }
             }else if(item.event === "Org Change"){
-              console.log({ old: JSON.parse(result[i - 1].organization), new: JSON.parse(item.organization)});
-              var orgs = diff(JSON.parse(result[i - 1].organization), JSON.parse(item.organization));
+              var org1 = [];
+              var org2 = [];
+
+              for (const [key, value] of Object.entries(JSON.parse(item.organization))) {
+                org1.push({sid: value.sid, rank:value.rank});
+              }
+              for (const [key, value] of Object.entries(JSON.parse(result[i - 1].organization))) {
+                org2.push({ sid: value.sid, rank: value.rank });
+              }
+              console.log({old: org2, new: org1});
+              var orgs = diff(org2, org1);
               console.log(orgs);
               
               item = {event: item.event, data: item.username}
