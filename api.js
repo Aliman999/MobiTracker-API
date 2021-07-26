@@ -208,7 +208,7 @@ var api = {
               var left = org2.filter(comparer(org1));
 
               var joined = org1.filter(comparer(org2));
-              var events;
+              var events = "";
               if(left.length){
                 events = " left ";
                 left.forEach((item, i) => {
