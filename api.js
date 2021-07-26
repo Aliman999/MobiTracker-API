@@ -183,6 +183,7 @@ var api = {
         con.query(sql, function (err, result, fields){
           if(err) throw err;
           var saved = result;
+          var direction = 0;
           result.forEach((item, i) => {
             delete item.id;
             if(item.event === "First Entry"){
@@ -224,9 +225,14 @@ var api = {
               var monthStamp = d.toLocaleString("en-US", { month: "short" });
               var dateStamp = d.toLocaleString("en-US", { month: "long", day: "2-digit", year: "numeric" });
               var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
-              console.log(i % 2);
 
-              item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp};
+
+              item = {title: item.event, description: item.username+events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
+              if(direction == 0){
+                direciton = 1;
+              }else{
+                direction = 0;
+              }
               console.log(item);
             }
           });
