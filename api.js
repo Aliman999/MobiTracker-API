@@ -263,7 +263,12 @@ var api = {
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].avatar, new: item.avatar }, actions: [{ text: "View Bio", href: "" }]};
             }else if(item.event === "Bio Changed"){
               events = item.username + " changed their bio.";
-              console.log({ old: saved[i - 1].bio, new: item.bio});
+              if (saved[i - 1] != '') {
+                const tempOldBio = JSON.parse(saved[i - 1].bio);
+              }else{
+                const tempOldBio = saved[i - 1].bio;
+              }
+              const tempNewBio = JSON.parse(item.bio);
               var changes = Diff.diffChars(tempOldBio, tempNewBio);
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changes, actions: [{ text: "View Bio", href: "" }]};
             }
