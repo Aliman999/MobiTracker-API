@@ -279,9 +279,7 @@ var api = {
                 // match for common parts
                 const color = part.added ? 'new' :
                   part.removed ? 'old' : 'match';
-                const symbol = part.added ? '+ ' :
-                  part.removed ? '- ' : '@@ '
-                changesOutput += "<span class='"+color+"'>"+symbol+part.value+"<br></span>";
+                changesOutput += "<span class='"+color+"'>"+part.value+"<br></span>";
               });
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }]};
             }
