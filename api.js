@@ -195,8 +195,9 @@ var api = {
             var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
             var direction = i % 2;
             var events = "";
+            item.event = item.event.split(",");
             var e = item.event.split(",");
-            item.event.forEach((item, i)=>{
+            e.event.forEach((item, i)=>{
               item.event[i] = item.trim();
             })
             console.log(removeDupe(item.event));
