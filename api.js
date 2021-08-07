@@ -276,7 +276,9 @@ var api = {
               changes.forEach((part) => {
                 // green for additions, red for deletions
                 // grey for common parts
-                changesOutput += part.value;
+                const color = part.added ? 'green' :
+                  part.removed ? 'red' : 'grey';
+                changesOutput += "<span style='color:"+color+"'>"+part.value+"</span>";
               });
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }]};
             }
