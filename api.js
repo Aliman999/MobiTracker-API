@@ -196,9 +196,8 @@ var api = {
             var direction = i % 2;
             var events = "";
             item.event = item.event.split(",");
-            var e = item.event.split(",");
-            e.event.forEach((item, i)=>{
-              item.event[i] = item.trim();
+            item.event.forEach((eventItem, ei)=>{
+              item.event[ei] = eventItem.trim();
             })
             console.log(removeDupe(item.event));
 
