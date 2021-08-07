@@ -281,8 +281,6 @@ var api = {
                   part.removed ? 'old' : 'match';
                 const symbol = part.added ? '+ ' :
                   part.removed ? '- ' : '@@ '
-                part.value = part.value.replace(/\r?\n|\r/g, "\g/");
-                part.value = symbol+part.value.replace(/\r?\n|\r/g, "\n");
                 changesOutput += "<span class='"+color+"'>"+symbol+part.value+"</span>";
               });
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }]};
