@@ -271,7 +271,7 @@ var api = {
                 //cannot parse empty string;
               }
               var tempNewBio = JSON.parse(JSON.parse(item.bio));
-              var changes = Diff.diffChars(tempOldBio, tempNewBio);
+              var changes = Diff.diffTrimmedLines(tempOldBio, tempNewBio);
               var changesOutput = '';
               changes.forEach((part) => {
                 // green for additions, red for deletions
