@@ -271,7 +271,7 @@ var api = {
                 // cannot parse empty string;
               }
               var tempNewBio = JSON.parse(JSON.parse(item.bio));
-              var changes = Diff.diffLines(tempOldBio, tempNewBio);
+              var changes = Diff.diffWords(tempOldBio, tempNewBio);
               var changesOutput = '';
               changes.forEach((part) => {
                 console.log(part);
