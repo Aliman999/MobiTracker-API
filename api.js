@@ -264,13 +264,13 @@ var api = {
             }else if(item.event === "Bio Changed"){
               events = item.username + " changed their bio.";
               var tempOldBio = '';
-              console.log({ old: saved[i - 1].bio, new: item.bio});
               try{
                 tempOldBio = JSON.parse(saved[i - 1].bio);
               }catch(e){
                 //cannot parse empty string;
               }
               const tempNewBio = JSON.parse(item.bio);
+              console.log({ old: tempOldBio, new: tempNewBio });
               var changes = Diff.diffChars(tempOldBio, tempNewBio);
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changes, actions: [{ text: "View Bio", href: "" }]};
             }
