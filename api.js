@@ -275,6 +275,10 @@ var api = {
               var changesOutput = '';
               changes.forEach((part) => {
                 console.log(part.value.split("\n"));
+                var temp = part.value.split("\n");
+                temp = temp.filter(function (el) {
+                  return el != '';
+                });
                 // new for additions, old for deletions
                 // match for common parts
                 const color = part.added ? 'new' :
