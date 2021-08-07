@@ -277,7 +277,7 @@ var api = {
                 // green for additions, red for deletions
                 // grey for common parts
                 const color = part.added ? 'green' :
-                  part.removed ? 'red' : 'grey';
+                  part.removed ? 'red' : '#C4D7E6';
                 changesOutput += "<span style='color:"+color+"'>"+part.value+"</span>";
               });
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }]};
