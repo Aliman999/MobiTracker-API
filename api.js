@@ -208,7 +208,7 @@ var api = {
               }
               if (eventItem === "Changed Name") {
                 if (type == "cID") {
-                  events = saved[i - 1].username + " changed their name to " + item.username + ".";
+                  events = saved[i + 1].username + " changed their name to " + item.username + ".";
                   result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
                 } else {
                   events = item.username + " changed their username.";
@@ -222,7 +222,7 @@ var api = {
                 for (const [key, value] of Object.entries(JSON.parse(item.organization))) {
                   org1.push({ sid: value.sid, rank: value.rank });
                 }
-                for (const [key, value] of Object.entries(JSON.parse(saved[i - 1].organization))) {
+                for (const [key, value] of Object.entries(JSON.parse(saved[i + 1].organization))) {
                   org2.push({ sid: value.sid, rank: value.rank });
                 }
                 var left = org2.filter(comparer(org1));
@@ -250,7 +250,7 @@ var api = {
                   org1.push({ sid: value.sid, rank: value.rank });
                 }
 
-                for (const [key, value] of Object.entries(JSON.parse(saved[i - 1].organization))) {
+                for (const [key, value] of Object.entries(JSON.parse(saved[i + 1].organization))) {
                   org2.push({ sid: value.sid, rank: value.rank });
                 }
 
@@ -273,13 +273,13 @@ var api = {
               }
               if (eventItem === "Avatar Changed") {
                 events = item.username + " changed their avatar.";
-                result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].avatar, new: item.avatar }, actions: [{ text: "View Bio", href: "" }] };
+                result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i + 1].avatar, new: item.avatar }, actions: [{ text: "View Bio", href: "" }] };
               }
               if (eventItem === "Bio Changed") {
                 events = item.username + " changed their bio.";
                 var tempOldBio = '';
                 try {
-                  tempOldBio = JSON.parse(JSON.parse(saved[i - 1].bio));
+                  tempOldBio = JSON.parse(JSON.parse(saved[i + 1].bio));
                 } catch (e) {
                   // cannot parse empty string;
                 }
