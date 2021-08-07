@@ -195,7 +195,8 @@ var api = {
             var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
             var direction = i % 2;
             var events = "";
-            console.log(item.event.split(","));
+            console.log(removeDupe(item.event.split(",")));
+
 
             if(item.event === "First Entry"){
               events = item.username+" discovered. Citizen ID:"+item.cID;
@@ -922,9 +923,6 @@ function cachePlayer(user) {
         console.log({old: data.bio, new: check.bio});
         eventUpdate.push("Bio Changed");
       }
-      function removeDupe(data){
-        return data.filter((value, index) => data.indexOf(value) === index)
-      }
       eventUpdate = removeDupe(eventUpdate);
     }else{
       check.bio = JSON.stringify(check.bio);
@@ -1073,6 +1071,10 @@ function comparer(otherArray) {
       return other.sid == current.sid && other.rank == current.rank
     }).length == 0;
   }
+}
+
+function removeDupe(data) {
+  return data.filter((value, index) => data.indexOf(value) === index)
 }
 
 const program = async () => {
