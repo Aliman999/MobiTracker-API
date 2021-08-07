@@ -195,7 +195,11 @@ var api = {
             var timeStamp = d.toLocaleString("en-US", { hour: "2-digit", minute: "2-digit" });
             var direction = i % 2;
             var events = "";
-            console.log(removeDupe(item.event.trim().split(",")));
+            var e = item.event.split(",");
+            item.event.forEach((item, i)=>{
+              item.event[i] = item.trim();
+            })
+            console.log(removeDupe(item.event));
 
 
             if(item.event === "First Entry"){
