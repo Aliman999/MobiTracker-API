@@ -282,10 +282,15 @@ var api = {
                 // match for common parts
                 const color = part.added ? 'new' :
                   part.removed ? 'old' : 'match';
-                const symbol = part.added ? 'NEW + ' :
-                  part.removed ? 'REMOVED - ' : 'UNCHANGED @@ '
-                
-                changesOutput += "<p class='"+color+"'>"+symbol+part.value.join("\n"+symbol)+"</p>";
+                const symbol = part.added ? '+ ' :
+                  part.removed ? '- ' : '@@ ';
+                if(part?.added){
+                  changesOutput += "<p class='"+color+"'>NEW"+symbol+part.value.join("\n"+symbol)+"</p>";
+                }else if(part?.removed){
+                  changesOutput += "<p class='"+color+"'>REMOVED"+symbol+part.value.join("\n"+symbol)+"</p>";
+                }else{
+                  changesOutput += "<p class='"+color+"'>UNCHANGED"+symbol+part.value.join("\n"+symbol)+"</p>";
+                }
               });
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }]};
             }
