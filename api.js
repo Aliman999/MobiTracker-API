@@ -253,16 +253,16 @@ var api = {
                 events += promotion.map(e => " [" + e.rank + "]").join(",");
               }
 
-              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
+              result[i] = { title: item.event, description: item.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction};
             }else if(item.event === "Badge Changed"){
               events = item.username+" changed their badge from "+saved[i].badge.title+" to "+item.badge.title+".";
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction };
             }else if(item.event === "Avatar Changed"){
               events = item.username+" changed their avatar.";
-              result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].avatar, new: item.avatar }};
+              result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].avatar, new: item.avatar }, actions: { text:"View Bio", href:"" }};
             }else if(item.event === "Bio Changed"){
               events = item.username+" changed their bio.";
-              result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].bio, new: item.bio }};
+              result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].bio, new: item.bio }, actions: { text:"View Bio", href:"" }};
             }
           });
           callback(result);
