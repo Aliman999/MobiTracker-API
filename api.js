@@ -8,6 +8,7 @@ const https = require('https');
 const mysql = require('mysql');
 const Diff = require('diff');
 const log = require('single-line-log').stdout;
+require('colors');
 require('console-stamp')(console, {
     format: ':date(mm/dd/yyyy HH:MM:ss)'
 });
@@ -272,6 +273,13 @@ var api = {
               const tempNewBio = JSON.parse(item.bio);
               console.log({ old: tempOldBio, new: tempNewBio });
               var changes = Diff.diffChars(tempOldBio, tempNewBio);
+              changes.forEach((part) => {
+                // green for additions, red for deletions
+                // grey for common parts
+                const color = part.added ? 'green' :
+                  part.removed ? 'red' : 'grey';
+                process.stderr.write(part.value[color]);
+              });
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changes, actions: [{ text: "View Bio", href: "" }]};
             }
           });
