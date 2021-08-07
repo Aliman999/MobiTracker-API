@@ -285,8 +285,7 @@ var api = {
                 const symbol = part.added ? ' + ' :
                   part.removed ? ' - ' : ' @@ '
                 
-                changesOutput += "<p class='"+color+"'>"+symbol+part.value.join("\n"+symbol)+"</p>";
-                console.log(changesOutput);
+                changesOutput += "<p class='"+color+"'>"+symbol+part.value.join(""+symbol)+"</p>";
               });
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }]};
             }
