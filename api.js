@@ -274,6 +274,7 @@ var api = {
               var changes = Diff.diffLines(tempOldBio, tempNewBio);
               var changesOutput = '';
               changes.forEach((part) => {
+                console.log(part);
                 // new for additions, old for deletions
                 // match for common parts
                 const color = part.added ? 'new' :
