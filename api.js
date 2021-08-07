@@ -296,7 +296,7 @@ var api = {
                   const color = part.added ? 'new' :
                     part.removed ? 'old' : 'match';
                   const symbol = part.added ? '+ ' :
-                    part.removed ? '- ' : '@@ ';
+                    part.removed ? '- ' : '';
                   changesOutput += "<p class='" + color + "'>" + symbol + part.value.join("\n" + symbol) + "</p>";
                 });
                 result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }] };
