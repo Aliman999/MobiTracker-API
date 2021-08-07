@@ -280,7 +280,7 @@ var api = {
                   part.removed ? 'red' : 'grey';
                 changesOutput += part.value;
               });
-              result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changes, actions: [{ text: "View Bio", href: "" }]};
+              result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }]};
             }
           });
           callback(result);
