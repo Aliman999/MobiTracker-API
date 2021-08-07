@@ -274,11 +274,10 @@ var api = {
               var changes = Diff.diffWords(tempOldBio, tempNewBio);
               var changesOutput = '';
               changes.forEach((part) => {
-                var temp = part.value.split("\n");
-                temp = temp.filter(function (el) {
-                  return el != '';
-                });
-                console.log(temp);
+                part.value = part.value.split("\n");
+                part.value = part.value.filter((e)=>{
+                  return e != '';
+                })
                 // new for additions, old for deletions
                 // match for common parts
                 const color = part.added ? 'new' :
