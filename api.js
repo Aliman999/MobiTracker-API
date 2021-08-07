@@ -274,12 +274,15 @@ var api = {
               var changes = Diff.diffWords(tempOldBio, tempNewBio);
               var changesOutput = '';
               changes.forEach((part) => {
-                console.log(part);
+                console.log(part.split("\n"));
                 // new for additions, old for deletions
                 // match for common parts
                 const color = part.added ? 'new' :
                   part.removed ? 'old' : 'match';
-                changesOutput += "<span class='"+color+"'>"+part.value+"</span>";
+                const symbol = part.added ? '+ ' :
+                  part.removed ? '- ' : '@@ '
+                
+                changesOutput += "<span class='"+color+"'>"+symbol+part.value+"<br></span>";
               });
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }]};
             }
