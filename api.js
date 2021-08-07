@@ -274,7 +274,7 @@ var api = {
               var changes = Diff.diffWords(tempOldBio, tempNewBio);
               var changesOutput = '';
               changes.forEach((part) => {
-                console.log(part.split("\n"));
+                console.log(part.value.split("\n"));
                 // new for additions, old for deletions
                 // match for common parts
                 const color = part.added ? 'new' :
