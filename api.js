@@ -278,7 +278,7 @@ var api = {
                 // match for common parts
                 const color = part.added ? 'new' :
                   part.removed ? 'old' : 'match';
-                const symbol = part.added ? '+' :
+                const symbol = part.added ? '+ ' :
                   part.removed ? '- ' : '@@ '
                 changesOutput += "<span class='"+color+"'>"+symbol+part.value+"</span>";
               });
