@@ -266,11 +266,11 @@ var api = {
               events = item.username + " changed their bio.";
               var tempOldBio = '';
               try{
-                tempOldBio = JSON.parse(saved[i - 1].bio);
+                tempOldBio = JSON.parse(saved[i - 1].bio).toString();
               }catch(e){
                 //cannot parse empty string;
               }
-              const tempNewBio = JSON.parse(item.bio);
+              const tempNewBio = JSON.parse(item.bio).toString();
               console.log({ old: tempOldBio, new: tempNewBio });
               var changes = Diff.diffChars(tempOldBio, tempNewBio);
               changes.forEach((part) => {
