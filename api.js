@@ -279,7 +279,7 @@ var api = {
                 // match for common parts
                 const color = part.added ? 'new' :
                   part.removed ? 'old' : 'match';
-                changesOutput += "<span class='"+color+"'>"+part.value+"<br></span>";
+                changesOutput += "<span class='"+color+"'>"+part.value+"</span>";
               });
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }]};
             }
