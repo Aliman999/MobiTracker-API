@@ -201,21 +201,21 @@ var api = {
             })
             item.event = removeDupe(item.event);
             item.event.forEach((eventItem, ei)=>{
-              eventItem.event = eventItem.event.toString();
-              if (eventItem.event === "First Entry") {
+              eventItem = eventItem.toString();
+              if (eventItem === "First Entry") {
                 events = eventItem.username + " discovered. Citizen ID:" + eventItem.cID;
-                result[i] = { title: eventItem.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
+                result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
               }
-              if (eventItem.event === "Changed Name") {
+              if (eventItem === "Changed Name") {
                 if (type == "cID") {
                   events = saved[i - 1].username + " changed their name to " + eventItem.username + ".";
-                  result[i] = { title: eventItem.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
+                  result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
                 } else {
                   events = eventItem.username + " changed their username.";
-                  result[i] = { title: eventItem.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
+                  result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
                 }
               }
-              if (eventItem.event === "Org Change") {
+              if (eventItem === "Org Change") {
                 var org1 = [];
                 var org2 = [];
 
@@ -240,9 +240,9 @@ var api = {
                   events += joined.map(e => e.sid + " [" + e.rank + "]").join(",");
                 }
 
-                result[i] = { title: eventItem.event, description: eventItem.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
+                result[i] = { title: eventItem, description: eventItem.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
               }
-              if (eventItem.event === "Org Promotion/Demotion") {
+              if (eventItem === "Org Promotion/Demotion") {
                 var org1 = [];
                 var org2 = [];
 
@@ -265,17 +265,17 @@ var api = {
                   events += promotion.map(e => " [" + e.rank + "]").join(",");
                 }
 
-                result[i] = { title: eventItem.event, description: eventItem.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
+                result[i] = { title: eventItem, description: eventItem.username + events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
               }
-              if (eventItem.event === "Badge Changed") {
+              if (eventItem === "Badge Changed") {
                 events = eventItem.username + " changed their badge from " + saved[i].badge.title + " to " + eventItem.badge.title + ".";
-                result[i] = { title: eventItem.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
+                result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
               }
-              if (eventItem.event === "Avatar Changed") {
+              if (eventItem === "Avatar Changed") {
                 events = eventItem.username + " changed their avatar.";
-                result[i] = { title: eventItem.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].avatar, new: eventItem.avatar }, actions: [{ text: "View Bio", href: "" }] };
+                result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].avatar, new: eventItem.avatar }, actions: [{ text: "View Bio", href: "" }] };
               }
-              if (eventItem.event === "Bio Changed") {
+              if (eventItem === "Bio Changed") {
                 events = eventItem.username + " changed their bio.";
                 var tempOldBio = '';
                 try {
@@ -299,7 +299,7 @@ var api = {
                     part.removed ? '- ' : '@@ ';
                   changesOutput += "<p class='" + color + "'>" + symbol + part.value.join("\n" + symbol) + "</p>";
                 });
-                result[i] = { title: eventItem.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }] };
+                result[i] = { title: eventItem, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changesOutput, actions: [{ text: "View Bio", href: "" }] };
               }
             })
           });
