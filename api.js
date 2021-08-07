@@ -278,6 +278,7 @@ var api = {
                 part.value = part.value.filter((e)=>{
                   return e != '';
                 })
+                console.log(part.value);
                 // new for additions, old for deletions
                 // match for common parts
                 const color = part.added ? 'new' :
