@@ -264,7 +264,7 @@ var api = {
             }else if(item.event === "Bio Changed"){
               events = item.username + " changed their bio.";
               console.log({ old: saved[i - 1].bio, new: item.bio});
-              if (saved[i - 1] === '') {
+              if (saved[i - 1].bio === '') {
                 const tempOldBio = saved[i - 1].bio;
               }else{
                 const tempOldBio = JSON.parse(saved[i - 1].bio);
