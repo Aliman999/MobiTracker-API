@@ -284,9 +284,9 @@ var api = {
                   part.removed ? 'old' : 'match';
                 const symbol = part.added ? '+ ' :
                   part.removed ? '- ' : '@@ ';
-                if(part.?added){
+                if(part?.added){
                   changesOutput += "<p class='"+color+"'>NEW"+symbol+part.value.join("\n"+symbol)+"</p>";
-                }else if(part.?removed){
+                }else if(part?.removed){
                   changesOutput += "<p class='"+color+"'>REMOVED"+symbol+part.value.join("\n"+symbol)+"</p>";
                 }else{
                   changesOutput += "<p class='"+color+"'>UNCHANGED"+symbol+part.value.join("\n"+symbol)+"</p>";
