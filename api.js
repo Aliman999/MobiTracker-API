@@ -181,7 +181,7 @@ var api = {
         }));
       }
       return new Promise(callback =>{
-        const sql = "SELECT * FROM `CACHE players` WHERE "+type+" = '"+input+"'";
+        const sql = "SELECT * FROM `CACHE players` WHERE "+type+" = '"+input+"' ORDER BY id DESC;";
         con.query(sql, function (err, result, fields){
           if(err) throw err;
           var saved = Array.from(result);
