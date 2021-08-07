@@ -6,6 +6,7 @@ const MySQLEvents = require('@rodrigogs/mysql-events');
 const fs = require('fs');
 const https = require('https');
 const mysql = require('mysql');
+const Diff = require('diff');
 const log = require('single-line-log').stdout;
 require('console-stamp')(console, {
     format: ':date(mm/dd/yyyy HH:MM:ss)'
@@ -262,7 +263,8 @@ var api = {
               result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].avatar, new: item.avatar }, actions: [{ text: "View Bio", href: "" }]};
             }else if(item.event === "Bio Changed"){
               events = item.username+" changed their bio.";
-              result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: { old: saved[i - 1].bio, new: item.bio }, actions: [{ text: "View Bio", href: "" }]};
+              var changes = Diff.diffChars(saved[i - 1].bio, item.bio);
+              result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: changes, actions: [{ text: "View Bio", href: "" }]};
             }
           });
           callback(result);
