@@ -201,6 +201,7 @@ var api = {
             })
             item.event = removeDupe(item.event);
             item.event.forEach((eventItem, ei)=>{
+              console.log(eventItem);
               if (item.event === "First Entry") {
                 events = item.username + " discovered. Citizen ID:" + item.cID;
                 result[i] = { title: item.event, description: events, day: dayStamp, month: monthStamp, date: dateStamp, time: timeStamp, direction: direction, extra: null, actions: [] };
