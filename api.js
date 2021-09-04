@@ -409,6 +409,10 @@ wss.on('connection', function(ws){
           }));
 
           ws.on('job', function (data) {
+
+            jwt.verify(data, config.Secret, { algorithm: 'HS265' }, function (err, decoded) {
+              
+            });
             console.log(ws.user+" searched for "+data);
             queryUser.schedule( {id:data}, api.queryUser, data, ws)
             .catch((error) => {
