@@ -800,18 +800,8 @@ const queryApi = function(username, key){
         };
         if(user){
           if(Object.size(user.data) > 0){
-            var sql = "SELECT reviewed_count AS vouches FROM players WHERE username LIKE '"+username+"'";
-            con.query(sql, function (err, result, fields){
-              if(err) throw err;
-              if(result.length > 0){
-                console.log("----------\n" + JSON.stringify(user.data.profile) + "\n----------");
-                user.data.profile.rating = api.xp(result[0].vouches)+" ["+result[0].vouches+"]";
-              }else{
-                user.data.profile.rating = api.xp(0)+" [0]";
-              }
-              cachePlayer(user.data);
-              callback({ status:1, data:user.data });
-            })
+            cachePlayer(user.data);
+            callback({ status: 1, data: user.data });
           }else{
             callback({ status:0, data:username+" not found." });
           }
