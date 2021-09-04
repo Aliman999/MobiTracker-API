@@ -743,7 +743,7 @@ const interval = setInterval(function (){
       item.isAlive = false;
     }
   });
-}, 60000 + 1000);
+}, 30000 + 1000);
 
 wss.on('close', function close(e) {
   clearInterval(interval);
