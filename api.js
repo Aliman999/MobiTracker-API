@@ -801,7 +801,6 @@ const queryApi = function(username, key){
         if(user){
           if(Object.size(user.data) > 0){
             cachePlayer(user.data);
-            console.log("debug0");
             callback({ status: 1, data: user.data });
           }else{
             callback({ status:0, data:username+" not found." });
@@ -821,6 +820,7 @@ const queryApi = function(username, key){
 
 function cachePlayer(user) {
   var download = function (uri, filename, callback) {
+    console.log("----------\nDOWNLOAD\n----------");
     request.head(uri, function (err, res, body) {
       console.log('content-type:', res.headers['content-type']);
       console.log('content-length:', res.headers['content-length']);
