@@ -820,7 +820,6 @@ const queryApi = function(username, key){
 
 function cachePlayer(user) {
   var download = function (uri, filename, callback) {
-    console.log("----------\nDOWNLOAD\n----------");
     request.head(uri, function (err, res, body) {
       console.log('content-type:', res.headers['content-type']);
       console.log('content-length:', res.headers['content-length']);
