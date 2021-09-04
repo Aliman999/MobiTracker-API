@@ -413,13 +413,10 @@ wss.on('connection', function(ws){
               if (err)
                 console.log(err);
               data = decoded;
-              console.log(data);
-              /*
-              console.log(ws.user + " searched for " + decoded);
-              queryUser.schedule({ id: data }, api.queryUser, data, ws)
+              console.log(ws.user + " searched for " + data.query);
+              queryUser.schedule({ id: data.query }, api.queryUser, data.query, ws)
                 .catch((error) => {
               });
-              */
             });
           })
 
