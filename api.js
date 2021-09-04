@@ -409,6 +409,7 @@ wss.on('connection', function(ws){
           }));
 
           ws.on('job', function (data) {
+            console.log(data);
             jwt.verify(data, config.Quick, { algorithm: 'HS265' }, function (err, decoded) {
               if (err)
                 console.log(err);
