@@ -142,7 +142,7 @@ var api = {
       }
     })
   },
-  priority: async function(user){
+  priority:async function(user){
     return new Promise(callback => {
       const sql = "SELECT value FROM priority WHERE cID = '"+user+"';";
       con.query(sql, function (err, result, fields) {
@@ -743,7 +743,7 @@ const interval = setInterval(function (){
       item.isAlive = false;
     }
   });
-}, 30000 + 1000);
+}, 60000 + 1000);
 
 wss.on('close', function close(e) {
   clearInterval(interval);
@@ -804,6 +804,7 @@ const queryApi = function(username, key){
             con.query(sql, function (err, result, fields){
               if(err) throw err;
               if(result.length > 0){
+                console.log("----------\n" + JSON.stringify(user.data.profile) + "\n----------");
                 user.data.profile.rating = api.xp(result[0].vouches)+" ["+result[0].vouches+"]";
               }else{
                 user.data.profile.rating = api.xp(0)+" [0]";
