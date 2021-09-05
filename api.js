@@ -376,7 +376,6 @@ wss.on('connection', function(ws){
   ws.on('message', toEvent)
     .on('ping', heartbeat)
     .on('internal', function (data){
-      console.log(wss.clients.size);
       jwt.verify(data, config.Secret, { algorithm: 'HS265' }, function(err, decoded){
         if(err){
           console.log(err);
