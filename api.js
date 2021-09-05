@@ -393,6 +393,7 @@ wss.on('connection', function(ws){
   ws.on('message', toEvent)
     .on('ping', heartbeat)
     .on('internal', function (data){
+      console.log("connection");
       jwt.verify(data, config.Secret, { algorithm: 'HS265' }, function(err, decoded){
         if(err){
           console.log(err);
@@ -427,7 +428,7 @@ wss.on('connection', function(ws){
               console.log(decoded);
               console.log(ws.user + " requested history on " + decoded.query);
               //1234
-              if(decoded.type === "player"){
+              if(decoded.type === "user"){ 
 
               }
               queryUser.schedule({ priority: ws.priority, id: data.input }, api.history[data.type], data.datatype, data.input, ws)
