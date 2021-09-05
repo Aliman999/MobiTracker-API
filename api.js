@@ -425,14 +425,13 @@ wss.on('connection', function(ws){
             jwt.verify(data, config.Quick, { algorithm: 'HS265' }, function (err, decoded) {
               if(err)
                 console.log(err);
-              console.log(decoded);
-              console.log(ws.user + " requested history on " + decoded.query);
+              data = decoded;
+              console.log(ws.user + " requested history on " + data.query);
               //1234
               if(decoded.type === "user"){ 
 
               }
-              /*
-              queryUser.schedule({ priority: ws.priority, id: data.input }, api.history[data.type], data.datatype, data.input, ws)
+              queryUser.schedule({ priority: ws.priority, id: data.query }, api.history[data.type], data.filter, data.query, ws)
               .then((result) => {
                 ws.send(JSON.stringify({
                   type: "response",
@@ -444,7 +443,6 @@ wss.on('connection', function(ws){
               .catch((error) => {
                 console.log(error);
               });
-              */
             });
           })
         }
