@@ -421,11 +421,10 @@ wss.on('connection', function(ws){
           })
 
           ws.on('history', function (data) {
-
-            console.log(data);
             jwt.verify(data, config.Quick, { algorithm: 'HS265' }, function (err, decoded) {
               if(err)
                 console.log(err);
+              console.log(decoded);
               console.log(ws.user + " requested history on " + data.input);
 
               queryUser.schedule({ priority: ws.priority, id: data.input }, api.history[data.type], data.datatype, data.input, ws)
