@@ -421,18 +421,22 @@ wss.on('connection', function(ws){
           })
 
           ws.on('history', function (data) {
-            console.log(data);
-            console.log(ws.user + " requested history on " + data.input);
-            queryUser.schedule({ priority:ws.priority, id: data.input }, api.history[data.type], data.datatype, data.input, ws)
-            .then((result) => {
-              ws.send(JSON.stringify({
-                type: "response",
-                data: result,
-                message: "Success",
-                status: 1
-              }));
-            })
-            .catch((error) => {
+            jwt.verify(data, config.Secret, { algorithm: 'HS265' }, function (err, decoded) {
+              console.log(decoded);
+              console.log(ws.user + " requested history on " + data.input);
+
+              queryUser.schedule({ priority: ws.priority, id: data.input }, api.history[data.type], data.datatype, data.input, ws)
+              .then((result) => {
+                ws.send(JSON.stringify({
+                  type: "response",
+                  data: result,
+                  message: "Success",
+                  status: 1
+                }));
+              })
+              .catch((error) => {
+                console.log(error);
+              });
             });
           })
         }
