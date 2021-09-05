@@ -155,7 +155,7 @@ var api = {
       });
     })
   },
-  history:{
+  history:{//1234
     user:function(type = 'username', input = null, ws){
       if(input === 0 || input === null || type === null || type === 0){
         ws.send(JSON.stringify({
@@ -425,8 +425,11 @@ wss.on('connection', function(ws){
               if(err)
                 console.log(err);
               console.log(decoded);
-              console.log(ws.user + " requested history on " + data.input);
+              console.log(ws.user + " requested history on " + decoded.query);
+              //1234
+              if(decoded.type === "player"){
 
+              }
               queryUser.schedule({ priority: ws.priority, id: data.input }, api.history[data.type], data.datatype, data.input, ws)
               .then((result) => {
                 ws.send(JSON.stringify({
