@@ -157,6 +157,7 @@ var api = {
   },
   history:{//1234
     user:function(type = 'username', input = null, ws){
+      input = escape(input);
       if(input === 0 || input === null || type === null || type === 0){
         ws.send(JSON.stringify({
           type: "response",
@@ -325,24 +326,6 @@ var api = {
         });
       })
     }
-  },
-  xp:function(rep){
-    rep = parseInt(rep);
-    if(rep < 0){
-      if(rep < -5){
-        return "Dangerous";
-      }else if (rep < 0) {
-        return "Sketchy";
-      }
-    }else{
-      if(rep == 0){
-        return "Newbie";
-      }else if (rep <= 30) {
-        return "Experienced";
-      }else if (rep <= 100) {
-        return "Reliable";
-      }
-    }
   }
 };
 
@@ -428,9 +411,6 @@ wss.on('connection', function(ws){
               data = decoded;
               console.log(ws.user + " requested history on " + data.query);
               //1234
-              if(decoded.type === "user"){ 
-
-              }
               queryUser.schedule({ priority: ws.priority, id: data.query }, api.history[data.type], data.filter, data.query, ws)
               .then((result) => {
                 ws.send(JSON.stringify({
